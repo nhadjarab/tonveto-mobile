@@ -66,9 +66,8 @@ class _LoginScreenState extends State<LoginScreen> {
                   CustomTextField(
                     labelText: "e-mail",
                     keyboardType: TextInputType.emailAddress,
-                    validator: (value) => value != null && value.isNotEmpty
-                        ? null
-                        : "le champ ne peut pas être vide",
+                    validator: (value) => validateEmail(value,
+                        "le champ ne peut pas être vide", "email invalide"),
                     onSaved: (value) => _email = value,
                   ),
                   const SizedBox(height: AppTheme.divider),
@@ -86,10 +85,10 @@ class _LoginScreenState extends State<LoginScreen> {
                       onPressed: () =>
                           setState(() => _passwordVisible = !_passwordVisible),
                     ),
-                    // validator: (value) => validatePassword(
-                    //     value,
-                    //     "le champ ne peut pas être vide",
-                    //     "Le mot de passe doit contenir au moins un chiffre et +8 caractères"),
+                    validator: (value) => validatePassword(
+                        value,
+                        "le champ ne peut pas être vide",
+                        "Le mot de passe doit contenir au moins un chiffre et +8 caractères"),
                     onSaved: (value) => _password = value,
                   ),
                   const SizedBox(height: AppTheme.divider * 4),

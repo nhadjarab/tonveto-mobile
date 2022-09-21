@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 import 'package:vet/config/theme.dart';
+import 'package:vet/utils/validators.dart';
 import 'package:vet/viewmodels/auth_viewmodel.dart';
 import 'package:vet/views/widgets/custom_button.dart';
 import 'package:vet/views/widgets/custom_fields.dart';
@@ -33,6 +34,11 @@ class _InfoScreenState extends State<InfoScreen> {
   void register() async {
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
+      if (birthDate == null || DateTime.now().year - birthDate!.year < 18) {
+        ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text("il faut que vous avez +18 ans")));
+        return;
+      }
       final redirect = await Provider.of<AuthViewModel>(context, listen: false)
           .registerInfo(
               _firstname, _lastname, _phone, birthDate, _email, _password);
@@ -67,17 +73,19 @@ class _InfoScreenState extends State<InfoScreen> {
                   const SizedBox(height: AppTheme.divider * 2),
                   CustomTextField(
                     labelText: "Nom*",
-                    validator: (value) => value != null && value.length >= 4
-                        ? null
-                        : "Le nom doit être +4 caracteres",
+                    validator: (value) => validateName(
+                        value,
+                        "le champ ne peut pas être vide",
+                        "le nom doit être +3 caracteres"),
                     onSaved: (value) => _lastname = value,
                   ),
                   const SizedBox(height: AppTheme.divider),
                   CustomTextField(
                     labelText: "Prénom*",
-                    validator: (value) => value != null && value.length >= 4
-                        ? null
-                        : "Le prénom doit être +4 caracteres",
+                    validator: (value) => validateName(
+                        value,
+                        "le champ ne peut pas être vide",
+                        "le prénom doit être +3 caracteres"),
                     onSaved: (value) => _firstname = value,
                   ),
                   const SizedBox(height: AppTheme.divider * 2),
@@ -97,15 +105,15 @@ class _InfoScreenState extends State<InfoScreen> {
                             final datePick = await showDatePicker(
                                 context: context,
                                 initialDate: DateTime.now(),
-                                firstDate: DateTime(DateTime.now().year - 18),
-                                lastDate: DateTime(DateTime.now().year + 100));
+                                firstDate: DateTime(DateTime.now().year - 100),
+                                lastDate: DateTime(DateTime.now().year - 18));
                             if (datePick != null && datePick != birthDate) {
                               setState(() {
                                 birthDate = datePick;
                                 isDateSelected = true;
 
                                 birthDateInString =
-                                    "${birthDate?.month}/${birthDate?.day}/${birthDate?.year}"; // 08/14/2019
+                                    "${birthDate?.day}/${birthDate?.month}/${birthDate?.year}"; // 08/14/2019
                               });
                             }
                           }),

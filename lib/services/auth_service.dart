@@ -131,4 +131,40 @@ class AuthService {
       throw Failure();
     }
   }
+
+  Future updateUserData(
+      String? userID,
+      String? token,
+      String? firstName,
+      String? lastName,
+      String? phone,
+      DateTime? birthday,
+      String? email) async {
+    try {
+      final response = await http.put(Uri.parse("$BASE_URL/user/$userID"),
+          headers: {
+            "Content-Type": "application/json",
+            'Authorization': 'Bearer $token',
+          },
+          body: json.encode({
+            "first_name": firstName,
+            "last_name": lastName,
+            "email": email,
+            "birth_date": birthday.toString(),
+            "phone_number": phone
+          }));
+      final result = json.decode(response.body);
+      print(response.body);
+      if (response.statusCode == 200) {
+        return true;
+      } else {
+        throw Failure.createFailure(response.statusCode, result.toString());
+      }
+    } on Failure {
+      rethrow;
+    } catch (e) {
+      print(e);
+      throw Failure();
+    }
+  }
 }

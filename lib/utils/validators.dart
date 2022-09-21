@@ -24,3 +24,16 @@ String? validateEmail(String? value, String isEmptyText, String errorText) {
     }
   }
 }
+
+String? validateName(String? value, String isEmptyText, String errorText) {
+  RegExp regex = RegExp(r"[a-zA-Z]");
+  if (value == null || value.isEmpty || value.length < 3) {
+    return isEmptyText;
+  } else {
+    if (!regex.hasMatch(value)) {
+      return errorText;
+    } else {
+      return null;
+    }
+  }
+}

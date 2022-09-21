@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:vet/viewmodels/auth_viewmodel.dart';
+import 'package:vet/views/screens/profile/profile_screen.dart';
 import 'package:vet/views/widgets/custom_button.dart';
 
 class MockHome extends StatefulWidget {
@@ -26,9 +27,10 @@ class _MockHomeState extends State<MockHome> {
     return Scaffold(
         body: Center(
       child: CustomButton(
-        text: "Logout",
+        text: "profile",
         onPressed: () async {
-          await Provider.of<AuthViewModel>(context, listen: false).logout();
+          // await Provider.of<AuthViewModel>(context, listen: false).logout();
+          Navigator.pushNamed(context, ProfileScreen.route);
         },
       ),
     ));

@@ -102,6 +102,7 @@ class AuthViewModel with ChangeNotifier {
       notifyListeners();
       final userData = await authService.getUserData(user?.id, token);
       user = userData;
+      loading = false;
       notifyListeners();
     } on Failure catch (f) {
       loading = false;
@@ -111,6 +112,38 @@ class AuthViewModel with ChangeNotifier {
       loading = false;
       print(e);
       notifyListeners();
+    }
+  }
+
+  Future updateUserData(String? firstName, String? lastName, String? phone,
+      DateTime? birthday, String? email) async {
+    final AuthService authService = AuthService();
+    try {
+      loading = true;
+      notifyListeners();
+      // register user info
+      await authService.updateUserData(
+          user?.id, token, firstName, lastName, phone, birthday, email);
+      loading = false;
+
+      user?.last_name = lastName;
+      user?.first_name = firstName;
+      user?.phone_number = phone;
+      user?.birth_date = birthday;
+      user?.email = email;
+
+      notifyListeners();
+      return true;
+    } on Failure catch (f) {
+      loading = false;
+      errorMessage = f.message;
+      notifyListeners();
+      return false;
+    } catch (e) {
+      loading = false;
+      print(e);
+      notifyListeners();
+      return false;
     }
   }
 
