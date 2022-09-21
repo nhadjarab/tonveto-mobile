@@ -6,6 +6,7 @@ import 'package:vet/viewmodels/auth_viewmodel.dart';
 import 'package:vet/views/widgets/custom_button.dart';
 import 'package:vet/views/widgets/custom_fields.dart';
 import 'package:vet/views/widgets/custom_progress.dart';
+import 'package:vet/views/widgets/show_message.dart';
 
 class InfoScreen extends StatefulWidget {
   static const route = "/info";
@@ -27,10 +28,17 @@ class _InfoScreenState extends State<InfoScreen> {
   String? _firstname;
   String? _email;
   String? _password;
+  String? _phone;
 
-  void register() {
+  void register() async {
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
+      final redirect = await Provider.of<AuthViewModel>(context, listen: false)
+          .registerInfo(
+              _firstname, _lastname, _phone, birthDate, _email, _password);
+      if (redirect) {
+        Navigator.pop(context);
+      }
     }
   }
 
@@ -40,7 +48,6 @@ class _InfoScreenState extends State<InfoScreen> {
         ModalRoute.of(context)!.settings.arguments as Map<String, String?>;
     _email = args["email"];
     _password = args["password"];
-
     return Scaffold(
         appBar: AppBar(
           title: const Text("Créer un compte"),
@@ -91,7 +98,7 @@ class _InfoScreenState extends State<InfoScreen> {
                                 context: context,
                                 initialDate: DateTime.now(),
                                 firstDate: DateTime(DateTime.now().year - 18),
-                                lastDate: DateTime(DateTime.now().year - 100));
+                                lastDate: DateTime(DateTime.now().year + 100));
                             if (datePick != null && datePick != birthDate) {
                               setState(() {
                                 birthDate = datePick;
@@ -116,13 +123,22 @@ class _InfoScreenState extends State<InfoScreen> {
                     validator: (value) => value != null && value.length >= 8
                         ? null
                         : "Le numéro doit être valide",
-                    onSaved: (value) => _firstname = value,
+                    onSaved: (value) => _phone = value,
                   ),
                   const SizedBox(height: AppTheme.divider * 2),
                   Provider.of<AuthViewModel>(context).loading
                       ? const CustomProgress()
                       : CustomButton(
                           text: "Créer votre compte", onPressed: register),
+                  Consumer<AuthViewModel>(builder: (context, value, child) {
+                    if (value.errorMessage != null) {
+                      return ShowMessage(
+                          message: value.errorMessage!,
+                          isError: true,
+                          onPressed: () => value.clearError());
+                    }
+                    return const SizedBox.shrink();
+                  }),
                 ],
               ),
             ),

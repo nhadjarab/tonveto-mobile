@@ -31,8 +31,8 @@ class AuthScreen extends StatelessWidget {
                     onPressed: () async => await Navigator.pushNamed(
                         context, RegisterScreen.route)),
                 const SizedBox(height: AppTheme.divider),
-                TextButton(
-                    child: const Text("Se connecter"),
+                CustomButton(
+                    text: "Se connecter",
                     onPressed: () async =>
                         await Navigator.pushNamed(context, LoginScreen.route)),
               ],

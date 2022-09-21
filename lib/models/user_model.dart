@@ -1,3 +1,5 @@
+import 'package:vet/models/pet_model.dart';
+
 class User {
   User(
       {this.id,
@@ -19,8 +21,8 @@ class User {
   String? phone_number;
   bool? profile_complete;
   String? type;
-  List<dynamic>? pets;
-  List<dynamic>? appointments;
+  List<Pet>? pets;
+  List? appointments;
 
   factory User.fromJson(Map<String, dynamic> json) => User(
         id: json["id"],
@@ -30,8 +32,9 @@ class User {
         phone_number: json["phone_number"],
         profile_complete: json["profile_complete"],
         type: json["type"],
-        pets: List<dynamic>.from(json["pets"].map((x) => x)),
-        appointments: List<dynamic>.from(json["appointments"].map((x) => x)),
+        pets: List<Pet>.from(json["pets"].map((pet) => Pet.fromJson(pet))),
+        appointments:
+            List<dynamic>.from(json["appointments"]?.map((x) => x) ?? []),
         birth_date:
             DateTime.tryParse(json["birth_date"] ?? DateTime.now().toString()),
       );

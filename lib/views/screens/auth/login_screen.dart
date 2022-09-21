@@ -2,12 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 import 'package:vet/config/theme.dart';
-import 'package:vet/utils/vaidators.dart';
+import 'package:vet/utils/validators.dart';
 import 'package:vet/viewmodels/auth_viewmodel.dart';
 import 'package:vet/views/screens/auth/register_screen.dart';
 import 'package:vet/views/widgets/custom_button.dart';
 import 'package:vet/views/widgets/custom_fields.dart';
 import 'package:vet/views/widgets/custom_progress.dart';
+import 'package:vet/views/widgets/show_message.dart';
 
 class LoginScreen extends StatefulWidget {
   static const route = "/login";
@@ -32,20 +33,14 @@ class _LoginScreenState extends State<LoginScreen> {
   void login() async {
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
-      // bool redirect = await Provider.of<AuthViewModel>(context, listen: false)
-      //     .login(
-      //         _email,
-      //         _password,
-      //         Provider.of<LangViewModel>(context, listen: false)
-      //                 .getCurrentLang
-      //                 ?.languageCode ??
-      //             'fr');
-      // if (redirect) {
-      //   await Navigator.pushReplacementNamed(context, VerifyEmailScreen.route);
-      // }
-      // if (Provider.of<AuthViewModel>(context, listen: false).isAuth) {
-      //   Navigator.pop(context);
-      // }
+
+      await Provider.of<AuthViewModel>(context, listen: false).login(
+        _email,
+        _password,
+      );
+      if (Provider.of<AuthViewModel>(context, listen: false).isAuth) {
+        Navigator.pop(context);
+      }
     }
   }
 
@@ -91,30 +86,25 @@ class _LoginScreenState extends State<LoginScreen> {
                       onPressed: () =>
                           setState(() => _passwordVisible = !_passwordVisible),
                     ),
-                    validator: (value) => validatePassword(
-                        value,
-                        "le champ ne peut pas être vide",
-                        "Le mot de passe doit contenir au moins un chiffre et +8 caractères"),
+                    // validator: (value) => validatePassword(
+                    //     value,
+                    //     "le champ ne peut pas être vide",
+                    //     "Le mot de passe doit contenir au moins un chiffre et +8 caractères"),
                     onSaved: (value) => _password = value,
                   ),
                   const SizedBox(height: AppTheme.divider * 4),
                   Provider.of<AuthViewModel>(context).loading
                       ? const CustomProgress()
-                      : Column(
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
-                          children: [
-                            CustomButton(
-                                text: "Se connecter", onPressed: login),
-                            TextButton(
-                                onPressed: () async {
-                                  await Navigator.pushNamed(
-                                      context, RegisterScreen.route);
-                                },
-                                child: const Text("Créer un compte",
-                                    style:
-                                        TextStyle(color: AppTheme.mainColor))),
-                          ],
-                        ),
+                      : CustomButton(text: "Se connecter", onPressed: login),
+                  Consumer<AuthViewModel>(builder: (context, value, child) {
+                    if (value.errorMessage != null) {
+                      return ShowMessage(
+                          message: value.errorMessage!,
+                          isError: true,
+                          onPressed: () => value.clearError());
+                    }
+                    return const SizedBox.shrink();
+                  }),
                 ],
               ),
             ),
