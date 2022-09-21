@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../config/theme.dart';
 
@@ -70,6 +71,32 @@ class CustomTextField extends StatelessWidget {
       keyboardType: keyboardType,
       validator: validator,
       onSaved: onSaved,
+    );
+  }
+}
+
+class VetTextField extends StatefulWidget {
+  final String? hintText;
+  final TextEditingController? controller;
+
+  const VetTextField({this.hintText, this.controller, Key? key})
+      : super(key: key);
+
+  @override
+  _VetTextFieldState createState() => _VetTextFieldState();
+}
+
+class _VetTextFieldState extends State<VetTextField> {
+  @override
+  Widget build(BuildContext context) {
+    return TextField(
+      decoration: InputDecoration(
+        hintText: widget.hintText,
+        filled: true,
+        fillColor: Colors.white,
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(20)),
+      ),
+      controller: widget.controller,
     );
   }
 }

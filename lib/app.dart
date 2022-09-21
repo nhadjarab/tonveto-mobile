@@ -19,7 +19,7 @@ class App extends StatelessWidget {
           debugShowCheckedModeBanner: false,
           title: 'Vet',
           routes: Routes.routes,
-          initialRoute: "/",
+          initialRoute: "/home",
         ),
       );
     });

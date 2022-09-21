@@ -6,10 +6,12 @@ class CustomButton extends StatelessWidget {
   final Function()? onPressed;
   final Color? color;
   final double? width;
-  const CustomButton(
+   double padding ;
+   CustomButton(
       {Key? key,
       required this.text,
       required this.onPressed,
+        this.padding= 14.0 ,
       this.color,
       this.width})
       : super(key: key);
@@ -28,7 +30,7 @@ class CustomButton extends StatelessWidget {
             side: BorderSide.none,
           ),
           textStyle: const TextStyle(fontWeight: FontWeight.normal),
-          padding: const EdgeInsets.symmetric(vertical: 14.0, horizontal: 14.0),
+          padding:  EdgeInsets.symmetric(vertical: padding, horizontal: padding),
           elevation: 0.0,
           primary: color ?? AppTheme.mainColor,
         ),
