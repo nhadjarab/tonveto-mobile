@@ -339,7 +339,7 @@ packages:
     source: hosted
     version: "2.1.1"
   sizer:
-    dependency: "direct dev"
+    dependency: "direct main"
     description:
       name: sizer
       url: "https://pub.dartlang.org"

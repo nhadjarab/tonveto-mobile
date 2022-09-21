@@ -1,0 +1,132 @@
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:sizer/sizer.dart';
+import 'package:vet/config/theme.dart';
+import 'package:vet/viewmodels/auth_viewmodel.dart';
+import 'package:vet/views/widgets/custom_button.dart';
+import 'package:vet/views/widgets/custom_fields.dart';
+import 'package:vet/views/widgets/custom_progress.dart';
+
+class InfoScreen extends StatefulWidget {
+  static const route = "/info";
+
+  const InfoScreen({Key? key}) : super(key: key);
+
+  @override
+  State<InfoScreen> createState() => _InfoScreenState();
+}
+
+class _InfoScreenState extends State<InfoScreen> {
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
+  String? birthDateInString;
+  DateTime? birthDate;
+  bool isDateSelected = false;
+
+  String? _lastname;
+  String? _firstname;
+  String? _email;
+  String? _password;
+
+  void register() {
+    if (_formKey.currentState!.validate()) {
+      _formKey.currentState!.save();
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final args =
+        ModalRoute.of(context)!.settings.arguments as Map<String, String?>;
+    _email = args["email"];
+    _password = args["password"];
+
+    return Scaffold(
+        appBar: AppBar(
+          title: const Text("Créer un compte"),
+          elevation: 0.0,
+          backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+          foregroundColor: Colors.black,
+        ),
+        body: SingleChildScrollView(
+          child: Center(
+              child: SizedBox(
+            width: 90.w,
+            child: Form(
+              key: _formKey,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  const SizedBox(height: AppTheme.divider * 2),
+                  CustomTextField(
+                    labelText: "Nom*",
+                    validator: (value) => value != null && value.length >= 4
+                        ? null
+                        : "Le nom doit être +4 caracteres",
+                    onSaved: (value) => _lastname = value,
+                  ),
+                  const SizedBox(height: AppTheme.divider),
+                  CustomTextField(
+                    labelText: "Prénom*",
+                    validator: (value) => value != null && value.length >= 4
+                        ? null
+                        : "Le prénom doit être +4 caracteres",
+                    onSaved: (value) => _firstname = value,
+                  ),
+                  const SizedBox(height: AppTheme.divider * 2),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const Text("Date de naissance*"),
+                      const SizedBox(width: AppTheme.divider),
+                      Text(birthDateInString ?? "DD/MM/YYYY"),
+                      const SizedBox(width: AppTheme.divider),
+                      GestureDetector(
+                          child: const Icon(
+                            Icons.calendar_today,
+                            color: AppTheme.mainColor,
+                          ),
+                          onTap: () async {
+                            final datePick = await showDatePicker(
+                                context: context,
+                                initialDate: DateTime.now(),
+                                firstDate: DateTime(DateTime.now().year - 18),
+                                lastDate: DateTime(DateTime.now().year - 100));
+                            if (datePick != null && datePick != birthDate) {
+                              setState(() {
+                                birthDate = datePick;
+                                isDateSelected = true;
+
+                                birthDateInString =
+                                    "${birthDate?.month}/${birthDate?.day}/${birthDate?.year}"; // 08/14/2019
+                              });
+                            }
+                          }),
+                    ],
+                  ),
+                  const SizedBox(height: AppTheme.divider * 2),
+                  const Divider(
+                    height: 1,
+                    color: AppTheme.mainColor,
+                  ),
+                  const SizedBox(height: AppTheme.divider),
+                  CustomTextField(
+                    labelText: "Tel*",
+                    keyboardType: TextInputType.number,
+                    validator: (value) => value != null && value.length >= 8
+                        ? null
+                        : "Le numéro doit être valide",
+                    onSaved: (value) => _firstname = value,
+                  ),
+                  const SizedBox(height: AppTheme.divider * 2),
+                  Provider.of<AuthViewModel>(context).loading
+                      ? const CustomProgress()
+                      : CustomButton(
+                          text: "Créer votre compte", onPressed: register),
+                ],
+              ),
+            ),
+          )),
+        ));
+  }
+}
