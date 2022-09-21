@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 import 'package:sizer/sizer.dart';
+import 'package:vet/config/consts.dart';
 import 'package:vet/config/theme.dart';
 import 'package:vet/views/screens/auth/login_screen.dart';
 import 'package:vet/views/screens/auth/register_screen.dart';
@@ -21,10 +23,12 @@ class AuthScreen extends StatelessWidget {
               children: [
                 const SizedBox(height: AppTheme.divider),
                 Text(
-                  "tonveto",
-                  style: Theme.of(context).textTheme.titleLarge,
+                  APP_NAME,
+                  style: TextStyle(fontSize: 10.w, fontWeight: FontWeight.bold),
                   textAlign: TextAlign.center,
                 ),
+                const SizedBox(height: AppTheme.divider * 2),
+                Lottie.asset('assets/lotties/dog.json'),
                 const SizedBox(height: AppTheme.divider * 2),
                 CustomButton(
                     text: "Créer un compte",
