@@ -95,16 +95,39 @@ class AuthViewModel with ChangeNotifier {
     }
   }
 
+  Future getUserData() async {
+    try {
+      final AuthService authService = AuthService();
+      loading = true;
+      notifyListeners();
+      final userData = await authService.getUserData(user?.id, token);
+      user = userData;
+      notifyListeners();
+    } on Failure catch (f) {
+      loading = false;
+      errorMessage = f.message;
+      notifyListeners();
+    } catch (e) {
+      loading = false;
+      print(e);
+      notifyListeners();
+    }
+  }
+
   Future<bool> tryAutoLogin() async {
     final userData = await LocalStorageService.getUser();
-
     if (userData == null) {
       isAuth = false;
       token = null;
+      notifyListeners();
+
       return false;
     } else {
       isAuth = true;
       token = userData["token"];
+      user = User(id: userData["user"]);
+      notifyListeners();
+
       return true;
     }
   }

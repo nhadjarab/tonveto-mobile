@@ -105,4 +105,29 @@ class AuthService {
       throw Failure();
     }
   }
+
+  Future<User?> getUserData(String? userID, String? token) async {
+    try {
+      print(userID);
+      final response = await http.get(
+        Uri.parse("$BASE_URL/user/$userID"),
+        headers: {
+          "Content-Type": "application/json",
+          'Authorization': 'Bearer $token',
+        },
+      );
+      final result = json.decode(response.body);
+      print(response.body);
+      if (response.statusCode == 200) {
+        return User.fromJson(result);
+      } else {
+        throw Failure.createFailure(response.statusCode, result);
+      }
+    } on Failure {
+      rethrow;
+    } catch (e) {
+      print(e);
+      throw Failure();
+    }
+  }
 }
