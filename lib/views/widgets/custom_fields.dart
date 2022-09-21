@@ -92,6 +92,7 @@ class _VetTextFieldState extends State<VetTextField> {
     return TextField(
       decoration: InputDecoration(
         hintText: widget.hintText,
+        labelText: widget.hintText,
         filled: true,
         fillColor: Colors.white,
         border: OutlineInputBorder(borderRadius: BorderRadius.circular(20)),

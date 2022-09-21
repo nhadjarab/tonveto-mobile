@@ -6,6 +6,7 @@ import 'package:vet/views/internet_screen.dart';
 import 'package:vet/views/loading_screen.dart';
 import 'package:vet/views/screens/auth/auth_screen.dart';
 import 'package:vet/views/screens/auth/login_screen.dart';
+import 'package:vet/views/screens/home.dart';
 import 'package:vet/views/screens/mock_home.dart';
 
 class Wrapper extends StatelessWidget {
@@ -27,7 +28,7 @@ class Wrapper extends StatelessWidget {
           } else {
             return Consumer<AuthViewModel>(builder: (context, auth, _) {
               if (auth.isAuth) {
-                return const MockHome();
+                return const Home();
               } else {
                 return FutureBuilder(
                     future: auth.tryAutoLogin(),

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 import 'package:vet/viewmodels/auth_viewmodel.dart';
+import 'package:vet/viewmodels/search_viewmodel.dart';
 import 'package:vet/views/routes/routes.dart';
 
 class App extends StatelessWidget {
@@ -14,6 +15,8 @@ class App extends StatelessWidget {
         providers: [
           ChangeNotifierProvider<AuthViewModel>(
               create: (context) => AuthViewModel()),
+          ChangeNotifierProvider<SearchViewModel>(
+              create: (context) => SearchViewModel()),
         ],
         child: MaterialApp(
           debugShowCheckedModeBanner: false,
