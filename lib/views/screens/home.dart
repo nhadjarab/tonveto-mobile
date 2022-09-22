@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
-import 'package:vet/config/theme.dart';
-import 'package:vet/models/search_model.dart';
-import 'package:vet/viewmodels/search_viewmodel.dart';
-import 'package:vet/views/screens/profile/profile_screen.dart';
-import 'package:vet/views/widgets/custom_button.dart';
-import 'package:vet/views/widgets/custom_fields.dart';
+import 'package:tonveto/views/screens/profile/profile_screen.dart';
 
+
+import '../../config/theme.dart';
 import '../../viewmodels/auth_viewmodel.dart';
+import '../../viewmodels/search_viewmodel.dart';
+import '../widgets/custom_button.dart';
+import '../widgets/custom_fields.dart';
 
 class Home extends StatefulWidget {
   static const route = "/home";
@@ -55,8 +55,9 @@ class _HomeState extends State<Home> {
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       Provider.of<AuthViewModel>(context, listen: false).getUserData();
+      search();
     });
-    search();
+
     super.initState();
   }
 
@@ -74,13 +75,122 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
+
+
+
+    Future<void> _dialogBuilder(BuildContext context) {
+      return showDialog<void>(
+
+        context: context,
+
+        builder: (BuildContext context) {
+          return Padding(
+            padding: EdgeInsets.only(left: 10.0, right: 10.0),
+            child: Dialog(
+insetPadding: EdgeInsets.all(10),
+              //insetPadding: EdgeInsets.zero,
+             // contentPadding: EdgeInsets.all(0.0),
+              child: SingleChildScrollView(
+                child: Padding(
+                  padding: const EdgeInsets.all(10),
+                  child: Center(
+                    child: Column(
+                      mainAxisAlignment:
+                      MainAxisAlignment.center,
+                      crossAxisAlignment:
+                      CrossAxisAlignment.center,
+                      //  mainAxisSize: MainAxisSize.min,
+                      children: <Widget>[
+                        Row(
+                          children: [
+                            const Text(
+                              'Filtres',
+                              style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 20,
+                                  fontWeight:
+                                  FontWeight.bold),
+                            ),
+
+
+                          ],
+                        ),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        VetTextField(
+                          hintText: 'Ville',
+                          controller: city,
+                        ),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        VetTextField(
+                          hintText: 'Code postal',
+                          controller: zipCode,
+                        ),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        VetTextField(
+                          hintText: 'Nom de la clinique',
+                          controller: clinicName,
+                        ),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        VetTextField(
+                          hintText: 'Nom du vétérinaire',
+                          controller: vetName,
+                        ),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        VetTextField(
+                          hintText: 'Adresse',
+                          controller: adress,
+                        ),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        VetTextField(
+                          hintText: 'Pays',
+                          controller: country,
+                        ),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        CustomButton(
+                          width:MediaQuery.of(context).size.width*0.4,
+                            text: 'Filtrer',
+                            padding: 0,
+                            onPressed: () async {
+                              Navigator.pop(context);
+                              await search();
+                            })
+
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+
+            ),
+          );
+        },
+      );
+    }
+
+
+
+
     return SafeArea(
       child: Scaffold(
         backgroundColor: AppTheme.mainColor,
         body: Provider.of<SearchViewModel>(
           context,
         ).loading
-            ? Center(
+            ? const Center(
                 child: CircularProgressIndicator(),
               )
             : SingleChildScrollView(
@@ -150,89 +260,7 @@ class _HomeState extends State<Home> {
                             ),
                             GestureDetector(
                               onTap: () {
-                                showModalBottomSheet<void>(
-                                  context: context,
-                                  builder: (BuildContext context) {
-                                    return SingleChildScrollView(
-                                      child: Container(
-                                        padding: const EdgeInsets.all(20),
-                                        child: Center(
-                                          child: Column(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            //  mainAxisSize: MainAxisSize.min,
-                                            children: <Widget>[
-                                              Row(
-                                                children: [
-                                                  const Text(
-                                                    'Filtres',
-                                                    style: TextStyle(
-                                                        color: Colors.black,
-                                                        fontSize: 20,
-                                                        fontWeight:
-                                                            FontWeight.bold),
-                                                  ),
-                                                  const Spacer(),
-                                                  CustomButton(
-                                                      text: 'Filtrer',
-                                                      padding: 0,
-                                                      onPressed: () async {
-                                                        Navigator.pop(context);
-                                                        await search();
-                                                      })
-                                                ],
-                                              ),
-                                              const SizedBox(
-                                                height: 10,
-                                              ),
-                                              VetTextField(
-                                                hintText: 'Ville',
-                                                controller: city,
-                                              ),
-                                              const SizedBox(
-                                                height: 10,
-                                              ),
-                                              VetTextField(
-                                                hintText: 'Code postal',
-                                                controller: zipCode,
-                                              ),
-                                              const SizedBox(
-                                                height: 10,
-                                              ),
-                                              VetTextField(
-                                                hintText: 'Nom de la clinique',
-                                                controller: clinicName,
-                                              ),
-                                              const SizedBox(
-                                                height: 10,
-                                              ),
-                                              VetTextField(
-                                                hintText: 'Nom du vétérinaire',
-                                                controller: vetName,
-                                              ),
-                                              const SizedBox(
-                                                height: 10,
-                                              ),
-                                              VetTextField(
-                                                hintText: 'Adresse',
-                                                controller: adress,
-                                              ),
-                                              const SizedBox(
-                                                height: 10,
-                                              ),
-                                              VetTextField(
-                                                hintText: 'Pays',
-                                                controller: country,
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      ),
-                                    );
-                                  },
-                                );
+                               _dialogBuilder(context);
                               },
                               child: Container(
                                 padding: const EdgeInsets.symmetric(
@@ -368,7 +396,7 @@ class _HomeState extends State<Home> {
                                     SizedBox(
                                       height:
                                           MediaQuery.of(context).size.height *
-                                              0.3,
+                                              0.4,
                                       child: TabBarView(children: [
                                         value.searchResult?.veterinaires
                                                     ?.length ==

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:vet/config/theme.dart';
+
+import '../../config/theme.dart';
 
 class ShowMessage extends StatelessWidget {
   final String message;

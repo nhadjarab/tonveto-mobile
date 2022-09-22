@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:vet/viewmodels/auth_viewmodel.dart';
-import 'package:vet/views/screens/profile/profile_screen.dart';
-import 'package:vet/views/widgets/custom_button.dart';
+import 'package:tonveto/views/screens/profile/profile_screen.dart';
+
+import '../../viewmodels/auth_viewmodel.dart';
+import '../widgets/custom_button.dart';
+
 
 class MockHome extends StatefulWidget {
   const MockHome({Key? key}) : super(key: key);

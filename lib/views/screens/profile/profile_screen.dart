@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
-import 'package:vet/config/theme.dart';
-import 'package:vet/viewmodels/auth_viewmodel.dart';
-import 'package:vet/views/screens/profile/edit_profile_screen.dart';
-import 'package:vet/views/widgets/custom_progress.dart';
+
+import '../../../config/theme.dart';
+import '../../../viewmodels/auth_viewmodel.dart';
+import '../../widgets/custom_progress.dart';
+import 'edit_profile_screen.dart';
 
 class ProfileScreen extends StatelessWidget {
   static const route = "/profile";

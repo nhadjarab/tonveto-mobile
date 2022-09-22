@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:vet/models/failure_model.dart';
-import 'package:vet/models/user_model.dart';
-import 'package:vet/services/auth_service.dart';
-import 'package:vet/services/localstorage_service.dart';
+
+import '../models/failure_model.dart';
+import '../models/user_model.dart';
+import '../services/auth_service.dart';
+import '../services/localstorage_service.dart';
+
 
 class AuthViewModel with ChangeNotifier {
   bool loading = false;

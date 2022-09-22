@@ -1,10 +1,10 @@
 import 'dart:convert';
 
-import 'package:vet/models/search_model.dart';
 import 'package:http/http.dart' as http;
 
 import '../config/consts.dart';
 import '../models/failure_model.dart';
+import '../models/search_model.dart';
 
 class SearchService {
   Future<SearchModel?> search(

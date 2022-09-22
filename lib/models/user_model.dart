@@ -1,4 +1,5 @@
-import 'package:vet/models/pet_model.dart';
+
+import 'package:tonveto/models/pet_model.dart';
 
 class User {
   User(

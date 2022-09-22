@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:vet/models/failure_model.dart';
-import 'package:vet/models/search_model.dart';
-import 'package:vet/models/user_model.dart';
-import 'package:vet/services/auth_service.dart';
-import 'package:vet/services/localstorage_service.dart';
-import 'package:vet/services/search_service.dart';
+
+import '../models/failure_model.dart';
+import '../models/search_model.dart';
+import '../services/search_service.dart';
+
 
 class SearchViewModel with ChangeNotifier {
   bool loading = false;

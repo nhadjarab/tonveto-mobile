@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:sizer/sizer.dart';
-import 'package:vet/config/theme.dart';
-import 'package:vet/utils/validators.dart';
-import 'package:vet/viewmodels/auth_viewmodel.dart';
-import 'package:vet/views/widgets/custom_button.dart';
-import 'package:vet/views/widgets/custom_fields.dart';
-import 'package:vet/views/widgets/custom_progress.dart';
+
+import '../../../config/theme.dart';
+import '../../../utils/validators.dart';
+import '../../../viewmodels/auth_viewmodel.dart';
+import '../../widgets/custom_button.dart';
+import '../../widgets/custom_fields.dart';
+import '../../widgets/custom_progress.dart';
 
 class EditProfileScreen extends StatefulWidget {
   static const route = "/edit-profile";

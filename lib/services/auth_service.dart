@@ -2,9 +2,11 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:http/http.dart' as http;
-import 'package:vet/config/consts.dart';
-import 'package:vet/models/failure_model.dart';
-import 'package:vet/models/user_model.dart';
+
+import '../config/consts.dart';
+import '../models/failure_model.dart';
+import '../models/user_model.dart';
+
 
 class AuthService {
   Future login(String? email, String? password) async {

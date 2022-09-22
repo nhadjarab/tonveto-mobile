@@ -1,6 +1,8 @@
 
-import 'package:vet/models/clinique_model.dart';
-import 'package:vet/models/vet_model.dart';
+
+import 'package:tonveto/models/vet_model.dart';
+
+import 'clinique_model.dart';
 
 class SearchModel {
   SearchModel(

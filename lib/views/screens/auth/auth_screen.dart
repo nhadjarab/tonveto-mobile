@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:sizer/sizer.dart';
-import 'package:vet/config/consts.dart';
-import 'package:vet/config/theme.dart';
-import 'package:vet/views/screens/auth/login_screen.dart';
-import 'package:vet/views/screens/auth/register_screen.dart';
-import 'package:vet/views/widgets/custom_button.dart';
+import 'package:tonveto/views/screens/auth/register_screen.dart';
+
+import '../../../config/consts.dart';
+import '../../../config/theme.dart';
+import '../../widgets/custom_button.dart';
+import 'login_screen.dart';
+
 
 class AuthScreen extends StatelessWidget {
   const AuthScreen({Key? key}) : super(key: key);

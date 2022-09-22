@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:vet/views/screens/auth/info_screen.dart';
-import 'package:vet/views/screens/auth/login_screen.dart';
-import 'package:vet/views/screens/auth/register_screen.dart';
-import 'package:vet/views/screens/profile/edit_profile_screen.dart';
-import 'package:vet/views/screens/profile/profile_screen.dart';
-import 'package:vet/views/wrapper.dart';
 
+
+import '../screens/auth/info_screen.dart';
+import '../screens/auth/login_screen.dart';
+import '../screens/auth/register_screen.dart';
 import '../screens/home.dart';
+import '../screens/profile/edit_profile_screen.dart';
+import '../screens/profile/profile_screen.dart';
+import '../wrapper.dart';
 
 class Routes {
   static final Map<String, Widget Function(BuildContext)> routes = {
