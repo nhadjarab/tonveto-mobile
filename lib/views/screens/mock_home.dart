@@ -29,7 +29,7 @@ class _MockHomeState extends State<MockHome> {
       child: CustomButton(
         text: "profile",
         onPressed: () async {
-          // await Provider.of<AuthViewModel>(context, listen: false).logout();
+
           Navigator.pushNamed(context, ProfileScreen.route);
         },
       ),

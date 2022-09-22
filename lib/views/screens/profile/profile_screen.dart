@@ -126,7 +126,7 @@ class ProfileScreen extends StatelessWidget {
                       ),
                       Container(
                         margin:
-                            EdgeInsets.symmetric(horizontal: 5.w, vertical: 40),
+                            EdgeInsets.symmetric(horizontal: 5.w,),
                         padding: const EdgeInsets.all(10),
                         decoration: const BoxDecoration(
                             color: Colors.white,
@@ -139,7 +139,7 @@ class ProfileScreen extends StatelessWidget {
                         child: Column(
                           children: [
                             ListTile(
-                              leading: const Icon(Icons.person),
+                              leading: const Icon(Icons.logout),
                               title: const Text("Déconnecter"),
                               onTap: () {
                                 auth.logout();

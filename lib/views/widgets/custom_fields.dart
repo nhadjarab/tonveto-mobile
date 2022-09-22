@@ -20,6 +20,7 @@ class CustomTextField extends StatelessWidget {
   final int? maxLines;
   final Color? fillColor;
   final Widget? suffixIcon;
+  final Widget? preffixIcon;
   final String? initialValue;
   final FocusNode? focusNode;
 
@@ -29,6 +30,7 @@ class CustomTextField extends StatelessWidget {
       this.hintText,
       this.labelText,
       this.errorText,
+      this.preffixIcon,
       this.controller,
       this.keyboardType,
       this.validator,
@@ -54,15 +56,18 @@ class CustomTextField extends StatelessWidget {
       maxLength: maxLength,
       controller: controller,
       onChanged: onChanged,
+
       obscureText: obscureText ?? false,
       decoration: InputDecoration(
         errorMaxLines: 3,
         contentPadding: padding,
         hintText: hintText,
         labelText: labelText,
+
         filled: fillColor != null,
         fillColor: fillColor,
         suffixIcon: suffixIcon,
+        prefixIcon: preffixIcon,
         floatingLabelStyle: const TextStyle(color: AppTheme.mainColor),
         focusedBorder: const UnderlineInputBorder(
           borderSide: BorderSide(color: AppTheme.mainColor),

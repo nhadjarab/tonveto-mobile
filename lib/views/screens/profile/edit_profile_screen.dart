@@ -50,6 +50,16 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   }
 
   @override
+  void initState() {
+    birthDate = Provider.of<AuthViewModel>(context, listen: false)
+        .user?.birth_date;
+    birthDateInString =
+    "${birthDate?.day}/${birthDate?.month}/${birthDate?.year}";
+
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppTheme.mainColor,
@@ -70,10 +80,9 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
         backgroundColor: Colors.white,
         foregroundColor: Colors.black,
       ),
-      body: Consumer<AuthViewModel>(builder: (context, auth, _) {
-        birthDate = auth.user?.birth_date;
-        birthDateInString =
-            "${auth.user?.birth_date?.day}/${auth.user?.birth_date?.month}/${auth.user?.birth_date?.year}";
+      body: Consumer<AuthViewModel>(
+          builder: (context, auth, _) {
+
         return SafeArea(
           child: SingleChildScrollView(
             child: Column(
@@ -140,20 +149,19 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                                 onTap: () async {
                                   final datePick = await showDatePicker(
                                       context: context,
-                                      initialDate: auth.user?.birth_date ??
-                                          DateTime.now(),
-                                      firstDate:
-                                          DateTime(DateTime.now().year - 100),
-                                      lastDate:
-                                          DateTime(DateTime.now().year - 18));
-                                  if (datePick != null &&
-                                      datePick != birthDate) {
+                                      initialDate: DateTime.now(),
+                                      firstDate: DateTime(DateTime.now().year - 100),
+                                      lastDate: DateTime(2050 ));
+                                  if (datePick != null && datePick != birthDate) {
+
                                     setState(() {
                                       birthDate = datePick;
                                       isDateSelected = true;
-
+                                      print(birthDateInString);
                                       birthDateInString =
-                                          "${birthDate?.month}/${birthDate?.day}/${birthDate?.year}"; // 08/14/2019
+                                      "${birthDate?.day}/${birthDate?.month}/${birthDate?.year}";  // 08/14/2019
+                                      print(birthDateInString);
+
                                     });
                                   }
                                 }),

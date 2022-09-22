@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:vet/config/theme.dart';
 import 'package:vet/models/search_model.dart';
 import 'package:vet/viewmodels/search_viewmodel.dart';
+import 'package:vet/views/screens/profile/profile_screen.dart';
 import 'package:vet/views/widgets/custom_button.dart';
 import 'package:vet/views/widgets/custom_fields.dart';
 
@@ -52,6 +53,9 @@ class _HomeState extends State<Home> {
 
   @override
   void initState() {
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      Provider.of<AuthViewModel>(context, listen: false).getUserData();
+    });
     search();
     super.initState();
   }
@@ -94,10 +98,16 @@ class _HomeState extends State<Home> {
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                const Icon(
-                                  Icons.person,
-                                  size: 25,
-                                  color: Colors.white,
+                                IconButton(
+                                  onPressed: () async {
+                                    Navigator.pushNamed(
+                                        context, ProfileScreen.route);
+                                  },
+                                  icon: const Icon(
+                                    Icons.person,
+                                    size: 25,
+                                    color: Colors.white,
+                                  ),
                                 ),
                                 const Text(
                                   'Page principale',
@@ -426,8 +436,9 @@ class _HomeState extends State<Home> {
                                                                               FontWeight.bold),
                                                                     )
                                                                   ])),
-                                                              const SizedBox(height: 5,),
-
+                                                              const SizedBox(
+                                                                height: 5,
+                                                              ),
                                                               Text(
                                                                 "${value.searchResult?.veterinaires?[index].phone_number}",
                                                                 style: const TextStyle(
@@ -522,7 +533,9 @@ class _HomeState extends State<Home> {
                                                                         FontWeight
                                                                             .bold),
                                                               ),
-                                                              const SizedBox(height: 5,),
+                                                              const SizedBox(
+                                                                height: 5,
+                                                              ),
                                                               Text(
                                                                 '${value.searchResult?.cliniques?[index].address} , ${value.searchResult?.cliniques?[index].city} , ${value.searchResult?.cliniques?[index].country}',
                                                                 style: const TextStyle(
@@ -531,8 +544,9 @@ class _HomeState extends State<Home> {
                                                                     color: Colors
                                                                         .grey),
                                                               ),
-                                                              const SizedBox(height: 5,),
-
+                                                              const SizedBox(
+                                                                height: 5,
+                                                              ),
                                                               Text(
                                                                 '${value.searchResult?.cliniques?[index].phone_number}',
                                                                 style:

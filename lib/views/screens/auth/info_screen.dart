@@ -106,7 +106,7 @@ class _InfoScreenState extends State<InfoScreen> {
                                 context: context,
                                 initialDate: DateTime.now(),
                                 firstDate: DateTime(DateTime.now().year - 100),
-                                lastDate: DateTime(DateTime.now().year - 18));
+                                lastDate: DateTime(2050 ));
                             if (datePick != null && datePick != birthDate) {
                               setState(() {
                                 birthDate = datePick;
