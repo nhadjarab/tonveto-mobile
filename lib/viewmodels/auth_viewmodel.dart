@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:tonveto/models/pet_model.dart';
+import 'package:tonveto/services/pet_service.dart';
 
 import '../models/failure_model.dart';
 import '../models/user_model.dart';
 import '../services/auth_service.dart';
 import '../services/localstorage_service.dart';
-
 
 class AuthViewModel with ChangeNotifier {
   bool loading = false;
@@ -173,5 +174,91 @@ class AuthViewModel with ChangeNotifier {
     token = null;
     await LocalStorageService.clearLocalStorage();
     notifyListeners();
+  }
+
+  // pets manipulation -----------------------------------------
+  Future<bool> addPet(Pet? pet) async {
+    try {
+      final PetService petService = PetService();
+      pet!.ownerId = user!.id;
+
+      loading = true;
+      notifyListeners();
+
+      final newPet = await petService.addPet(pet, token);
+      user?.addPet(newPet!);
+
+      loading = false;
+      notifyListeners();
+      return true;
+    } on Failure catch (f) {
+      loading = false;
+      errorMessage = f.message;
+      notifyListeners();
+      return false;
+    } catch (e) {
+      loading = false;
+      print(e);
+      notifyListeners();
+      return false;
+    }
+  }
+
+  Future<bool> editPet(Pet? pet) async {
+    try {
+      final PetService petService = PetService();
+      pet!.ownerId = user!.id;
+
+      loading = true;
+      notifyListeners();
+
+      final updatedPet = await petService.updatePet(pet, token);
+      int index =
+          user?.pets?.indexWhere((pet) => pet.id == updatedPet.id) ?? -1;
+      if (index == -1) {
+        loading = false;
+        notifyListeners();
+        return false;
+      }
+
+      user?.pets?[index] = updatedPet;
+      loading = false;
+      notifyListeners();
+      return true;
+    } on Failure catch (f) {
+      loading = false;
+      errorMessage = f.message;
+      notifyListeners();
+      return false;
+    } catch (e) {
+      loading = false;
+      print(e);
+      notifyListeners();
+      return false;
+    }
+  }
+
+  Future<bool> deletePet(String? petID) async {
+    try {
+      final PetService petService = PetService();
+      loading = true;
+      notifyListeners();
+
+      await petService.deletePet(user?.id, petID, token);
+      user?.pets?.removeWhere((pet) => pet.id == petID);
+      loading = false;
+      notifyListeners();
+      return true;
+    } on Failure catch (f) {
+      loading = false;
+      errorMessage = f.message;
+      notifyListeners();
+      return false;
+    } catch (e) {
+      loading = false;
+      print(e);
+      notifyListeners();
+      return false;
+    }
   }
 }

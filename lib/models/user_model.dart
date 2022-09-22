@@ -1,4 +1,3 @@
-
 import 'package:tonveto/models/pet_model.dart';
 
 class User {
@@ -24,6 +23,10 @@ class User {
   String? type;
   List<Pet>? pets;
   List? appointments;
+
+  void addPet(Pet pet) {
+    pets?.add(pet);
+  }
 
   factory User.fromJson(Map<String, dynamic> json) => User(
         id: json["id"],

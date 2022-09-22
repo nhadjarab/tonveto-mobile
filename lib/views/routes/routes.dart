@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
-
+import 'package:tonveto/views/screens/pet/add_pet_screen.dart';
+import 'package:tonveto/views/screens/pet/edit_pet_screen.dart';
+import 'package:tonveto/views/screens/pet/pet_details_screen.dart';
+import 'package:tonveto/views/screens/pet/pets_screen.dart';
 
 import '../screens/auth/info_screen.dart';
 import '../screens/auth/login_screen.dart';
@@ -18,5 +21,8 @@ class Routes {
     Home.route: (_) => const Home(),
     ProfileScreen.route: (_) => const ProfileScreen(),
     EditProfileScreen.route: (_) => const EditProfileScreen(),
+    PetsScreen.route: (_) => const PetsScreen(),
+    AddPetScreen.route: (_) => const AddPetScreen(),
+    PetDetailsScreen.route: (_) => const PetDetailsScreen(),
   };
 }
