@@ -82,7 +82,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                               ),
                             ),
                             const Text(
-                              'Inscrire',
+                              'Inscription',
                               style: TextStyle(
                                   color: Colors.white,
                                   fontSize: 20,

@@ -38,7 +38,7 @@ class _InfoScreenState extends State<InfoScreen> {
       _formKey.currentState!.save();
       if (birthDate == null || DateTime.now().year - birthDate!.year < 18) {
         ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text("il faut que vous avez +18 ans")));
+            const SnackBar(content: Text("Il faut avoir 18 ans pour s'inscrire")));
         return;
       }
       final redirect = await Provider.of<AuthViewModel>(context, listen: false)
@@ -78,7 +78,7 @@ class _InfoScreenState extends State<InfoScreen> {
                     validator: (value) => validateName(
                         value,
                         "le champ ne peut pas être vide",
-                        "le nom doit être +3 caracteres"),
+                        "le nom doit avoir au moins 3 caracteres"),
                     onSaved: (value) => _lastname = value,
                   ),
                   const SizedBox(height: AppTheme.divider),
@@ -87,7 +87,7 @@ class _InfoScreenState extends State<InfoScreen> {
                     validator: (value) => validateName(
                         value,
                         "le champ ne peut pas être vide",
-                        "le prénom doit être +3 caracteres"),
+                        "le prénom doit avoir au moins 3 caracteres"),
                     onSaved: (value) => _firstname = value,
                   ),
                   const SizedBox(height: AppTheme.divider * 2),
@@ -128,7 +128,7 @@ class _InfoScreenState extends State<InfoScreen> {
                   ),
                   const SizedBox(height: AppTheme.divider),
                   CustomTextField(
-                    labelText: "Tel*",
+                    labelText: "Numéro de téléphone*",
                     keyboardType: TextInputType.number,
                     validator: (value) => value != null && value.length >= 8
                         ? null

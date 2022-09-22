@@ -196,7 +196,7 @@ class _HomeState extends State<Home> {
                                  Text(
                                   'Page principale',
                                   style: TextStyle(
-                                      fontSize: 20,
+                                      fontSize: 22,
                                       color: Colors.white,
                                       fontWeight: FontWeight.bold),
                                 ),
@@ -207,14 +207,14 @@ class _HomeState extends State<Home> {
                               height: 30,
                             ),
                             const Text(
-                              'Trouvez votre vétérinaire',
+                              'Trouver un bon vétérinaire',
                               style: TextStyle(
-                                fontSize: 24,
+                                fontSize: 20,
                                 color: Colors.white,
                               ),
                             ),
                             const Text(
-                              'désiré dès maintenant!',
+                              'n\'a jamais été si facile',
                               style: TextStyle(
                                   fontSize: 28,
                                   color: Colors.white,

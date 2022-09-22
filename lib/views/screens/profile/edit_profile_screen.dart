@@ -37,7 +37,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
 
       if (birthDate == null || DateTime.now().year - birthDate!.year < 18) {
         ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text("il faut que vous avez +18 ans")));
+            const SnackBar(content: Text("il faut avoir au moins 18 ans")));
         return;
       }
 
@@ -51,10 +51,10 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
 
   @override
   void initState() {
-    birthDate = Provider.of<AuthViewModel>(context, listen: false)
-        .user?.birth_date;
+    birthDate =
+        Provider.of<AuthViewModel>(context, listen: false).user?.birth_date;
     birthDateInString =
-    "${birthDate?.day}/${birthDate?.month}/${birthDate?.year}";
+        "${birthDate?.day}/${birthDate?.month}/${birthDate?.year}";
 
     super.initState();
   }
@@ -80,9 +80,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
         backgroundColor: Colors.white,
         foregroundColor: Colors.black,
       ),
-      body: Consumer<AuthViewModel>(
-          builder: (context, auth, _) {
-
+      body: Consumer<AuthViewModel>(builder: (context, auth, _) {
         return SafeArea(
           child: SingleChildScrollView(
             child: Column(
@@ -104,23 +102,13 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
                         CustomTextField(
-                          initialValue: auth.user?.email ?? "",
-                          labelText: "e-mail",
-                          keyboardType: TextInputType.emailAddress,
-                          validator: (value) => validateEmail(
-                              value,
-                              "le champ ne peut pas être vide",
-                              "email invalide"),
-                          onSaved: (value) => _email = value,
-                        ),
-                        CustomTextField(
                           initialValue: auth.user?.last_name ?? "",
                           labelText: "Nom",
                           keyboardType: TextInputType.name,
                           validator: (value) => validateName(
                               value,
                               "le champ ne peut pas être vide",
-                              "le nom doit être +3 caracteres"),
+                              "le nom doit avoir au moins 3 caracteres"),
                           onSaved: (value) => _lastname = value,
                         ),
                         CustomTextField(
@@ -130,8 +118,18 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                           validator: (value) => validateName(
                               value,
                               "le champ ne peut pas être vide",
-                              "le prénom doit être +3 caracteres"),
+                              "le prénom doit avoir au moins 3 caracteres"),
                           onSaved: (value) => _firstname = value,
+                        ),
+                        CustomTextField(
+                          initialValue: auth.user?.email ?? "",
+                          labelText: "e-mail",
+                          keyboardType: TextInputType.emailAddress,
+                          validator: (value) => validateEmail(
+                              value,
+                              "le champ ne peut pas être vide",
+                              "email invalide"),
+                          onSaved: (value) => _email = value,
                         ),
                         const SizedBox(height: AppTheme.divider * 2),
                         Row(
@@ -150,18 +148,18 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                                   final datePick = await showDatePicker(
                                       context: context,
                                       initialDate: DateTime.now(),
-                                      firstDate: DateTime(DateTime.now().year - 100),
-                                      lastDate: DateTime(2050 ));
-                                  if (datePick != null && datePick != birthDate) {
-
+                                      firstDate:
+                                          DateTime(DateTime.now().year - 100),
+                                      lastDate: DateTime(2050));
+                                  if (datePick != null &&
+                                      datePick != birthDate) {
                                     setState(() {
                                       birthDate = datePick;
                                       isDateSelected = true;
                                       print(birthDateInString);
                                       birthDateInString =
-                                      "${birthDate?.day}/${birthDate?.month}/${birthDate?.year}";  // 08/14/2019
+                                          "${birthDate?.day}/${birthDate?.month}/${birthDate?.year}"; // 08/14/2019
                                       print(birthDateInString);
-
                                     });
                                   }
                                 }),

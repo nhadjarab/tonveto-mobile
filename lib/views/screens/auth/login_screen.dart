@@ -130,7 +130,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                   validatePassword(
                                       value,
                                       "le champ ne peut pas être vide",
-                                      "Le mot de passe doit contenir au moins un chiffre et +8 caractères"),
+                                      "Le mot de passe doit contenir au moins un chiffre et avoir au moins 8 caractères"),
                               onSaved: (value) => _password = value,
                             ),
                             const SizedBox(height: AppTheme.divider * 4),
