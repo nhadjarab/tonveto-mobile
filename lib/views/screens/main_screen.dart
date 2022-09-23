@@ -30,10 +30,7 @@ class _MainScreenState extends State<MainScreen> {
         items: [
           SalomonBottomBarItem(
             icon: const Icon(Icons.home),
-            title: Text(
-              'Home',
-              style: const TextStyle(fontSize: 12),
-            ),
+              title: const SizedBox()
             // label: textLocals.home,
           ),
           SalomonBottomBarItem(
@@ -42,34 +39,22 @@ class _MainScreenState extends State<MainScreen> {
               width: 25,
               color: _currentIndex == 1 ? AppTheme.mainColor : Colors.grey,
             ),
-            title: Text(
-              'Pets',
-              style: const TextStyle(fontSize: 12),
-            ),
+            title: const SizedBox()
             // label: textLocals.search,
           ),
+
           SalomonBottomBarItem(
-            icon: const Icon(Icons.add_circle_outline),
-            title: Text(
-              'Rendez vous',
-              style: const TextStyle(fontSize: 12),
-            ),
-            // label: textLocals.vendre,
-          ),
-          SalomonBottomBarItem(
-            icon: const Icon(Icons.email_outlined),
-            title: Text(
-              'chat bot',
-              style: const TextStyle(fontSize: 12),
-            ),
+              icon: SvgPicture.asset(
+                'assets/icons/chatbot.svg',
+                width: 25,
+                color: _currentIndex == 2 ? AppTheme.mainColor : Colors.grey,
+              ),
+              title: const SizedBox()
             // label: textLocals.messages,
           ),
           SalomonBottomBarItem(
             icon: const Icon(Icons.person_outlined),
-            title: Text(
-              'Profile',
-              style: const TextStyle(fontSize: 12),
-            ),
+              title: const SizedBox()
             // label: textLocals.profil,
           ),
         ],
@@ -87,7 +72,6 @@ class _MainScreenState extends State<MainScreen> {
               children: const [
                 Home(),
                 PetsScreen(),
-                Home(),
                 Home(),
                 ProfileScreen(),
               ],

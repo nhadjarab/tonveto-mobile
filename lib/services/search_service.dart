@@ -32,7 +32,7 @@ class SearchService {
         url = url + "clinic_name=$clinic_name&";
       }
       if (specialty != '') {
-        url = url + "speciality=$specialty&";
+        url = url + "specialty=$specialty&";
       }
       if (address != '') {
         url = url + "address=$address&";
