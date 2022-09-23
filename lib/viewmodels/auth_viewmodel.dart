@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tonveto/models/appointment_model.dart';
 import 'package:tonveto/models/pet_model.dart';
 import 'package:tonveto/services/pet_service.dart';
 
@@ -246,6 +247,40 @@ class AuthViewModel with ChangeNotifier {
 
       await petService.deletePet(user?.id, petID, token);
       user?.pets?.removeWhere((pet) => pet.id == petID);
+      loading = false;
+      notifyListeners();
+      return true;
+    } on Failure catch (f) {
+      loading = false;
+      errorMessage = f.message;
+      notifyListeners();
+      return false;
+    } catch (e) {
+      loading = false;
+      print(e);
+      notifyListeners();
+      return false;
+    }
+  }
+
+  Future getPetAppointments(String? petID) async {
+    try {
+      final PetService petService = PetService();
+      loading = true;
+      notifyListeners();
+
+      int? petIndex = user?.pets?.indexWhere((pet) => pet.id == petID);
+      if (petIndex != null && petIndex != -1) {
+        user?.pets?[petIndex].clearAppointments();
+      }
+
+      List<Appointment> appointments =
+          await petService.getPetAppointments(petID, token, user?.id);
+      print(appointments.length);
+
+      if (petIndex != null && petIndex != -1) {
+        user?.pets?[petIndex].addAppointments(appointments);
+      }
       loading = false;
       notifyListeners();
       return true;

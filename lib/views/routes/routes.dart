@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tonveto/views/screens/pet/add_pet_screen.dart';
 import 'package:tonveto/views/screens/pet/edit_pet_screen.dart';
+import 'package:tonveto/views/screens/pet/pet_appointments_screen.dart';
 import 'package:tonveto/views/screens/pet/pet_details_screen.dart';
 import 'package:tonveto/views/screens/pet/pets_screen.dart';
 

@@ -5,6 +5,7 @@ import 'package:tonveto/config/theme.dart';
 import 'package:tonveto/models/pet_model.dart';
 import 'package:tonveto/viewmodels/auth_viewmodel.dart';
 import 'package:tonveto/views/screens/pet/edit_pet_screen.dart';
+import 'package:tonveto/views/screens/pet/pet_appointments_screen.dart';
 import 'package:tonveto/views/widgets/custom_progress.dart';
 
 import '../../widgets/custom_button.dart';

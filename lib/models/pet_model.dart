@@ -1,3 +1,5 @@
+import 'package:tonveto/models/appointment_model.dart';
+
 class Pet {
   Pet({
     this.id,
@@ -20,6 +22,16 @@ class Pet {
   bool? crossbreed;
   bool? sterilised;
   String? ownerId;
+
+  List<Appointment> appointments = [];
+
+  addAppointments(List<Appointment> appointmentsList) {
+    appointments.addAll(appointmentsList);
+  }
+
+  clearAppointments() {
+    appointments.clear();
+  }
 
   factory Pet.fromJson(Map<String, dynamic> json) => Pet(
         id: json["id"],
