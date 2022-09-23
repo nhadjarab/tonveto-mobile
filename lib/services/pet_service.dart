@@ -114,4 +114,29 @@ class PetService {
       throw Failure();
     }
   }
+
+  Future getPet(String? petID, String? token, String? userID) async {
+    try {
+      final response = await http.get(
+        Uri.parse("$BASE_URL/pet/$petID"),
+        headers: {
+          "Content-Type": "application/json",
+          'Authorization': 'Bearer $token',
+          "logged_in_id": "$userID"
+        },
+      );
+      final result = json.decode(response.body);
+      print(response.body);
+      if (response.statusCode == 200) {
+        return Pet.fromJson(result);
+      } else {
+        throw Failure.createFailure(response.statusCode, result);
+      }
+    } on Failure {
+      rethrow;
+    } catch (e) {
+      print(e);
+      throw Failure();
+    }
+  }
 }

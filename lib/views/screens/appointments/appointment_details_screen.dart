@@ -24,10 +24,10 @@ class _AppointmentDetailsScreenState extends State<AppointmentDetailsScreen> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) async {
-      veterinaire = await Provider.of<AuthViewModel>(context, listen: false)
-          .getVetForAppointment(widget.appointment.vet?.id);
-    });
+    // WidgetsBinding.instance.addPostFrameCallback((_) async {
+    //   veterinaire = await Provider.of<AuthViewModel>(context, listen: false)
+    //       .getVetForAppointment(widget.appointment.vet?.id);
+    // });
   }
 
   @override
@@ -62,107 +62,94 @@ class _AppointmentDetailsScreenState extends State<AppointmentDetailsScreen> {
       ),
       body: SafeArea(
         child: Consumer<AuthViewModel>(builder: (context, auth, _) {
-          return SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                Container(
-                  margin: EdgeInsets.symmetric(horizontal: 5.w, vertical: 20),
-                  padding: const EdgeInsets.all(10),
-                  decoration:
-                      const BoxDecoration(color: Colors.white, boxShadow: [
-                    BoxShadow(
-                      color: Colors.black12,
-                      blurRadius: 4.0,
-                    )
-                  ]),
-                  child: Column(
-                    children: [
-                      ListTile(
-                        leading: const Icon(Icons.person),
-                        title: Text(
-                            "Vétérinaire: ${widget.appointment.vet?.first_name} ${widget.appointment.vet?.last_name}"),
-                      ),
-                      ListTile(
-                        leading: const Icon(Icons.date_range_outlined),
-                        title: Text(
-                            "Date: ${widget.appointment.date?.day}/${widget.appointment.date?.month}/${widget.appointment.date?.year} - ${widget.appointment.time}"),
-                      ),
-                      ListTile(
-                        leading: const Icon(Icons.phone),
-                        title: Text(
-                            "Tel: ${widget.appointment.vet?.phone_number}"),
-                      ),
-                      ListTile(
-                        leading: const Icon(Icons.contact_mail),
-                        title: Text("E-mail: ${widget.appointment.vet?.email}"),
-                      ),
-                    ],
-                  ),
-                ),
-                Container(
-                  margin: EdgeInsets.symmetric(
-                    horizontal: 5.w,
-                  ),
-                  padding: const EdgeInsets.all(10),
-                  decoration:
-                      const BoxDecoration(color: Colors.white, boxShadow: [
-                    BoxShadow(
-                      color: Colors.black12,
-                      blurRadius: 4.0,
-                    )
-                  ]),
-                  child: Column(
-                    children: [
-                      ListTile(
-                        leading: const Icon(Icons.file_copy_rounded),
-                        title: const Text("Les rapports médicaux"),
-                        trailing: const Icon(Icons.keyboard_arrow_right),
-                        onTap: () {
-                          Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => MedicalRecordsScreen(
-                              records: widget.appointment.medicalReports ?? [],
-                            ),
-                          ));
-                        },
-                      ),
-                    ],
-                  ),
-                ),
-                auth.loading
-                    ? const Center(child: CustomProgress())
-                    : Container(
-                        margin: EdgeInsets.symmetric(
-                          horizontal: 5.w,
+          return SizedBox(
+            child: SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Container(
+                    margin: EdgeInsets.symmetric(horizontal: 5.w, vertical: 20),
+                    padding: const EdgeInsets.all(10),
+                    decoration:
+                        const BoxDecoration(color: Colors.white, boxShadow: [
+                      BoxShadow(
+                        color: Colors.black12,
+                        blurRadius: 4.0,
+                      )
+                    ]),
+                    child: Column(
+                      children: [
+                        ListTile(
+                          leading: const Icon(Icons.person),
+                          title: Text(
+                              "Vétérinaire: ${widget.appointment.vet?.first_name} ${widget.appointment.vet?.last_name}"),
                         ),
-                        padding: const EdgeInsets.all(10),
-                        decoration: const BoxDecoration(
-                            color: Colors.white,
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.black12,
-                                blurRadius: 4.0,
-                              )
-                            ]),
-                        child: Column(
-                          children: [
-                            ListTile(
-                              leading: const Icon(Icons.file_copy_rounded),
-                              title: const Text("Les rapports médicaux"),
-                              trailing: const Icon(Icons.keyboard_arrow_right),
-                              onTap: () {
-                                Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (context) => MedicalRecordsScreen(
-                                    records:
-                                        widget.appointment.medicalReports ?? [],
-                                  ),
-                                ));
-                              },
-                            ),
-                          ],
+                        ListTile(
+                          leading: const Icon(Icons.date_range_outlined),
+                          title: Text(
+                              "Date: ${widget.appointment.date?.day}/${widget.appointment.date?.month}/${widget.appointment.date?.year} - ${widget.appointment.time}"),
                         ),
-                      ),
-              ],
+                        ListTile(
+                          leading: const Icon(Icons.phone),
+                          title: Text(
+                              "Tel: ${widget.appointment.vet?.phone_number}"),
+                        ),
+                        ListTile(
+                          leading: const Icon(Icons.contact_mail),
+                          title:
+                              Text("E-mail: ${widget.appointment.vet?.email}"),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Container(
+                    margin: EdgeInsets.only(left: 5.w, right: 5.w, bottom: 20),
+                    padding: const EdgeInsets.all(10),
+                    decoration:
+                        const BoxDecoration(color: Colors.white, boxShadow: [
+                      BoxShadow(
+                        color: Colors.black12,
+                        blurRadius: 4.0,
+                      )
+                    ]),
+                    child: Column(
+                      children: [
+                        ListTile(
+                          leading: const Icon(Icons.file_copy_rounded),
+                          title: const Text("Les rapports médicaux"),
+                          trailing: const Icon(Icons.keyboard_arrow_right),
+                          onTap: () {
+                            Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) => MedicalRecordsScreen(
+                                records:
+                                    widget.appointment.medicalReports ?? [],
+                              ),
+                            ));
+                          },
+                        ),
+                      ],
+                    ),
+                  ),
+                  // Container(
+                  //   margin: EdgeInsets.symmetric(
+                  //     horizontal: 5.w,
+                  //   ),
+                  //   padding: const EdgeInsets.all(10),
+                  //   decoration:
+                  //       const BoxDecoration(color: Colors.white, boxShadow: [
+                  //     BoxShadow(
+                  //       color: Colors.black12,
+                  //       blurRadius: 4.0,
+                  //     )
+                  //   ]),
+                  //   child: auth.loading
+                  //       ? const Center(child: CustomProgress())
+                  //       : Column(
+                  //         children:
+                  //       ),
+                  // ),
+                ],
+              ),
             ),
           );
         }),
