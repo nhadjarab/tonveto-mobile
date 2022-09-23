@@ -3,14 +3,32 @@ import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 import 'package:tonveto/config/theme.dart';
 import 'package:tonveto/models/appointment_model.dart';
+import 'package:tonveto/models/vet_model.dart';
 import 'package:tonveto/viewmodels/auth_viewmodel.dart';
 import 'package:tonveto/views/screens/appointments/medical_records_screen.dart';
 import 'package:tonveto/views/widgets/custom_progress.dart';
 
-class AppointmentDetailsScreen extends StatelessWidget {
+class AppointmentDetailsScreen extends StatefulWidget {
   final Appointment appointment;
   const AppointmentDetailsScreen({Key? key, required this.appointment})
       : super(key: key);
+
+  @override
+  State<AppointmentDetailsScreen> createState() =>
+      _AppointmentDetailsScreenState();
+}
+
+class _AppointmentDetailsScreenState extends State<AppointmentDetailsScreen> {
+  Veterinaire? veterinaire;
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      veterinaire = await Provider.of<AuthViewModel>(context, listen: false)
+          .getVetForAppointment(widget.appointment.vet?.id);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -63,20 +81,21 @@ class AppointmentDetailsScreen extends StatelessWidget {
                       ListTile(
                         leading: const Icon(Icons.person),
                         title: Text(
-                            "Vétérinaire: ${appointment.vet?.first_name} ${appointment.vet?.last_name}"),
+                            "Vétérinaire: ${widget.appointment.vet?.first_name} ${widget.appointment.vet?.last_name}"),
                       ),
                       ListTile(
                         leading: const Icon(Icons.date_range_outlined),
                         title: Text(
-                            "Date: ${appointment.date?.day}/${appointment.date?.month}/${appointment.date?.year} - ${appointment.time}"),
+                            "Date: ${widget.appointment.date?.day}/${widget.appointment.date?.month}/${widget.appointment.date?.year} - ${widget.appointment.time}"),
                       ),
                       ListTile(
                         leading: const Icon(Icons.phone),
-                        title: Text("Tel: ${appointment.vet?.phone_number}"),
+                        title: Text(
+                            "Tel: ${widget.appointment.vet?.phone_number}"),
                       ),
                       ListTile(
                         leading: const Icon(Icons.contact_mail),
-                        title: Text("E-mail: ${appointment.vet?.email}"),
+                        title: Text("E-mail: ${widget.appointment.vet?.email}"),
                       ),
                     ],
                   ),
@@ -102,14 +121,47 @@ class AppointmentDetailsScreen extends StatelessWidget {
                         onTap: () {
                           Navigator.of(context).push(MaterialPageRoute(
                             builder: (context) => MedicalRecordsScreen(
-                              records: appointment.medicalReports ?? [],
+                              records: widget.appointment.medicalReports ?? [],
                             ),
                           ));
                         },
                       ),
                     ],
                   ),
-                )
+                ),
+                auth.loading
+                    ? const Center(child: CustomProgress())
+                    : Container(
+                        margin: EdgeInsets.symmetric(
+                          horizontal: 5.w,
+                        ),
+                        padding: const EdgeInsets.all(10),
+                        decoration: const BoxDecoration(
+                            color: Colors.white,
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black12,
+                                blurRadius: 4.0,
+                              )
+                            ]),
+                        child: Column(
+                          children: [
+                            ListTile(
+                              leading: const Icon(Icons.file_copy_rounded),
+                              title: const Text("Les rapports médicaux"),
+                              trailing: const Icon(Icons.keyboard_arrow_right),
+                              onTap: () {
+                                Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (context) => MedicalRecordsScreen(
+                                    records:
+                                        widget.appointment.medicalReports ?? [],
+                                  ),
+                                ));
+                              },
+                            ),
+                          ],
+                        ),
+                      ),
               ],
             ),
           );
