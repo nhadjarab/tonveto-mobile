@@ -1,4 +1,5 @@
 import 'package:tonveto/models/clinique_model.dart';
+import 'package:tonveto/models/comment_model.dart';
 
 class Veterinaire {
   Veterinaire({
@@ -16,6 +17,7 @@ class Veterinaire {
     this.balance,
     this.specialities,
     this.clinics,
+    this.comments,
   });
 
   String? id;
@@ -32,6 +34,7 @@ class Veterinaire {
   int? balance;
   List<dynamic>? specialities;
   List<Clinique>? clinics;
+  List<CommentModel>? comments;
 
   factory Veterinaire.fromJson(Map<String, dynamic> json) => Veterinaire(
         id: json["id"],
@@ -47,8 +50,15 @@ class Veterinaire {
         type: json["type"],
         bank_details: json["bank_details"],
         balance: json["balance"],
+        //vetRating: json["vetRating"]['_avg']['rating'] ?? 0,
         specialities: List<dynamic>.from(json["specialities"].map((x) => x)),
-        clinics: json["clinics"] != null ? List<Clinique>.from(json["clinics"]
-            .map((clinique) => Clinique.fromJson(clinique['clinic']))) : null,
+        clinics: json["clinics"] != null
+            ? List<Clinique>.from(json["clinics"]
+                .map((clinique) => Clinique.fromJson(clinique['clinic'])))
+            : null,
+        comments: json["CommentVet"] != null
+            ? List<CommentModel>.from(json["CommentVet"]
+                .map((comment) => CommentModel.fromJson(comment)))
+            : null,
       );
 }

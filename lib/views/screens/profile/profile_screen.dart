@@ -5,6 +5,7 @@ import 'package:sizer/sizer.dart';
 import '../../../config/theme.dart';
 import '../../../viewmodels/auth_viewmodel.dart';
 import '../../widgets/custom_progress.dart';
+import '../../widgets/widgets.dart';
 import 'edit_profile_screen.dart';
 
 class ProfileScreen extends StatelessWidget {
@@ -16,15 +17,6 @@ class ProfileScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: IconButton(
-          icon: const Icon(
-            Icons.arrow_back_outlined,
-            color: Colors.white,
-          ),
-          onPressed: () {
-            Navigator.pop(context);
-          },
-        ),
         centerTitle: true,
         title: const Text(
           "Profile",
@@ -92,8 +84,8 @@ class ProfileScreen extends StatelessWidget {
                         margin:
                             EdgeInsets.symmetric(horizontal: 5.w, vertical: 40),
                         padding: const EdgeInsets.all(10),
-                        decoration:
-                        BoxDecoration(color: Colors.white,
+                        decoration: BoxDecoration(
+                            color: Colors.white,
                             borderRadius: BorderRadius.circular(20),
                             boxShadow: const [
                               BoxShadow(
@@ -104,41 +96,51 @@ class ProfileScreen extends StatelessWidget {
                         child: Column(
                           children: [
                             ListTile(
-                              leading: const Icon(
-                                Icons.person,
-                                color: AppTheme.mainColor,
-                              ),
-                              title: Text("Nom: ${auth.user?.last_name}"),
-                            ),
+                                leading: const Icon(
+                                  Icons.person,
+                                  color: AppTheme.mainColor,
+                                ),
+                                title: InfoWidget(
+                                  info: '${auth.user?.last_name}',
+                                  infoType: 'Nom',
+                                )),
                             ListTile(
-                              leading: const Icon(
-                                Icons.person,
-                                color: AppTheme.mainColor,
-                              ),
-                              title: Text("Prénom: ${auth.user?.first_name}"),
-                            ),
+                                leading: const Icon(
+                                  Icons.person,
+                                  color: AppTheme.mainColor,
+                                ),
+                                title: InfoWidget(
+                                  info: '${auth.user?.first_name}',
+                                  infoType: 'Prénom',
+                                )),
                             ListTile(
-                              leading: const Icon(
-                                Icons.email,
-                                color: AppTheme.mainColor,
-                              ),
-                              title: Text("Email: ${auth.user?.email}"),
-                            ),
+                                leading: const Icon(
+                                  Icons.email,
+                                  color: AppTheme.mainColor,
+                                ),
+                                title: InfoWidget(
+                                  info: '${auth.user?.email}',
+                                  infoType: 'Email',
+                                )),
                             ListTile(
-                              leading: const Icon(
-                                Icons.date_range_outlined,
-                                color: AppTheme.mainColor,
-                              ),
-                              title: Text(
-                                  "Date de naissance: ${auth.user?.birth_date?.year}/${auth.user?.birth_date?.month}/${auth.user?.birth_date?.day}"),
-                            ),
+                                leading: const Icon(
+                                  Icons.date_range_outlined,
+                                  color: AppTheme.mainColor,
+                                ),
+                                title: InfoWidget(
+                                  info:
+                                      '${auth.user?.birth_date?.year}/${auth.user?.birth_date?.month}/${auth.user?.birth_date?.day}',
+                                  infoType: 'Date de naissance',
+                                )),
                             ListTile(
-                              leading: const Icon(
-                                Icons.phone,
-                                color: AppTheme.mainColor,
-                              ),
-                              title: Text("Tel: ${auth.user?.phone_number}"),
-                            ),
+                                leading: const Icon(
+                                  Icons.phone,
+                                  color: AppTheme.mainColor,
+                                ),
+                                title: InfoWidget(
+                                  info: "${auth.user?.phone_number}",
+                                  infoType: 'Tel',
+                                )),
                           ],
                         ),
                       ),
@@ -146,15 +148,16 @@ class ProfileScreen extends StatelessWidget {
                         margin: EdgeInsets.symmetric(
                           horizontal: 5.w,
                         ),
-                        padding: const EdgeInsets.all(10),decoration:
-                      BoxDecoration(color: Colors.white,
-                          borderRadius: BorderRadius.circular(20),
-                          boxShadow: const [
-                            BoxShadow(
-                              color: Colors.black12,
-                              blurRadius: 4.0,
-                            )
-                          ]),
+                        padding: const EdgeInsets.all(10),
+                        decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(20),
+                            boxShadow: const [
+                              BoxShadow(
+                                color: Colors.black12,
+                                blurRadius: 4.0,
+                              )
+                            ]),
                         child: Column(
                           children: [
                             ListTile(

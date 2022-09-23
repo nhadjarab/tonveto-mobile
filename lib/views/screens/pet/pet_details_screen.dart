@@ -7,6 +7,9 @@ import 'package:tonveto/viewmodels/auth_viewmodel.dart';
 import 'package:tonveto/views/screens/pet/edit_pet_screen.dart';
 import 'package:tonveto/views/widgets/custom_progress.dart';
 
+import '../../widgets/custom_button.dart';
+import '../../widgets/widgets.dart';
+
 class PetDetailsScreen extends StatelessWidget {
   static const route = "/pet-details";
 
@@ -87,12 +90,13 @@ class PetDetailsScreen extends StatelessWidget {
                         ),
                       ),
                       Container(
-                        margin:
-                            EdgeInsets.symmetric(horizontal: 5.w, vertical: 40),
+                        margin: EdgeInsets.only(
+                            left: 5.w, right: 5.w, top: 40, bottom: 20),
                         padding: const EdgeInsets.all(10),
-                        decoration: const BoxDecoration(
+                        decoration: BoxDecoration(
                             color: Colors.white,
-                            boxShadow: [
+                            borderRadius: BorderRadius.circular(20),
+                            boxShadow: const [
                               BoxShadow(
                                 color: Colors.black12,
                                 blurRadius: 4.0,
@@ -101,24 +105,69 @@ class PetDetailsScreen extends StatelessWidget {
                         child: Column(
                           children: [
                             ListTile(
-                              leading: const Icon(Icons.pets),
-                              title: Text("Nom: ${pet.name}"),
-                            ),
+                                leading: const Icon(
+                                  Icons.pets,
+                                  color: AppTheme.mainColor,
+                                ),
+                                title: InfoWidget(
+                                  info: "${pet.name}",
+                                  infoType: 'Nom',
+                                )),
                             ListTile(
-                              leading: const Icon(Icons.date_range_outlined),
-                              title: Text(
-                                  "Date de naissance: ${pet.birthDate?.day}/${pet.birthDate?.month}/${pet.birthDate?.year}"),
-                            ),
+                                leading: const Icon(
+                                  Icons.pets,
+                                  color: AppTheme.mainColor,
+                                ),
+                                title: InfoWidget(
+                                  info:
+                                      "${pet.birthDate?.day}/${pet.birthDate?.month}/${pet.birthDate?.year}",
+                                  infoType: 'Date de naissance',
+                                )),
                             ListTile(
-                              leading: const Icon(Icons.pets),
-                              title: Text(
-                                  "${pet.sex} ${pet.species} - ${pet.breed}"),
-                            ),
+                                leading: const Icon(
+                                  Icons.pets,
+                                  color: AppTheme.mainColor,
+                                ),
+                                title: InfoWidget(
+                                  info: "${pet.sex}",
+                                  infoType: 'Sex',
+                                )),
                             ListTile(
-                              leading: const Icon(Icons.pets),
-                              title: Text(
-                                  "Croiser: ${pet.crossbreed! ? "Oui" : "Non"} / Stérialsé: ${pet.sterilised! ? "Oui" : "Non"}"),
-                            ),
+                                leading: const Icon(
+                                  Icons.pets,
+                                  color: AppTheme.mainColor,
+                                ),
+                                title: InfoWidget(
+                                  info: "${pet.species}",
+                                  infoType: 'Species',
+                                )),
+                            ListTile(
+                                leading: const Icon(
+                                  Icons.pets,
+                                  color: AppTheme.mainColor,
+                                ),
+                                title: InfoWidget(
+                                  info: "${pet.breed}",
+                                  infoType: 'Breed',
+                                )),
+                            ListTile(
+                                leading: const Icon(
+                                  Icons.pets,
+                                  color: AppTheme.mainColor,
+                                ),
+                                title: InfoWidget(
+                                  info: "${pet.crossbreed! ? "Oui" : "Non"}",
+                                  infoType: 'Croiser',
+                                )),
+                            ListTile(
+                                leading: const Icon(
+                                  Icons.pets,
+                                  color: AppTheme.mainColor,
+                                ),
+                                title: InfoWidget(
+                                  info: "${pet.sterilised! ? "Oui" : "Non"}",
+                                  infoType: 'Stérialsé',
+                                )),
                           ],
                         ),
                       ),
@@ -126,24 +175,9 @@ class PetDetailsScreen extends StatelessWidget {
                         margin: EdgeInsets.symmetric(
                           horizontal: 5.w,
                         ),
-                        padding: const EdgeInsets.all(10),
-                        decoration: const BoxDecoration(
-                            color: Colors.white,
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.black12,
-                                blurRadius: 4.0,
-                              )
-                            ]),
-                        child: Column(
-                          children: [
-                            ListTile(
-                              leading: const Icon(Icons.timelapse),
-                              title: const Text("Afficher les rendez-vous"),
-                              onTap: () {},
-                            ),
-                          ],
-                        ),
+                        padding: const EdgeInsets.symmetric(horizontal: 10),
+                        child: CustomButton(
+                            text: 'Afficher les rendez-vous', onPressed: () {}),
                       )
                     ],
                   ),

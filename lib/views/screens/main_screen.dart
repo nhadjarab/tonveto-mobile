@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
 import 'package:tonveto/views/screens/home.dart';
+import 'package:tonveto/views/screens/pet/pets_screen.dart';
 import 'package:tonveto/views/screens/profile/profile_screen.dart';
 
 import '../../config/theme.dart';
-
 
 class MainScreen extends StatefulWidget {
   static const route = "/main_screen";
@@ -18,6 +18,7 @@ class MainScreen extends StatefulWidget {
 
 class _MainScreenState extends State<MainScreen> {
   int _currentIndex = 0;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -36,7 +37,11 @@ class _MainScreenState extends State<MainScreen> {
             // label: textLocals.home,
           ),
           SalomonBottomBarItem(
-            icon: SvgPicture.asset('assets/icons/pets.svg',width: 25,color: _currentIndex == 1 ? AppTheme.mainColor : Colors.grey,),
+            icon: SvgPicture.asset(
+              'assets/icons/pets.svg',
+              width: 25,
+              color: _currentIndex == 1 ? AppTheme.mainColor : Colors.grey,
+            ),
             title: Text(
               'Pets',
               style: const TextStyle(fontSize: 12),
@@ -81,14 +86,12 @@ class _MainScreenState extends State<MainScreen> {
               index: _currentIndex,
               children: const [
                 Home(),
-                Home(),
+                PetsScreen(),
                 Home(),
                 Home(),
                 ProfileScreen(),
               ],
             ),
-
-
           ],
         ),
       ),

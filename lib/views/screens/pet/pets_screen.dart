@@ -9,7 +9,9 @@ import 'package:tonveto/views/screens/pet/pet_details_screen.dart';
 
 class PetsScreen extends StatelessWidget {
   static const route = "/pets";
+
   const PetsScreen({Key? key}) : super(key: key);
+
   Future<void> confirmDeleteDialog(context, String? petID) async {
     return showDialog<void>(
       context: context,
@@ -47,80 +49,104 @@ class PetsScreen extends StatelessWidget {
       appBar: AppBar(
         title: const Text(
           "Mes animaux",
-          style: TextStyle(color: Colors.black),
-        ),
-        leading: IconButton(
-          icon: const Icon(
-            Icons.arrow_back,
-            color: Colors.black,
-          ),
-          onPressed: () => Navigator.pop(context),
+          style: TextStyle(color: Colors.white),
         ),
         centerTitle: true,
         elevation: 0,
-        backgroundColor: Colors.transparent,
-        actions: [
-          Container(
-            margin: const EdgeInsets.only(right: 10),
-            decoration: const BoxDecoration(
-                color: AppTheme.mainColor, shape: BoxShape.circle),
-            child: IconButton(
-                icon: const Icon(Icons.add),
-                onPressed: () =>
-                    Navigator.pushNamed(context, AddPetScreen.route)),
-          )
-        ],
+        backgroundColor: AppTheme.mainColor,
       ),
+      floatingActionButton: FloatingActionButton(
+
+        backgroundColor: AppTheme.mainColor,
+        child: const Icon(Icons.add,),
+        onPressed: () {
+          Navigator.pushNamed(context, AddPetScreen.route);
+        },
+      ),
+      backgroundColor: AppTheme.secondaryColor,
       body: Consumer<AuthViewModel>(
-        builder: (context, auth, child) => ListView.builder(
-            itemCount: auth.user?.pets?.length ?? 0,
-            itemBuilder: (context, index) {
-              Pet pet = auth.user!.pets![index];
-              return Container(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 5, vertical: 15),
-                margin: EdgeInsets.symmetric(horizontal: 5.w, vertical: 10),
-                decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(8),
-                    boxShadow: const [
-                      BoxShadow(color: Colors.black12, blurRadius: 2)
-                    ]),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    IconButton(
-                        onPressed: () {
-                          confirmDeleteDialog(context, pet.id);
-                        },
-                        icon: const Icon(Icons.delete, color: Colors.red)),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          pet.name ?? "",
-                          overflow: TextOverflow.ellipsis,
-                          style: const TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
-                              color: AppTheme.mainColor),
-                        ),
-                        const SizedBox(height: AppTheme.divider),
-                        Text("Type: ${pet.species} / Sex: ${pet.sex}"),
-                        Text(
-                            "Date de naissance : ${pet.birthDate?.day}/${pet.birthDate?.month}/${pet.birthDate?.year}")
-                      ],
-                    ),
-                    IconButton(
-                        onPressed: () {
+        builder: (context, auth, child) => Padding(
+          padding: const EdgeInsets.symmetric(vertical: 10),
+          child: ListView.builder(
+              itemCount: auth.user?.pets?.length ?? 0,
+              itemBuilder: (context, index) {
+                Pet pet = auth.user!.pets![index];
+                return Container(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
+                  margin: EdgeInsets.symmetric(horizontal: 5.w, vertical: 10),
+                  decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(8),
+                      boxShadow: const [
+                        BoxShadow(color: Colors.black12, blurRadius: 2)
+                      ]),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      GestureDetector(
+                        onTap: () {
                           Navigator.pushNamed(context, PetDetailsScreen.route,
                               arguments: index);
                         },
-                        icon: const Icon(Icons.keyboard_arrow_right))
-                  ],
-                ),
-              );
-            }),
+                        child: Row(
+                          children: [
+                            const CircleAvatar(
+                              backgroundImage:
+                                  AssetImage('assets/images/clinic.png'),
+                              radius: 30,
+                            ),
+                            Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 10),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    pet.name ?? "",
+                                    overflow: TextOverflow.ellipsis,
+                                    style: const TextStyle(
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.bold,
+                                        color: AppTheme.mainColor),
+                                  ),
+                                  const SizedBox(height: AppTheme.divider),
+                                   RichText(
+                                      text: TextSpan(children: [
+                                        const TextSpan(
+                                        text: 'Type : ',
+                                        style: TextStyle(
+                                          color: AppTheme.mainColor,
+                                        )),
+                                    TextSpan(
+                                        text: '${pet.species}  /  ',
+                                        style: const TextStyle(color: Colors.black)),
+                                        const  TextSpan(
+                                        text: 'Sex : ',
+                                        style: TextStyle(
+                                          color: AppTheme.mainColor,
+                                        )),
+                                    TextSpan(
+                                        text: '${pet.sex}',
+                                        style:const TextStyle(color: Colors.black))
+                                  ])),
+
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      IconButton(
+                          onPressed: () {
+                            confirmDeleteDialog(context, pet.id);
+                          },
+                          icon: const Icon(Icons.delete, color: Colors.red)),
+                    ],
+                  ),
+                );
+              }),
+        ),
       ),
     );
   }

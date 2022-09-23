@@ -8,7 +8,6 @@ import '../../../config/theme.dart';
 import '../../../models/clinique_model.dart';
 import '../../widgets/custom_progress.dart';
 
-
 class ClinicProfileScreen extends StatefulWidget {
   static const route = "/clinique-profile";
   Clinique clinique;
@@ -20,11 +19,6 @@ class ClinicProfileScreen extends StatefulWidget {
 }
 
 class _ClinicProfileScreenState extends State<ClinicProfileScreen> {
-
-
-
-
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -33,19 +27,22 @@ class _ClinicProfileScreenState extends State<ClinicProfileScreen> {
           onPressed: () {
             Navigator.pop(context);
           },
-          icon: const Icon(Icons.arrow_back,color: Colors.white,),
+          icon: const Icon(
+            Icons.arrow_back,
+            color: Colors.white,
+          ),
         ),
         centerTitle: true,
         title: widget.clinique.name == null
             ? const SizedBox()
             : Text(
-          "${widget.clinique.name}}",
-          overflow: TextOverflow.ellipsis,
-          style: TextStyle(
-              color: Colors.white,
-              fontSize: 5.w,
-              fontWeight: FontWeight.bold),
-        ),
+                "${widget.clinique.name}}",
+                overflow: TextOverflow.ellipsis,
+                style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 5.w,
+                    fontWeight: FontWeight.bold),
+              ),
         elevation: 0.0,
         backgroundColor: AppTheme.mainColor,
         foregroundColor: Colors.black,
@@ -55,72 +52,145 @@ class _ClinicProfileScreenState extends State<ClinicProfileScreen> {
         child: Provider.of<SearchViewModel>(context).loading
             ? const CustomProgress()
             : SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Container(
-                margin:
-                EdgeInsets.symmetric(horizontal: 5.w, vertical: 40),
-                padding: const EdgeInsets.all(10),
-                decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(20),
-                    boxShadow: const [
-                      BoxShadow(
-                        color: Colors.black12,
-                        blurRadius: 4.0,
-                      )
-                    ]),
                 child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    ListTile(
-                      leading: const Icon(
-                        Icons.person,
-                        color: AppTheme.mainColor,
-                      ),
-                      title: Text("Nom: ${widget.clinique.name}"),
+                    const SizedBox(
+                      height: 30,
                     ),
-                    ListTile(
-                      leading: const Icon(
-                        Icons.person,
-                        color: AppTheme.mainColor,
+                    Container(
+                      padding:const EdgeInsets.all(5),
+                      height: 50.w,
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                          color: AppTheme.mainColor,
+                        ),
+                        color: Colors.white,
+                        shape: BoxShape.circle,
+                        image: const DecorationImage(
+                            image: AssetImage('assets/images/clinic.png'),
+                            fit: BoxFit.contain),
                       ),
-                      title: Text("Prénom: ${widget.clinique.name}"),
                     ),
-                    ListTile(
-                      leading: const Icon(
-                        Icons.email,
-                        color: AppTheme.mainColor,
+                    Container(
+                      margin:
+                          EdgeInsets.symmetric(horizontal: 5.w, vertical: 40),
+                      padding: const EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(20),
+                          boxShadow: const [
+                            BoxShadow(
+                              color: Colors.black12,
+                              blurRadius: 4.0,
+                            )
+                          ]),
+                      child: Column(
+                        children: [
+                          ListTile(
+                            leading: const Icon(
+                              Icons.person,
+                              color: AppTheme.mainColor,
+                            ),
+                            title: RichText(
+                              text: TextSpan(
+                                children: [
+                                  const  TextSpan(
+                                    text: 'Nom:',
+                                    style: TextStyle(
+                                        fontSize: 17,
+                                        fontWeight: FontWeight.bold,
+                                        color: AppTheme.mainColor),
+                                  ),
+                                  TextSpan(
+                                    text: " ${widget.clinique.name}",
+                                    style:const TextStyle(
+                                        fontSize: 17, color: Colors.black),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                          ListTile(
+                            leading: const Icon(
+                              Icons.location_on,
+                              color: AppTheme.mainColor,
+                            ),
+                            title: RichText(
+                              text: TextSpan(
+                                children: [
+                                 const  TextSpan(
+                                    text: 'Adresse:',
+                                    style: TextStyle(
+                                        fontSize: 17,
+                                        fontWeight: FontWeight.bold,
+                                        color: AppTheme.mainColor),
+                                  ),
+                                  TextSpan(
+                                    text:
+                                        " ${widget.clinique.address} , ${widget.clinique.city} , ${widget.clinique.country}",
+                                    style: const TextStyle(
+                                        fontSize: 17, color: Colors.black),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                          ListTile(
+                            leading: const Icon(
+                              Icons.phone,
+                              color: AppTheme.mainColor,
+                            ),
+                            title: RichText(
+                              text: TextSpan(
+                                children: [
+                                  const TextSpan(
+                                    text: 'Numéro de téléphone:',
+                                    style: TextStyle(
+                                        fontSize: 17,
+                                        fontWeight: FontWeight.bold,
+                                        color: AppTheme.mainColor),
+                                  ),
+                                  TextSpan(
+                                    text: " ${widget.clinique.phone_number}",
+                                    style: const TextStyle(
+                                        fontSize: 17, color: Colors.black),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                          ListTile(
+                            leading: SvgPicture.asset(
+                              "assets/icons/zip_code.svg",
+                              width: 25,
+                              color: AppTheme.mainColor,
+                            ),
+                            title: RichText(
+                              text: TextSpan(
+                                children: [
+                                  const TextSpan(
+                                    text: 'Code postal:',
+                                    style: TextStyle(
+                                        fontSize: 17,
+                                        fontWeight: FontWeight.bold,
+                                        color: AppTheme.mainColor),
+                                  ),
+                                  TextSpan(
+                                    text: " ${widget.clinique.zip_code}",
+                                    style: const TextStyle(
+                                        fontSize: 17, color: Colors.black),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
-                      title: Text("Email: ${widget.clinique.name}"),
-                    ),
-
-                    ListTile(
-                      leading: const Icon(
-                        Icons.phone,
-                        color: AppTheme.mainColor,
-                      ),
-                      title: Text(
-                          "Numéro de téléphone: ${widget.clinique.name}"),
-                    ),
-                    ListTile(
-                      leading: SvgPicture.asset(
-                        "assets/icons/bank_details.svg",
-                        width: 30,
-                        color: AppTheme.mainColor,
-                      ),
-                      title:
-                      Text("Credit info: ${widget.clinique.name}"),
                     ),
                   ],
                 ),
               ),
-
-
-
-            ],
-          ),
-        ),
       ),
     );
   }

@@ -39,18 +39,32 @@ class _VetProfileScreenState extends State<VetProfileScreen> {
       getVet();
     });
 
+
+
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
+
+    double rating = 0;
+    int somme = 0;
+    for(int i = 0;i < (vet?.comments?.length ?? 0);i++){
+      somme = somme + (vet?.comments?[i].rating ?? 0);
+    }
+
+    rating = somme / (vet?.comments?.length ?? 1);
+    print(rating);
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
           onPressed: () {
             Navigator.pop(context);
           },
-          icon: const Icon(Icons.arrow_back,color: Colors.white,),
+          icon: const Icon(
+            Icons.arrow_back,
+            color: Colors.white,
+          ),
         ),
         centerTitle: true,
         title: vet?.first_name == null
@@ -75,9 +89,31 @@ class _VetProfileScreenState extends State<VetProfileScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
+                    const SizedBox(
+                      height: 30,
+                    ),
+                    Container(
+                      padding: const EdgeInsets.all(5),
+                      height: 50.w,
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                          color: AppTheme.mainColor,
+                        ),
+                        color: Colors.white,
+                        shape: BoxShape.circle,
+                        image: const DecorationImage(
+                            image: AssetImage('assets/images/veterinaire.png'),
+                            fit: BoxFit.contain),
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(left: 5.w, right: 5.w, top: 10),
+                      child: CustomButton(
+                          text: 'Prendre un rendez vous', onPressed: () {}),
+                    ),
                     Container(
                       margin:
-                          EdgeInsets.symmetric(horizontal: 5.w, vertical: 40),
+                          EdgeInsets.symmetric(horizontal: 5.w, vertical: 20),
                       padding: const EdgeInsets.all(10),
                       decoration: BoxDecoration(
                           color: Colors.white,
@@ -89,44 +125,78 @@ class _VetProfileScreenState extends State<VetProfileScreen> {
                             )
                           ]),
                       child: Column(
+
                         children: [
-                          ListTile(
-                            leading: const Icon(
-                              Icons.person,
-                              color: AppTheme.mainColor,
+                          Center(
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 20, vertical: 10),
+                              child: AbsorbPointer(
+                                child: StarRating(
+                                  rating: (rating ?? 0).toDouble(),
+                                  onRatingChanged: (rating) =>
+                                      setState(() =>5+5),
+                                ),
+                              ),
                             ),
-                            title: Text("Nom: ${widget.vet.last_name}"),
                           ),
                           ListTile(
+                              leading: const Icon(
+                                Icons.person,
+                                color: AppTheme.mainColor,
+                              ),
+                              title: InfoWidget(
+                                info: '${widget.vet.first_name}',
+                                infoType: 'Nom',
+                              )),
+                          ListTile(
                             leading: const Icon(
                               Icons.person,
                               color: AppTheme.mainColor,
                             ),
-                            title: Text("Prénom: ${widget.vet.first_name}"),
+                            title:
+                            InfoWidget(
+                              info: '${widget.vet.last_name}',
+                              infoType: 'Prénom',
+                            )
+
                           ),
                           ListTile(
                             leading: const Icon(
                               Icons.email,
                               color: AppTheme.mainColor,
                             ),
-                            title: Text("Email: ${widget.vet.email}"),
+                            title:
+
+                            InfoWidget(
+                              info: '${widget.vet.email}',
+                              infoType: 'Email',
+                            )
                           ),
                           ListTile(
                             leading: const Icon(
                               Icons.date_range_outlined,
                               color: AppTheme.mainColor,
                             ),
-                            title: Text(
-                                "Date de naissance: ${widget.vet.birth_date?.year}/${widget.vet.birth_date?.month}/${widget.vet.birth_date?.day}"),
+                            title:
+
+                            InfoWidget(
+                              info: '${widget.vet.birth_date?.year}/${widget.vet.birth_date?.month}/${widget.vet.birth_date?.day}',
+                              infoType: 'Date de naissance',
+                            )
+
                           ),
                           ListTile(
                             leading: const Icon(
                               Icons.phone,
                               color: AppTheme.mainColor,
                             ),
-                            title: Text(
-                                "Numéro de téléphone: ${widget.vet.phone_number}"),
-                          ),
+                            title:
+                            InfoWidget(
+                              info: '${widget.vet.phone_number}',
+                              infoType: 'Numéro de téléphone',
+                            )
+                            ),
                           ListTile(
                             leading: SvgPicture.asset(
                               "assets/icons/bank_details.svg",
@@ -134,16 +204,13 @@ class _VetProfileScreenState extends State<VetProfileScreen> {
                               color: AppTheme.mainColor,
                             ),
                             title:
-                                Text("Credit info: ${widget.vet.bank_details}"),
+                            InfoWidget(
+                              info: '${widget.vet.bank_details}',
+                              infoType: 'Credit info',
+                            )
                           ),
                         ],
                       ),
-                    ),
-                    Padding(
-                      padding:
-                          EdgeInsets.only(left: 5.w, right: 5.w, bottom: 10),
-                      child: CustomButton(
-                          text: 'Prendre un rendez vous', onPressed: () {}),
                     ),
                     Padding(
                       padding: vet?.specialities?.length != 0
