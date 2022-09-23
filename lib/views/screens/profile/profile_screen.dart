@@ -168,7 +168,6 @@ class ProfileScreen extends StatelessWidget {
                               title: const Text("Déconnecter"),
                               onTap: () {
                                 auth.logout();
-                                Navigator.pop(context);
                               },
                             ),
                           ],

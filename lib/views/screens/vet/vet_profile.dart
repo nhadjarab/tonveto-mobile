@@ -39,17 +39,14 @@ class _VetProfileScreenState extends State<VetProfileScreen> {
       getVet();
     });
 
-
-
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-
     double rating = 0;
     int somme = 0;
-    for(int i = 0;i < (vet?.comments?.length ?? 0);i++){
+    for (int i = 0; i < (vet?.comments?.length ?? 0); i++) {
       somme = somme + (vet?.comments?[i].rating ?? 0);
     }
 
@@ -125,7 +122,6 @@ class _VetProfileScreenState extends State<VetProfileScreen> {
                             )
                           ]),
                       child: Column(
-
                         children: [
                           Center(
                             child: Padding(
@@ -133,9 +129,9 @@ class _VetProfileScreenState extends State<VetProfileScreen> {
                                   horizontal: 20, vertical: 10),
                               child: AbsorbPointer(
                                 child: StarRating(
-                                  rating: (rating ?? 0).toDouble(),
+                                  rating: (rating).toDouble(),
                                   onRatingChanged: (rating) =>
-                                      setState(() =>5+5),
+                                      setState(() => 5 + 5),
                                 ),
                               ),
                             ),
@@ -150,65 +146,52 @@ class _VetProfileScreenState extends State<VetProfileScreen> {
                                 infoType: 'Nom',
                               )),
                           ListTile(
-                            leading: const Icon(
-                              Icons.person,
-                              color: AppTheme.mainColor,
-                            ),
-                            title:
-                            InfoWidget(
-                              info: '${widget.vet.last_name}',
-                              infoType: 'Prénom',
-                            )
-
-                          ),
+                              leading: const Icon(
+                                Icons.person,
+                                color: AppTheme.mainColor,
+                              ),
+                              title: InfoWidget(
+                                info: '${widget.vet.last_name}',
+                                infoType: 'Prénom',
+                              )),
                           ListTile(
-                            leading: const Icon(
-                              Icons.email,
-                              color: AppTheme.mainColor,
-                            ),
-                            title:
-
-                            InfoWidget(
-                              info: '${widget.vet.email}',
-                              infoType: 'Email',
-                            )
-                          ),
+                              leading: const Icon(
+                                Icons.email,
+                                color: AppTheme.mainColor,
+                              ),
+                              title: InfoWidget(
+                                info: '${widget.vet.email}',
+                                infoType: 'Email',
+                              )),
                           ListTile(
-                            leading: const Icon(
-                              Icons.date_range_outlined,
-                              color: AppTheme.mainColor,
-                            ),
-                            title:
-
-                            InfoWidget(
-                              info: '${widget.vet.birth_date?.year}/${widget.vet.birth_date?.month}/${widget.vet.birth_date?.day}',
-                              infoType: 'Date de naissance',
-                            )
-
-                          ),
+                              leading: const Icon(
+                                Icons.date_range_outlined,
+                                color: AppTheme.mainColor,
+                              ),
+                              title: InfoWidget(
+                                info:
+                                    '${widget.vet.birth_date?.year}/${widget.vet.birth_date?.month}/${widget.vet.birth_date?.day}',
+                                infoType: 'Date de naissance',
+                              )),
                           ListTile(
-                            leading: const Icon(
-                              Icons.phone,
-                              color: AppTheme.mainColor,
-                            ),
-                            title:
-                            InfoWidget(
-                              info: '${widget.vet.phone_number}',
-                              infoType: 'Numéro de téléphone',
-                            )
-                            ),
+                              leading: const Icon(
+                                Icons.phone,
+                                color: AppTheme.mainColor,
+                              ),
+                              title: InfoWidget(
+                                info: '${widget.vet.phone_number}',
+                                infoType: 'Numéro de téléphone',
+                              )),
                           ListTile(
-                            leading: SvgPicture.asset(
-                              "assets/icons/bank_details.svg",
-                              width: 30,
-                              color: AppTheme.mainColor,
-                            ),
-                            title:
-                            InfoWidget(
-                              info: '${widget.vet.bank_details}',
-                              infoType: 'Credit info',
-                            )
-                          ),
+                              leading: SvgPicture.asset(
+                                "assets/icons/bank_details.svg",
+                                width: 30,
+                                color: AppTheme.mainColor,
+                              ),
+                              title: InfoWidget(
+                                info: '${widget.vet.bank_details}',
+                                infoType: 'Credit info',
+                              )),
                         ],
                       ),
                     ),
