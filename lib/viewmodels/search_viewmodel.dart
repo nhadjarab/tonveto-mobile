@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../models/failure_model.dart';
 import '../models/search_model.dart';
+import '../models/vet_model.dart';
 import '../services/search_service.dart';
 
 
@@ -34,6 +35,31 @@ class SearchViewModel with ChangeNotifier {
           clinic_name, specialty, address, country, token);
        loading = false;
       notifyListeners();
+
+    } on Failure catch (f) {
+      loading = false;
+      errorMessage = f.message;
+      notifyListeners();
+    } catch (e) {
+      loading = false;
+      print(e);
+      notifyListeners();
+    }
+  }
+
+  Future<Veterinaire?> getVet(
+      String? vetId,
+      String? user_id,
+      String? token) async {
+    try {
+      final SearchService searchService = SearchService();
+      loading = true;
+      notifyListeners();
+      Veterinaire vet = await searchService.getVet(vetId,user_id, token);
+
+      loading = false;
+      notifyListeners();
+      return vet;
 
     } on Failure catch (f) {
       loading = false;

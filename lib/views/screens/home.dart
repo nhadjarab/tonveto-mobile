@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 import 'package:tonveto/views/screens/profile/profile_screen.dart';
-
+import 'package:tonveto/views/widgets/custom_progress.dart';
+import 'package:tonveto/views/widgets/widgets.dart';
 
 import '../../config/theme.dart';
 import '../../viewmodels/auth_viewmodel.dart';
@@ -75,44 +76,34 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
-
-
-
     Future<void> _dialogBuilder(BuildContext context) {
       return showDialog<void>(
-
         context: context,
-
         builder: (BuildContext context) {
           return Padding(
             padding: EdgeInsets.only(left: 10.0, right: 10.0),
             child: Dialog(
-insetPadding: EdgeInsets.all(10),
+              insetPadding: EdgeInsets.all(10),
               //insetPadding: EdgeInsets.zero,
-             // contentPadding: EdgeInsets.all(0.0),
+              // contentPadding: EdgeInsets.all(0.0),
               child: SingleChildScrollView(
                 child: Padding(
                   padding: const EdgeInsets.all(10),
                   child: Center(
                     child: Column(
-                      mainAxisAlignment:
-                      MainAxisAlignment.center,
-                      crossAxisAlignment:
-                      CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       //  mainAxisSize: MainAxisSize.min,
                       children: <Widget>[
                         Row(
-                          children: [
-                            const Text(
+                          children: const [
+                            Text(
                               'Filtres',
                               style: TextStyle(
                                   color: Colors.black,
                                   fontSize: 20,
-                                  fontWeight:
-                                  FontWeight.bold),
+                                  fontWeight: FontWeight.bold),
                             ),
-
-
                           ],
                         ),
                         const SizedBox(
@@ -161,28 +152,23 @@ insetPadding: EdgeInsets.all(10),
                           height: 10,
                         ),
                         CustomButton(
-                          width:MediaQuery.of(context).size.width*0.4,
+                            width: MediaQuery.of(context).size.width * 0.4,
                             text: 'Filtrer',
                             padding: 0,
                             onPressed: () async {
                               Navigator.pop(context);
                               await search();
                             })
-
                       ],
                     ),
                   ),
                 ),
               ),
-
             ),
           );
         },
       );
     }
-
-
-
 
     return SafeArea(
       child: Scaffold(
@@ -190,9 +176,7 @@ insetPadding: EdgeInsets.all(10),
         body: Provider.of<SearchViewModel>(
           context,
         ).loading
-            ? const Center(
-                child: CircularProgressIndicator(),
-              )
+            ? const CustomProgress()
             : SingleChildScrollView(
                 child: Container(
                   color: AppTheme.mainColor,
@@ -206,36 +190,17 @@ insetPadding: EdgeInsets.all(10),
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                IconButton(
-                                  onPressed: () async {
-                                    Navigator.pushNamed(
-                                        context, ProfileScreen.route);
-                                  },
-                                  icon: const Icon(
-                                    Icons.person,
-                                    size: 25,
-                                    color: Colors.white,
-                                  ),
-                                ),
-                                const Text(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: const [
+
+                                 Text(
                                   'Page principale',
                                   style: TextStyle(
                                       fontSize: 20,
                                       color: Colors.white,
                                       fontWeight: FontWeight.bold),
                                 ),
-                                IconButton(
-                                    onPressed: () async {
-                                      await Provider.of<AuthViewModel>(context,
-                                              listen: false)
-                                          .logout();
-                                    },
-                                    icon: const Icon(
-                                      Icons.logout,
-                                      color: Colors.white,
-                                    ))
+
                               ],
                             ),
                             const SizedBox(
@@ -260,7 +225,7 @@ insetPadding: EdgeInsets.all(10),
                             ),
                             GestureDetector(
                               onTap: () {
-                               _dialogBuilder(context);
+                                _dialogBuilder(context);
                               },
                               child: Container(
                                 padding: const EdgeInsets.symmetric(
@@ -415,93 +380,11 @@ insetPadding: EdgeInsets.all(10),
                                                 itemCount: value.searchResult
                                                     ?.veterinaires?.length,
                                                 itemBuilder: (context, index) {
-                                                  return Container(
-                                                    margin: const EdgeInsets
-                                                            .symmetric(
-                                                        vertical: 10),
-                                                    padding:
-                                                        const EdgeInsets.all(
-                                                            20),
-                                                    decoration: BoxDecoration(
-                                                        color: Colors.white,
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(20)),
-                                                    child: Row(
-                                                      children: [
-                                                        const CircleAvatar(
-                                                          backgroundImage:
-                                                              AssetImage(
-                                                                  'assets/images/veterinaire.png'),
-                                                          radius: 30,
-                                                        ),
-                                                        const SizedBox(
-                                                          width: 15,
-                                                        ),
-                                                        Expanded(
-                                                          child: Column(
-                                                            mainAxisAlignment:
-                                                                MainAxisAlignment
-                                                                    .spaceBetween,
-                                                            crossAxisAlignment:
-                                                                CrossAxisAlignment
-                                                                    .start,
-                                                            children: [
-                                                              RichText(
-                                                                  text: TextSpan(
-                                                                      children: [
-                                                                    TextSpan(
-                                                                      text:
-                                                                          'Dr ${value.searchResult?.veterinaires?[index].first_name} ${value.searchResult?.veterinaires?[index].last_name}',
-                                                                      style: const TextStyle(
-                                                                          overflow: TextOverflow
-                                                                              .ellipsis,
-                                                                          color: Colors
-                                                                              .black,
-                                                                          fontSize:
-                                                                              18,
-                                                                          fontWeight:
-                                                                              FontWeight.bold),
-                                                                    )
-                                                                  ])),
-                                                              const SizedBox(
-                                                                height: 5,
-                                                              ),
-                                                              Text(
-                                                                "${value.searchResult?.veterinaires?[index].phone_number}",
-                                                                style: const TextStyle(
-                                                                    fontSize:
-                                                                        14,
-                                                                    color: Colors
-                                                                        .grey),
-                                                              ),
-                                                            ],
-                                                          ),
-                                                        ),
-                                                        Column(
-                                                          children: [
-                                                            Row(
-                                                              children: const [
-                                                                Icon(
-                                                                  Icons.star,
-                                                                  color: Colors
-                                                                      .yellow,
-                                                                ),
-                                                                Text(
-                                                                  ' 4.8',
-                                                                  style:
-                                                                      TextStyle(
-                                                                    fontSize:
-                                                                        16,
-                                                                  ),
-                                                                ),
-                                                              ],
-                                                            ),
-                                                          ],
-                                                        )
-                                                      ],
-                                                    ),
-                                                  );
+                                                  return VetCard(
+                                                      veterinaire: value
+                                                              .searchResult
+                                                              ?.veterinaires?[
+                                                          index]);
                                                 },
                                               ),
                                         value.searchResult?.cliniques?.length ==
@@ -520,95 +403,10 @@ insetPadding: EdgeInsets.all(10),
                                                 itemCount: value.searchResult
                                                     ?.cliniques?.length,
                                                 itemBuilder: (context, index) {
-                                                  return Container(
-                                                    margin: const EdgeInsets
-                                                            .symmetric(
-                                                        vertical: 10),
-                                                    padding:
-                                                        const EdgeInsets.all(
-                                                            15),
-                                                    decoration: BoxDecoration(
-                                                        color: Colors.white,
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(20)),
-                                                    child: Row(
-                                                      children: [
-                                                        const CircleAvatar(
-                                                          backgroundImage:
-                                                              AssetImage(
-                                                                  'assets/images/clinic.png'),
-                                                          radius: 30,
-                                                        ),
-                                                        const SizedBox(
-                                                          width: 15,
-                                                        ),
-                                                        Expanded(
-                                                          child: Column(
-                                                            mainAxisAlignment:
-                                                                MainAxisAlignment
-                                                                    .spaceBetween,
-                                                            crossAxisAlignment:
-                                                                CrossAxisAlignment
-                                                                    .start,
-                                                            children: [
-                                                              Text(
-                                                                '${value.searchResult?.cliniques?[index].name}',
-                                                                style: const TextStyle(
-                                                                    fontSize:
-                                                                        18,
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .bold),
-                                                              ),
-                                                              const SizedBox(
-                                                                height: 5,
-                                                              ),
-                                                              Text(
-                                                                '${value.searchResult?.cliniques?[index].address} , ${value.searchResult?.cliniques?[index].city} , ${value.searchResult?.cliniques?[index].country}',
-                                                                style: const TextStyle(
-                                                                    fontSize:
-                                                                        14,
-                                                                    color: Colors
-                                                                        .grey),
-                                                              ),
-                                                              const SizedBox(
-                                                                height: 5,
-                                                              ),
-                                                              Text(
-                                                                '${value.searchResult?.cliniques?[index].phone_number}',
-                                                                style:
-                                                                    const TextStyle(
-                                                                  fontSize: 16,
-                                                                ),
-                                                              ),
-                                                            ],
-                                                          ),
-                                                        ),
-                                                        Column(
-                                                          children: [
-                                                            Row(
-                                                              children: const [
-                                                                Icon(
-                                                                  Icons.star,
-                                                                  color: Colors
-                                                                      .yellow,
-                                                                ),
-                                                                Text(
-                                                                  ' 4.8',
-                                                                  style:
-                                                                      TextStyle(
-                                                                    fontSize:
-                                                                        16,
-                                                                  ),
-                                                                ),
-                                                              ],
-                                                            ),
-                                                          ],
-                                                        )
-                                                      ],
-                                                    ),
-                                                  );
+                                                  return CliniqueCard(
+                                                      clinique: value
+                                                          .searchResult
+                                                          ?.cliniques?[index]);
                                                 },
                                               ),
                                       ]),

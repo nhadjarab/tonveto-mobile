@@ -34,6 +34,7 @@ class ProfileScreen extends StatelessWidget {
         backgroundColor: AppTheme.mainColor,
         foregroundColor: Colors.black,
       ),
+      backgroundColor: AppTheme.secondaryColor,
       body: SafeArea(
         child: Consumer<AuthViewModel>(builder: (context, auth, _) {
           return auth.loading
@@ -91,9 +92,10 @@ class ProfileScreen extends StatelessWidget {
                         margin:
                             EdgeInsets.symmetric(horizontal: 5.w, vertical: 40),
                         padding: const EdgeInsets.all(10),
-                        decoration: const BoxDecoration(
-                            color: Colors.white,
-                            boxShadow: [
+                        decoration:
+                        BoxDecoration(color: Colors.white,
+                            borderRadius: BorderRadius.circular(20),
+                            boxShadow: const [
                               BoxShadow(
                                 color: Colors.black12,
                                 blurRadius: 4.0,
@@ -102,45 +104,64 @@ class ProfileScreen extends StatelessWidget {
                         child: Column(
                           children: [
                             ListTile(
-                              leading: const Icon(Icons.person),
+                              leading: const Icon(
+                                Icons.person,
+                                color: AppTheme.mainColor,
+                              ),
                               title: Text("Nom: ${auth.user?.last_name}"),
                             ),
                             ListTile(
-                              leading: const Icon(Icons.person),
+                              leading: const Icon(
+                                Icons.person,
+                                color: AppTheme.mainColor,
+                              ),
                               title: Text("Prénom: ${auth.user?.first_name}"),
                             ),
                             ListTile(
-                              leading: const Icon(Icons.email),
+                              leading: const Icon(
+                                Icons.email,
+                                color: AppTheme.mainColor,
+                              ),
                               title: Text("Email: ${auth.user?.email}"),
                             ),
                             ListTile(
-                              leading: const Icon(Icons.date_range_outlined),
+                              leading: const Icon(
+                                Icons.date_range_outlined,
+                                color: AppTheme.mainColor,
+                              ),
                               title: Text(
                                   "Date de naissance: ${auth.user?.birth_date?.year}/${auth.user?.birth_date?.month}/${auth.user?.birth_date?.day}"),
                             ),
                             ListTile(
-                              leading: const Icon(Icons.phone),
+                              leading: const Icon(
+                                Icons.phone,
+                                color: AppTheme.mainColor,
+                              ),
                               title: Text("Tel: ${auth.user?.phone_number}"),
                             ),
                           ],
                         ),
                       ),
                       Container(
-                        margin:
-                            EdgeInsets.symmetric(horizontal: 5.w,),
-                        padding: const EdgeInsets.all(10),
-                        decoration: const BoxDecoration(
-                            color: Colors.white,
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.black12,
-                                blurRadius: 4.0,
-                              )
-                            ]),
+                        margin: EdgeInsets.symmetric(
+                          horizontal: 5.w,
+                        ),
+                        padding: const EdgeInsets.all(10),decoration:
+                      BoxDecoration(color: Colors.white,
+                          borderRadius: BorderRadius.circular(20),
+                          boxShadow: const [
+                            BoxShadow(
+                              color: Colors.black12,
+                              blurRadius: 4.0,
+                            )
+                          ]),
                         child: Column(
                           children: [
                             ListTile(
-                              leading: const Icon(Icons.logout),
+                              leading: const Icon(
+                                Icons.logout,
+                                color: AppTheme.mainColor,
+                              ),
                               title: const Text("Déconnecter"),
                               onTap: () {
                                 auth.logout();
