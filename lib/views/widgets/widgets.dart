@@ -62,24 +62,7 @@ class VetCard extends StatelessWidget {
                 ],
               ),
             ),
-            Column(
-              children: [
-                Row(
-                  children: const [
-                    Icon(
-                      Icons.star,
-                      color: Colors.yellow,
-                    ),
-                    Text(
-                      ' 4.8',
-                      style: TextStyle(
-                        fontSize: 16,
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            )
+
           ],
         ),
       ),
@@ -147,24 +130,7 @@ class CliniqueCard extends StatelessWidget {
                 ],
               ),
             ),
-            Column(
-              children: [
-                Row(
-                  children: const [
-                    Icon(
-                      Icons.star,
-                      color: Colors.yellow,
-                    ),
-                    Text(
-                      ' 4.8',
-                      style: TextStyle(
-                        fontSize: 16,
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            )
+
           ],
         ),
       ),

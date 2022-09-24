@@ -154,25 +154,8 @@ class _VetProfileScreenState extends State<VetProfileScreen> {
                                 info: '${widget.vet.last_name}',
                                 infoType: 'Prénom',
                               )),
-                          ListTile(
-                              leading: const Icon(
-                                Icons.email,
-                                color: AppTheme.mainColor,
-                              ),
-                              title: InfoWidget(
-                                info: '${widget.vet.email}',
-                                infoType: 'Email',
-                              )),
-                          ListTile(
-                              leading: const Icon(
-                                Icons.date_range_outlined,
-                                color: AppTheme.mainColor,
-                              ),
-                              title: InfoWidget(
-                                info:
-                                    '${widget.vet.birth_date?.year}/${widget.vet.birth_date?.month}/${widget.vet.birth_date?.day}',
-                                infoType: 'Date de naissance',
-                              )),
+
+
                           ListTile(
                               leading: const Icon(
                                 Icons.phone,
@@ -180,18 +163,9 @@ class _VetProfileScreenState extends State<VetProfileScreen> {
                               ),
                               title: InfoWidget(
                                 info: '${widget.vet.phone_number}',
-                                infoType: 'Numéro de téléphone',
+                                infoType: 'Tel',
                               )),
-                          ListTile(
-                              leading: SvgPicture.asset(
-                                "assets/icons/bank_details.svg",
-                                width: 30,
-                                color: AppTheme.mainColor,
-                              ),
-                              title: InfoWidget(
-                                info: '${widget.vet.bank_details}',
-                                infoType: 'Credit info',
-                              )),
+
                         ],
                       ),
                     ),
