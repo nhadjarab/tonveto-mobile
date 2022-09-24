@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
+import 'package:tonveto/views/screens/appointments/appointments_list_screen.dart';
 import 'package:tonveto/views/screens/home.dart';
 import 'package:tonveto/views/screens/pet/pets_screen.dart';
 import 'package:tonveto/views/screens/profile/profile_screen.dart';
@@ -29,20 +30,18 @@ class _MainScreenState extends State<MainScreen> {
         // selectedFontSize: 12.0,
         items: [
           SalomonBottomBarItem(
-            icon: const Icon(Icons.home),
-              title: const SizedBox()
-            // label: textLocals.home,
-          ),
+              icon: const Icon(Icons.home), title: const SizedBox()
+              // label: textLocals.home,
+              ),
           SalomonBottomBarItem(
-            icon: SvgPicture.asset(
-              'assets/icons/pets.svg',
-              width: 25,
-              color: _currentIndex == 1 ? AppTheme.mainColor : Colors.grey,
-            ),
-            title: const SizedBox()
-            // label: textLocals.search,
-          ),
-
+              icon: SvgPicture.asset(
+                'assets/icons/pets.svg',
+                width: 25,
+                color: _currentIndex == 1 ? AppTheme.mainColor : Colors.grey,
+              ),
+              title: const SizedBox()
+              // label: textLocals.search,
+              ),
           SalomonBottomBarItem(
               icon: SvgPicture.asset(
                 'assets/icons/chatbot.svg',
@@ -50,13 +49,12 @@ class _MainScreenState extends State<MainScreen> {
                 color: _currentIndex == 2 ? AppTheme.mainColor : Colors.grey,
               ),
               title: const SizedBox()
-            // label: textLocals.messages,
-          ),
+              // label: textLocals.messages,
+              ),
           SalomonBottomBarItem(
-            icon: const Icon(Icons.person_outlined),
-              title: const SizedBox()
-            // label: textLocals.profil,
-          ),
+              icon: const Icon(Icons.person_outlined), title: const SizedBox()
+              // label: textLocals.profil,
+              ),
         ],
         currentIndex: _currentIndex,
         onTap: (int index) {
@@ -72,7 +70,7 @@ class _MainScreenState extends State<MainScreen> {
               children: const [
                 Home(),
                 PetsScreen(),
-                Home(),
+                AppointmentsListScreen(),
                 ProfileScreen(),
               ],
             ),

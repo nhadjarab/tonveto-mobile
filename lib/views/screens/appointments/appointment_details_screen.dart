@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 import 'package:tonveto/config/theme.dart';
 import 'package:tonveto/models/appointment_model.dart';
+import 'package:tonveto/models/clinique_model.dart';
 import 'package:tonveto/models/vet_model.dart';
 import 'package:tonveto/viewmodels/auth_viewmodel.dart';
 import 'package:tonveto/views/screens/appointments/medical_records_screen.dart';
@@ -19,15 +20,15 @@ class AppointmentDetailsScreen extends StatefulWidget {
 }
 
 class _AppointmentDetailsScreenState extends State<AppointmentDetailsScreen> {
-  Veterinaire? veterinaire;
+  Clinique? clinic;
 
   @override
   void initState() {
     super.initState();
-    // WidgetsBinding.instance.addPostFrameCallback((_) async {
-    //   veterinaire = await Provider.of<AuthViewModel>(context, listen: false)
-    //       .getVetForAppointment(widget.appointment.vet?.id);
-    // });
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      clinic = await Provider.of<AuthViewModel>(context, listen: false)
+          .getClinic(widget.appointment.clinicId);
+    });
   }
 
   @override
@@ -92,7 +93,7 @@ class _AppointmentDetailsScreenState extends State<AppointmentDetailsScreen> {
                         ListTile(
                           leading: const Icon(Icons.phone),
                           title: Text(
-                              "Tel: ${widget.appointment.vet?.phone_number}"),
+                              "Téléphone: ${widget.appointment.vet?.phone_number}"),
                         ),
                         ListTile(
                           leading: const Icon(Icons.contact_mail),
@@ -130,24 +131,27 @@ class _AppointmentDetailsScreenState extends State<AppointmentDetailsScreen> {
                       ],
                     ),
                   ),
-                  // Container(
-                  //   margin: EdgeInsets.symmetric(
-                  //     horizontal: 5.w,
-                  //   ),
-                  //   padding: const EdgeInsets.all(10),
-                  //   decoration:
-                  //       const BoxDecoration(color: Colors.white, boxShadow: [
-                  //     BoxShadow(
-                  //       color: Colors.black12,
-                  //       blurRadius: 4.0,
-                  //     )
-                  //   ]),
-                  //   child: auth.loading
-                  //       ? const Center(child: CustomProgress())
-                  //       : Column(
-                  //         children:
-                  //       ),
-                  // ),
+                  Container(
+                    margin: EdgeInsets.symmetric(
+                      horizontal: 5.w,
+                    ),
+                    padding: const EdgeInsets.all(10),
+                    decoration:
+                        const BoxDecoration(color: Colors.white, boxShadow: [
+                      BoxShadow(
+                        color: Colors.black12,
+                        blurRadius: 4.0,
+                      )
+                    ]),
+                    child: auth.loading
+                        ? const Center(child: CustomProgress())
+                        : ListTile(
+                            leading: const Icon(Icons.location_on),
+                            title: Text(clinic?.name ?? ""),
+                            subtitle: Text(
+                                "${clinic?.address}, ${clinic?.city}, ${clinic?.country}"),
+                          ),
+                  ),
                 ],
               ),
             ),

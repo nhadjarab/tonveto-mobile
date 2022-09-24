@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tonveto/models/appointment_model.dart';
+import 'package:tonveto/models/clinique_model.dart';
 import 'package:tonveto/models/pet_model.dart';
 import 'package:tonveto/models/vet_model.dart';
 import 'package:tonveto/services/pet_service.dart';
@@ -299,17 +300,18 @@ class AuthViewModel with ChangeNotifier {
     }
   }
 
-  Future<Veterinaire?> getVetForAppointment(String? vetId) async {
+  Future<Clinique?> getClinic(String? clinicID) async {
     try {
-      final SearchService petService = SearchService();
+      final PetService petService = PetService();
       loading = true;
       notifyListeners();
 
-      Veterinaire? vet = await petService.getVet(vetId, user?.id, token);
+      Clinique? clinique =
+          await petService.getClinic(clinicID, token, user?.id);
 
       loading = false;
       notifyListeners();
-      return vet;
+      return clinique;
     } on Failure catch (f) {
       loading = false;
       errorMessage = f.message;

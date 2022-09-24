@@ -10,7 +10,8 @@ class Appointment {
       this.vetId,
       this.userId,
       this.vet,
-      this.medicalReports});
+      this.medicalReports,
+      this.clinicId});
 
   String? id;
   DateTime? date;
@@ -20,18 +21,20 @@ class Appointment {
   String? userId;
   Veterinaire? vet;
   List<MedicalReport>? medicalReports;
+  String? clinicId;
 
   factory Appointment.fromJson(Map<String, dynamic> json) => Appointment(
-        id: json["id"],
-        date: DateTime.parse(json["date"]),
-        time: json["time"],
-        petId: json["pet_id"],
-        vetId: json["vet_id"],
-        userId: json["user_id"],
-        vet: Veterinaire.fromJson(json["vet"]),
-        medicalReports: List<MedicalReport>.from(json["MedicalReport"]
-            .map((record) => MedicalReport.fromJson(record))),
-      );
+      id: json["id"],
+      date: DateTime.parse(json["date"]),
+      time: json["time"],
+      petId: json["pet_id"],
+      vetId: json["vet_id"],
+      userId: json["user_id"],
+      vet: Veterinaire.fromJson(json["vet"]),
+      medicalReports: List<MedicalReport>.from(json["MedicalReport"]
+              ?.map((record) => MedicalReport.fromJson(record)) ??
+          []),
+      clinicId: json["clinic_id"]);
 
   Map<String, dynamic> toJson() => {
         "id": id,

@@ -10,7 +10,6 @@ import '../../widgets/custom_fields.dart';
 import '../../widgets/custom_progress.dart';
 import '../../widgets/show_message.dart';
 
-
 class InfoScreen extends StatefulWidget {
   static const route = "/info";
 
@@ -37,8 +36,8 @@ class _InfoScreenState extends State<InfoScreen> {
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
       if (birthDate == null || DateTime.now().year - birthDate!.year < 18) {
-        ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text("Il faut avoir 18 ans pour s'inscrire")));
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+            content: Text("Il faut avoir 18 ans pour s'inscrire")));
         return;
       }
       final redirect = await Provider.of<AuthViewModel>(context, listen: false)
@@ -78,7 +77,7 @@ class _InfoScreenState extends State<InfoScreen> {
                     validator: (value) => validateName(
                         value,
                         "le champ ne peut pas être vide",
-                        "le nom doit avoir au moins 3 caracteres"),
+                        "le nom doit avoir au moins 3 caracteres, pas de caractères spécieaux"),
                     onSaved: (value) => _lastname = value,
                   ),
                   const SizedBox(height: AppTheme.divider),
@@ -87,7 +86,7 @@ class _InfoScreenState extends State<InfoScreen> {
                     validator: (value) => validateName(
                         value,
                         "le champ ne peut pas être vide",
-                        "le prénom doit avoir au moins 3 caracteres"),
+                        "le prénom doit avoir au moins 3 caracteres, pas de caractères spécieaux"),
                     onSaved: (value) => _firstname = value,
                   ),
                   const SizedBox(height: AppTheme.divider * 2),
@@ -108,7 +107,7 @@ class _InfoScreenState extends State<InfoScreen> {
                                 context: context,
                                 initialDate: DateTime.now(),
                                 firstDate: DateTime(DateTime.now().year - 100),
-                                lastDate: DateTime(2050 ));
+                                lastDate: DateTime(2050));
                             if (datePick != null && datePick != birthDate) {
                               setState(() {
                                 birthDate = datePick;

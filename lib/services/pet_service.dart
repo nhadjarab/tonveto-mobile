@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:tonveto/models/appointment_model.dart';
+import 'package:tonveto/models/clinique_model.dart';
 import 'package:tonveto/models/pet_model.dart';
 
 import 'package:http/http.dart' as http;
@@ -129,6 +130,31 @@ class PetService {
       print(response.body);
       if (response.statusCode == 200) {
         return Pet.fromJson(result);
+      } else {
+        throw Failure.createFailure(response.statusCode, result);
+      }
+    } on Failure {
+      rethrow;
+    } catch (e) {
+      print(e);
+      throw Failure();
+    }
+  }
+
+  Future getClinic(String? clinicID, String? token, String? userID) async {
+    try {
+      final response = await http.get(
+        Uri.parse("$BASE_URL/clinic/$clinicID"),
+        headers: {
+          "Content-Type": "application/json",
+          'Authorization': 'Bearer $token',
+          "logged_in_id": "$userID"
+        },
+      );
+      final result = json.decode(response.body);
+      print(response.body);
+      if (response.statusCode == 200) {
+        return Clinique.fromJson(result["clinic"]);
       } else {
         throw Failure.createFailure(response.statusCode, result);
       }
