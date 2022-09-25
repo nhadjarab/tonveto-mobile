@@ -40,6 +40,8 @@ class PetDetailsScreen extends StatelessWidget {
         backgroundColor: AppTheme.mainColor,
         foregroundColor: Colors.black,
       ),
+      backgroundColor: AppTheme.secondaryColor,
+
       body: SafeArea(
         child: Consumer<AuthViewModel>(builder: (context, auth, _) {
           return auth.loading

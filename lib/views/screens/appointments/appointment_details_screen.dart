@@ -62,6 +62,7 @@ class _AppointmentDetailsScreenState extends State<AppointmentDetailsScreen> {
               )),
         ],
       ),
+      backgroundColor: AppTheme.secondaryColor,
       body: SafeArea(
         child: Consumer<AuthViewModel>(builder: (context, auth, _) {
           return SizedBox(

@@ -30,6 +30,7 @@ class MedicalRecordsScreen extends StatelessWidget {
         backgroundColor: AppTheme.mainColor,
         foregroundColor: Colors.black,
       ),
+      backgroundColor: AppTheme.secondaryColor,
       body: SafeArea(
         child: ListView.builder(
           itemCount: records.length,

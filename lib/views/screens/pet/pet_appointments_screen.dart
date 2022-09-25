@@ -50,6 +50,7 @@ class _PetAppointmentScreenState extends State<PetAppointmentScreen> {
         backgroundColor: AppTheme.mainColor,
         foregroundColor: Colors.black,
       ),
+
       body: Consumer<AuthViewModel>(builder: (context, auth, _) {
         return Container(
           padding: const EdgeInsets.only(top: 30),

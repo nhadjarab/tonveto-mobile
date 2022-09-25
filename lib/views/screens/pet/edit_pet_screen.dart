@@ -112,6 +112,8 @@ class _EditPetScreenState extends State<EditPetScreen> {
         backgroundColor: AppTheme.mainColor,
         foregroundColor: Colors.black,
       ),
+      backgroundColor: AppTheme.secondaryColor,
+
       body: SafeArea(
           child: SingleChildScrollView(
         child: Consumer<AuthViewModel>(

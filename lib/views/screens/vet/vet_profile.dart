@@ -51,7 +51,11 @@ class _VetProfileScreenState extends State<VetProfileScreen> {
       somme = somme + (vet?.comments?[i].rating ?? 0);
     }
 
-    rating = somme / (vet?.comments?.length ?? 1);
+    if(vet?.comments?.length != 0){
+      rating = somme / (vet?.comments?.length ?? 1);
+
+    }
+
     print(rating);
     return Scaffold(
       appBar: AppBar(
@@ -104,7 +108,7 @@ class _VetProfileScreenState extends State<VetProfileScreen> {
                             fit: BoxFit.contain),
                       ),
                     ),
-                   
+
                     Padding(
                       padding: EdgeInsets.only(left: 5.w, right: 5.w, top: 10),
                       child: CustomButton(
