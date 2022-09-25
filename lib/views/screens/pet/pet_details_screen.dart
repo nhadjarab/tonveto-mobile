@@ -159,7 +159,7 @@ class PetDetailsScreen extends StatelessWidget {
                                   color: AppTheme.mainColor,
                                 ),
                                 title: InfoWidget(
-                                  info: "${pet.crossbreed! ? "Oui" : "Non"}",
+                                  info: pet.crossbreed! ? "Oui" : "Non",
                                   infoType: 'Croiser',
                                 )),
                             ListTile(
@@ -168,7 +168,7 @@ class PetDetailsScreen extends StatelessWidget {
                                   color: AppTheme.mainColor,
                                 ),
                                 title: InfoWidget(
-                                  info: "${pet.sterilised! ? "Oui" : "Non"}",
+                                  info: pet.sterilised! ? "Oui" : "Non",
                                   infoType: 'Stérialsé',
                                 )),
                           ],

@@ -1,5 +1,6 @@
 const String BASE_URL = "https://vetolib-backend-production.up.railway.app";
-const String APP_NAME = "tonveto";
+const String AI_URL = "http://ai.tonveto.com";
+const String APP_NAME = "Tonveto";
 
 const types = ["Chien", "Chat", "Autre"];
 
@@ -129,3 +130,20 @@ const Map<String, List<String>> animalsTypes = {
   ],
   "Autre": ["Autre"]
 };
+
+const List<String> species = [
+  "dog",
+  "cat",
+  "poultry",
+  "livestock",
+  "cow",
+  "hose",
+  "goat",
+  "sheep",
+  "chicken",
+  "turkey",
+  "duck",
+  "cattle",
+  "pig",
+  "donkey"
+];

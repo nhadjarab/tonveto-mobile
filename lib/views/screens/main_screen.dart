@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
 import 'package:tonveto/views/screens/appointments/appointments_list_screen.dart';
+import 'package:tonveto/views/screens/chatbot/chatbot_screen.dart';
 import 'package:tonveto/views/screens/home.dart';
 import 'package:tonveto/views/screens/pet/pets_screen.dart';
 import 'package:tonveto/views/screens/profile/profile_screen.dart';
@@ -33,7 +34,6 @@ class _MainScreenState extends State<MainScreen> {
               icon: const Icon(Icons.home), title: const SizedBox()
               // label: textLocals.home,
               ),
-
           SalomonBottomBarItem(
               icon: SvgPicture.asset(
                 'assets/icons/pets.svg',
@@ -44,9 +44,10 @@ class _MainScreenState extends State<MainScreen> {
               // label: textLocals.search,
               ),
           SalomonBottomBarItem(
-              icon: const Icon(Icons.calendar_month_rounded), title: const SizedBox()
-            // label: textLocals.home,
-          ),
+              icon: const Icon(Icons.calendar_month_rounded),
+              title: const SizedBox()
+              // label: textLocals.home,
+              ),
           SalomonBottomBarItem(
               icon: SvgPicture.asset(
                 'assets/icons/chatbot.svg',
@@ -76,7 +77,7 @@ class _MainScreenState extends State<MainScreen> {
                 Home(),
                 PetsScreen(),
                 AppointmentsListScreen(),
-                AppointmentsListScreen(),
+                ChatBotScreen(),
                 ProfileScreen(),
               ],
             ),

@@ -65,22 +65,19 @@ class _PetAppointmentScreenState extends State<PetAppointmentScreen> {
                   itemBuilder: (context, index) {
                     Appointment appointment = widget.pet.appointments[index];
                     return ListTile(
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => AppointmentDetailsScreen(
+                                    appointment: appointment)));
+                      },
                       leading: const Icon(Icons.calendar_today),
                       title: Text(
                           "${appointment.vet?.last_name} ${appointment.vet?.first_name}"),
                       subtitle: Text(
                           "Date:  ${appointment.date?.day}/${appointment.date?.month}/${appointment.date?.year} - ${appointment.time}"),
-                      trailing: IconButton(
-                        icon: const Icon(Icons.keyboard_arrow_right),
-                        onPressed: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) =>
-                                      AppointmentDetailsScreen(
-                                          appointment: appointment)));
-                        },
-                      ),
+                      trailing: const Icon(Icons.keyboard_arrow_right),
                     );
                   },
                 ),

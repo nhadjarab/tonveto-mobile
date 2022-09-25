@@ -133,7 +133,6 @@ class _AppointmentDetailsScreenState extends State<AppointmentDetailsScreen> {
                       ],
                     ),
                   ),
-
                   Container(
                     margin: EdgeInsets.symmetric(
                       horizontal: 5.w,
@@ -152,7 +151,7 @@ class _AppointmentDetailsScreenState extends State<AppointmentDetailsScreen> {
                             leading: const Icon(Icons.location_on),
                             title: Text(clinic?.name ?? ""),
                             subtitle: Text(
-                                "${clinic?.address}, ${clinic?.city}, ${clinic?.country}"),
+                                "${clinic?.address}, ${clinic?.city}, ${clinic?.country} (${clinic?.zip_code})"),
                           ),
                   ),
                 ],
