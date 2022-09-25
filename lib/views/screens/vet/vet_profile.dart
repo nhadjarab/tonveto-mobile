@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 import 'package:tonveto/models/vet_model.dart';
 import 'package:tonveto/viewmodels/search_viewmodel.dart';
+import 'package:tonveto/views/screens/commentaires/commentaires_screen.dart';
 import 'package:tonveto/views/widgets/custom_button.dart';
 
 import '../../../config/theme.dart';
@@ -103,10 +104,21 @@ class _VetProfileScreenState extends State<VetProfileScreen> {
                             fit: BoxFit.contain),
                       ),
                     ),
+                   
                     Padding(
                       padding: EdgeInsets.only(left: 5.w, right: 5.w, top: 10),
                       child: CustomButton(
-                          text: 'Prendre un rendez vous', onPressed: () {}),
+                          color: Color(0xFFFFB200),
+                          text: 'Commentaires et évaluations',
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                       CommentairesScreen(
+                                          comments: vet?.comments ?? [])),
+                            );
+                          }),
                     ),
                     Container(
                       margin:
@@ -123,18 +135,21 @@ class _VetProfileScreenState extends State<VetProfileScreen> {
                           ]),
                       child: Column(
                         children: [
-                          Center(
-                            child: Padding(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 20, vertical: 10),
-                              child: AbsorbPointer(
-                                child: StarRating(
-                                  rating: (rating).toDouble(),
-                                  onRatingChanged: (rating) =>
-                                      setState(() => 5 + 5),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 20, vertical: 10),
+                                child: AbsorbPointer(
+                                  child: StarRating(
+                                    rating: (rating).toDouble(),
+                                    onRatingChanged: (rating) =>
+                                        setState(() => 5 + 5),
+                                  ),
                                 ),
                               ),
-                            ),
+                            ],
                           ),
                           ListTile(
                               leading: const Icon(
@@ -154,8 +169,6 @@ class _VetProfileScreenState extends State<VetProfileScreen> {
                                 info: '${widget.vet.last_name}',
                                 infoType: 'Prénom',
                               )),
-
-
                           ListTile(
                               leading: const Icon(
                                 Icons.phone,
@@ -165,7 +178,6 @@ class _VetProfileScreenState extends State<VetProfileScreen> {
                                 info: '${widget.vet.phone_number}',
                                 infoType: 'Tel',
                               )),
-
                         ],
                       ),
                     ),

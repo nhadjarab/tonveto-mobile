@@ -71,4 +71,30 @@ class SearchViewModel with ChangeNotifier {
       notifyListeners();
     }
   }
+
+  Future<List<String>?> getAvailableAppointments(
+      String? vetId,
+      String? user_id,
+      String? date,
+      String? token) async {
+    try {
+      final SearchService searchService = SearchService();
+      loading = true;
+      notifyListeners();
+      List<String> vet = await searchService.getAvailableAppointments(vetId,user_id,date, token);
+
+      loading = false;
+      notifyListeners();
+      return vet;
+
+    } on Failure catch (f) {
+      loading = false;
+      errorMessage = f.message;
+      notifyListeners();
+    } catch (e) {
+      loading = false;
+      print(e);
+      notifyListeners();
+    }
+  }
 }

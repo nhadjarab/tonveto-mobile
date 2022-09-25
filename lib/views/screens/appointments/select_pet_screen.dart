@@ -1,67 +1,72 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
-import 'package:tonveto/config/theme.dart';
-import 'package:tonveto/models/pet_model.dart';
-import 'package:tonveto/viewmodels/auth_viewmodel.dart';
-import 'package:tonveto/views/screens/pet/add_pet_screen.dart';
-import 'package:tonveto/views/screens/pet/pet_details_screen.dart';
+import 'package:tonveto/services/search_service.dart';
 
-class PetsScreen extends StatelessWidget {
-  static const route = "/pets";
+import '../../../config/theme.dart';
+import '../../../models/pet_model.dart';
+import '../../../viewmodels/auth_viewmodel.dart';
+import '../pet/add_pet_screen.dart';
 
-  const PetsScreen({Key? key}) : super(key: key);
+class SelectPetsScreen extends StatelessWidget {
+  final DateTime date;
+  final String user_id;
+  final String vet_id;
+  final String token;
+  final String time;
+  final String clinic_id;
+  static const route = "/select-pets-list";
 
-  Future<void> confirmDeleteDialog(context, String? petID) async {
-    return showDialog<void>(
-      context: context,
-      barrierDismissible: false, // user must tap button!
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text("Confimer la suppression, s'il vous plais"),
-          actions: <Widget>[
-            TextButton(
-              child: const Text(
-                'Confimer',
-                style: TextStyle(color: Colors.red),
-              ),
-              onPressed: () {
-                Provider.of<AuthViewModel>(context, listen: false)
-                    .deletePet(petID);
-                Navigator.pop(context);
-              },
-            ),
-            TextButton(
-              child: const Text('Annuler'),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
-        );
-      },
-    );
-  }
+  const SelectPetsScreen(
+      {required this.date,
+      required this.token,
+      required this.user_id,
+      required this.time,
+      required this.vet_id,
+      required this.clinic_id,
+      Key? key})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    Future<void> confirmDeleteDialog(
+      context,
+    ) async {
+      return showDialog<void>(
+        context: context,
+        barrierDismissible: false, // user must tap button!
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: const Text("Rendez vous réservé avec succés"),
+            actions: <Widget>[
+              TextButton(
+                child: const Text(
+                  'Ok',
+                  style: TextStyle(color: AppTheme.mainColor),
+                ),
+                onPressed: () {
+                  Navigator.pop(context);
+                  Navigator.pop(context);
+                  Navigator.pop(context);
+                  Navigator.pop(context);
+                },
+              ),
+            ],
+          );
+        },
+      );
+    }
+
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          "Mes animaux",
+          "Séléctionner un animal",
           style: TextStyle(color: Colors.white),
         ),
         centerTitle: true,
         elevation: 0,
         backgroundColor: AppTheme.mainColor,
-      ),
-      floatingActionButton: FloatingActionButton(
-
-        backgroundColor: AppTheme.mainColor,
-        child: const Icon(Icons.add,),
-        onPressed: () {
-          Navigator.pushNamed(context, AddPetScreen.route);
-        },
       ),
       backgroundColor: AppTheme.secondaryColor,
       body: Consumer<AuthViewModel>(
@@ -85,14 +90,25 @@ class PetsScreen extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       GestureDetector(
-                        onTap: () {
-                          Navigator.pushNamed(context, PetDetailsScreen.route,
-                              arguments: index);
+                        onTap: () async {
+                          SearchService searchService = SearchService();
+
+                          await searchService
+                              .addAppointment(
+                                  DateFormat('yyyy-MM-dd').format(date),
+                                  time,
+                                  pet.id,
+                                  vet_id,
+                                  user_id,
+                                  clinic_id,
+                                  token)
+                              .then((value) {
+                            confirmDeleteDialog(context);
+                          });
                         },
                         child: Row(
                           children: [
                             const CircleAvatar(
-
                               backgroundImage:
                                   AssetImage('assets/images/dog.png'),
                               backgroundColor: AppTheme.mainColor,
@@ -113,37 +129,33 @@ class PetsScreen extends StatelessWidget {
                                         color: AppTheme.mainColor),
                                   ),
                                   const SizedBox(height: AppTheme.divider),
-                                   RichText(
+                                  RichText(
                                       text: TextSpan(children: [
-                                        const TextSpan(
+                                    const TextSpan(
                                         text: 'Type : ',
                                         style: TextStyle(
                                           color: AppTheme.mainColor,
                                         )),
                                     TextSpan(
                                         text: '${pet.species}  /  ',
-                                        style: const TextStyle(color: Colors.black)),
-                                        const  TextSpan(
+                                        style: const TextStyle(
+                                            color: Colors.black)),
+                                    const TextSpan(
                                         text: 'Sex : ',
                                         style: TextStyle(
                                           color: AppTheme.mainColor,
                                         )),
                                     TextSpan(
                                         text: '${pet.sex}',
-                                        style:const TextStyle(color: Colors.black))
+                                        style: const TextStyle(
+                                            color: Colors.black))
                                   ])),
-
                                 ],
                               ),
                             ),
                           ],
                         ),
                       ),
-                      IconButton(
-                          onPressed: () {
-                            confirmDeleteDialog(context, pet.id);
-                          },
-                          icon: const Icon(Icons.delete, color: Colors.red)),
                     ],
                   ),
                 );

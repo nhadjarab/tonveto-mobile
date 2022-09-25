@@ -33,6 +33,7 @@ class _MainScreenState extends State<MainScreen> {
               icon: const Icon(Icons.home), title: const SizedBox()
               // label: textLocals.home,
               ),
+
           SalomonBottomBarItem(
               icon: SvgPicture.asset(
                 'assets/icons/pets.svg',
@@ -43,10 +44,14 @@ class _MainScreenState extends State<MainScreen> {
               // label: textLocals.search,
               ),
           SalomonBottomBarItem(
+              icon: const Icon(Icons.calendar_month_rounded), title: const SizedBox()
+            // label: textLocals.home,
+          ),
+          SalomonBottomBarItem(
               icon: SvgPicture.asset(
                 'assets/icons/chatbot.svg',
                 width: 25,
-                color: _currentIndex == 2 ? AppTheme.mainColor : Colors.grey,
+                color: _currentIndex == 3 ? AppTheme.mainColor : Colors.grey,
               ),
               title: const SizedBox()
               // label: textLocals.messages,
@@ -70,6 +75,7 @@ class _MainScreenState extends State<MainScreen> {
               children: const [
                 Home(),
                 PetsScreen(),
+                AppointmentsListScreen(),
                 AppointmentsListScreen(),
                 ProfileScreen(),
               ],

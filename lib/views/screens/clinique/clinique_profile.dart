@@ -3,6 +3,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 import 'package:tonveto/viewmodels/search_viewmodel.dart';
+import 'package:tonveto/views/screens/appointments/select_date_screen.dart';
 import 'package:tonveto/views/widgets/custom_button.dart';
 import '../../../config/theme.dart';
 import '../../../models/clinique_model.dart';
@@ -59,7 +60,7 @@ class _ClinicProfileScreenState extends State<ClinicProfileScreen> {
                       height: 30,
                     ),
                     Container(
-                      padding:const EdgeInsets.all(5),
+                      padding: const EdgeInsets.all(5),
                       height: 50.w,
                       decoration: BoxDecoration(
                         border: Border.all(
@@ -72,9 +73,23 @@ class _ClinicProfileScreenState extends State<ClinicProfileScreen> {
                             fit: BoxFit.contain),
                       ),
                     ),
+                    Padding(
+                      padding: EdgeInsets.only(left: 5.w, right: 5.w, top: 10),
+                      child: CustomButton(
+                          text: 'Prendre un rendez vous',
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => SelectDateScreen(
+                                        clinique: widget.clinique,
+                                      )),
+                            );
+                          }),
+                    ),
                     Container(
                       margin:
-                          EdgeInsets.symmetric(horizontal: 5.w, vertical: 40),
+                          EdgeInsets.symmetric(horizontal: 5.w, vertical: 20),
                       padding: const EdgeInsets.all(10),
                       decoration: BoxDecoration(
                           color: Colors.white,
@@ -95,7 +110,7 @@ class _ClinicProfileScreenState extends State<ClinicProfileScreen> {
                             title: RichText(
                               text: TextSpan(
                                 children: [
-                                  const  TextSpan(
+                                  const TextSpan(
                                     text: 'Nom:',
                                     style: TextStyle(
                                         fontSize: 17,
@@ -104,7 +119,7 @@ class _ClinicProfileScreenState extends State<ClinicProfileScreen> {
                                   ),
                                   TextSpan(
                                     text: " ${widget.clinique.name}",
-                                    style:const TextStyle(
+                                    style: const TextStyle(
                                         fontSize: 17, color: Colors.black),
                                   ),
                                 ],
@@ -119,7 +134,7 @@ class _ClinicProfileScreenState extends State<ClinicProfileScreen> {
                             title: RichText(
                               text: TextSpan(
                                 children: [
-                                 const  TextSpan(
+                                  const TextSpan(
                                     text: 'Adresse:',
                                     style: TextStyle(
                                         fontSize: 17,

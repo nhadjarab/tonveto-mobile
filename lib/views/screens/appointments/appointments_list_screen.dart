@@ -29,6 +29,7 @@ class _AppointmentsListScreenState extends State<AppointmentsListScreen> {
             ],
           ),
         ),
+        backgroundColor: AppTheme.secondaryColor,
         body: Consumer<AuthViewModel>(
           builder: (context, auth, _) => TabBarView(
             children: [

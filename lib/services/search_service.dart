@@ -63,11 +63,8 @@ class SearchService {
     }
   }
 
-
   Future<Veterinaire> getVet(
-      String? vetId,
-      String? user_id,
-      String? token) async {
+      String? vetId, String? user_id, String? token) async {
     try {
       String url = "$BASE_URL/vet/$vetId";
 
@@ -87,6 +84,97 @@ class SearchService {
       } else {
         throw Failure.createFailure(response.statusCode, result);
       }
+    } on Failure {
+      rethrow;
+    } catch (e) {
+      print(e);
+      throw Failure();
+    }
+  }
+
+  Future<List<String>> getAvailableAppointments(
+      String? vetId, String? user_id, String? date, String? token) async {
+    try {
+      String url = "$BASE_URL/vetAvailableAppointments/$vetId";
+
+      final response = await http.get(
+        Uri.parse(url),
+        headers: {
+          "Content-Type": "application/json",
+          "logged_in_id": user_id!,
+          "date": date!,
+          'Authorization': 'Bearer $token',
+        },
+      );
+      final result = json.decode(response.body);
+      if (response.statusCode == 200) {
+        return List<String>.from(result?.map((x) => x) ?? []);
+      } else {
+        throw Failure.createFailure(response.statusCode, result);
+      }
+    } on Failure {
+      rethrow;
+    } catch (e) {
+      print(e);
+      throw Failure();
+    }
+  }
+
+  Future<String> addAppointment(
+    String? date,
+    String? time,
+    String? pet_id,
+    String? vet_id,
+    String? user_id,
+    String? clinic_id,
+    String? token,
+  ) async {
+    try {
+      print(date);
+      final response = await http.post(Uri.parse("$BASE_URL/appointment"),
+          headers: {
+            "Content-Type": "application/json",
+            'Authorization': 'Bearer $token',
+          },
+          body: json.encode({
+            "date": date,
+            "time": time,
+            "pet_id": pet_id,
+            "vet_id": vet_id,
+            "user_id": user_id,
+            "clinic_id": clinic_id,
+          }));
+      final result = json.decode(response.body);
+      print(response.body);
+      if(response.statusCode !=200 && response.statusCode != 201){
+        return response.body;
+      }
+      return '';
+    } on Failure {
+      rethrow;
+    } catch (e) {
+      print(e);
+      throw Failure();
+    }
+  }
+
+  Future cancelAppointment(
+      String? appointment_id,
+      String? user_id,
+      String? token,
+      ) async {
+    try {
+      final response = await http.delete(Uri.parse("$BASE_URL/appointment/$appointment_id"),
+          headers: {
+            "Content-Type": "application/json",
+            'Authorization': 'Bearer $token',
+            'user_id': user_id!,
+          },
+         );
+      final result = json.decode(response.body);
+      print(response.body);
+
+
     } on Failure {
       rethrow;
     } catch (e) {

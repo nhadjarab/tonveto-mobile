@@ -6,6 +6,7 @@ class CustomButton extends StatelessWidget {
   final String text;
   final Function()? onPressed;
   final Color? color;
+  final Color? textColor;
   final double? width;
    double padding ;
    CustomButton(
@@ -14,6 +15,7 @@ class CustomButton extends StatelessWidget {
       required this.onPressed,
         this.padding= 14.0 ,
       this.color,
+      this.textColor,
       this.width})
       : super(key: key);
 
@@ -35,7 +37,7 @@ class CustomButton extends StatelessWidget {
           elevation: 0.0,
           primary: color ?? AppTheme.mainColor,
         ),
-        child: Text(text),
+        child: Text(text,style:TextStyle(color: textColor),),
       ),
     );
   }

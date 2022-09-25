@@ -25,7 +25,7 @@ class Appointment {
 
   factory Appointment.fromJson(Map<String, dynamic> json) => Appointment(
       id: json["id"],
-      date: DateTime.parse(json["date"]),
+      date:DateTime.tryParse(json["date"] ?? DateTime.now().toString()) ,
       time: json["time"],
       petId: json["pet_id"],
       vetId: json["vet_id"],

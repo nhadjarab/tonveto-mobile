@@ -11,6 +11,7 @@ import 'package:tonveto/views/widgets/custom_progress.dart';
 
 class AppointmentDetailsScreen extends StatefulWidget {
   final Appointment appointment;
+
   const AppointmentDetailsScreen({Key? key, required this.appointment})
       : super(key: key);
 
@@ -131,6 +132,7 @@ class _AppointmentDetailsScreenState extends State<AppointmentDetailsScreen> {
                       ],
                     ),
                   ),
+
                   Container(
                     margin: EdgeInsets.symmetric(
                       horizontal: 5.w,
