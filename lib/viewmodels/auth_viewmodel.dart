@@ -19,6 +19,7 @@ class AuthViewModel with ChangeNotifier {
   User? user;
 
   String? errorMessage;
+
   void clearError() {
     errorMessage = null;
     notifyListeners();
@@ -322,4 +323,6 @@ class AuthViewModel with ChangeNotifier {
       print(e);
     }
   }
+
+
 }

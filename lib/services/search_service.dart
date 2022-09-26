@@ -1,6 +1,8 @@
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
+import 'package:intl/intl.dart';
+import 'package:tonveto/models/appointment_model.dart';
 import 'package:tonveto/models/vet_model.dart';
 
 import '../config/consts.dart';
@@ -120,7 +122,7 @@ class SearchService {
     }
   }
 
-  Future<String> addAppointment(
+  Future<bool> addAppointment(
     String? date,
     String? time,
     String? pet_id,
@@ -146,10 +148,52 @@ class SearchService {
           }));
       final result = json.decode(response.body);
       print(response.body);
-      if(response.statusCode !=200 && response.statusCode != 201){
-        return response.body;
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        return true;
       }
-      return '';
+      return false;
+    } on Failure {
+      rethrow;
+    } catch (e) {
+      print(e);
+      throw Failure();
+    }
+  }
+
+  Future<bool> updateAppointment(
+    Appointment? appointment,
+    String? token,
+  ) async {
+    try {
+      print(appointment?.id);
+      print(DateFormat('yyyy-MM-dd')
+          .format(appointment?.date ?? DateTime.now()));
+      print(appointment?.time);
+      print(appointment?.petId);
+      print(appointment?.vetId);
+      print(appointment?.userId);
+      print(appointment?.clinicId);
+      final response =
+          await http.put(Uri.parse("$BASE_URL/appointment/${appointment?.id}"),
+              headers: {
+                "Content-Type": "application/json",
+                'Authorization': 'Bearer $token',
+              },
+              body: json.encode({
+                "date": DateFormat('yyyy-MM-dd')
+                    .format(appointment?.date ?? DateTime.now()),
+                "time": appointment?.time,
+                "pet_id": appointment?.petId,
+                "vet_id": appointment?.vetId,
+                "user_id": appointment?.userId,
+                "clinic_id": appointment?.clinicId,
+              }));
+      final result = json.decode(response.body);
+      print(response.body);
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        return true;
+      }
+      return false;
     } on Failure {
       rethrow;
     } catch (e) {
@@ -159,22 +203,21 @@ class SearchService {
   }
 
   Future cancelAppointment(
-      String? appointment_id,
-      String? user_id,
-      String? token,
-      ) async {
+    String? appointment_id,
+    String? user_id,
+    String? token,
+  ) async {
     try {
-      final response = await http.delete(Uri.parse("$BASE_URL/appointment/$appointment_id"),
-          headers: {
-            "Content-Type": "application/json",
-            'Authorization': 'Bearer $token',
-            'user_id': user_id!,
-          },
-         );
+      final response = await http.delete(
+        Uri.parse("$BASE_URL/appointment/$appointment_id"),
+        headers: {
+          "Content-Type": "application/json",
+          'Authorization': 'Bearer $token',
+          'user_id': user_id!,
+        },
+      );
       final result = json.decode(response.body);
       print(response.body);
-
-
     } on Failure {
       rethrow;
     } catch (e) {

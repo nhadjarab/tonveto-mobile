@@ -73,20 +73,7 @@ class _ClinicProfileScreenState extends State<ClinicProfileScreen> {
                             fit: BoxFit.contain),
                       ),
                     ),
-                    Padding(
-                      padding: EdgeInsets.only(left: 5.w, right: 5.w, top: 10),
-                      child: CustomButton(
-                          text: 'Prendre un rendez vous',
-                          onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => SelectDateScreen(
-                                        clinique: widget.clinique,
-                                      )),
-                            );
-                          }),
-                    ),
+
                     Container(
                       margin:
                           EdgeInsets.symmetric(horizontal: 5.w, vertical: 20),

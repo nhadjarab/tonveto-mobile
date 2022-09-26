@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 import 'package:tonveto/models/vet_model.dart';
 import 'package:tonveto/viewmodels/search_viewmodel.dart';
+import 'package:tonveto/views/screens/appointments/select_clinique_screen.dart';
 import 'package:tonveto/views/screens/commentaires/commentaires_screen.dart';
 import 'package:tonveto/views/widgets/custom_button.dart';
 
@@ -51,9 +52,8 @@ class _VetProfileScreenState extends State<VetProfileScreen> {
       somme = somme + (vet?.comments?[i].rating ?? 0);
     }
 
-    if(vet?.comments?.length != 0){
+    if (vet?.comments?.length != 0) {
       rating = somme / (vet?.comments?.length ?? 1);
-
     }
 
     print(rating);
@@ -108,6 +108,35 @@ class _VetProfileScreenState extends State<VetProfileScreen> {
                             fit: BoxFit.contain),
                       ),
                     ),
+                    Padding(
+                      padding: EdgeInsets.only(left: 5.w, right: 5.w, top: 10),
+                      child: CustomButton(
+                          text: 'Prendre un rendez vous',
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => SelectCliniqueScreen(
+                                        clinics: vet?.clinics ?? [],
+                                        vet_id: vet?.id ?? '',
+                                      )),
+                            );
+                          }),
+                    ),
+                    /*  Padding(
+                      padding: EdgeInsets.only(left: 5.w, right: 5.w, top: 10),
+                      child: CustomButton(
+                          text: 'Prendre un rendez vous',
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => SelectDateScreen(
+                                    clinique: widget.clinique,
+                                  )),
+                            );
+                          }),
+                    ),*/
 
                     Padding(
                       padding: EdgeInsets.only(left: 5.w, right: 5.w, top: 10),
@@ -118,9 +147,8 @@ class _VetProfileScreenState extends State<VetProfileScreen> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) =>
-                                       CommentairesScreen(
-                                          comments: vet?.comments ?? [])),
+                                  builder: (context) => CommentairesScreen(
+                                      comments: vet?.comments ?? [])),
                             );
                           }),
                     ),

@@ -5,8 +5,10 @@ import 'package:tonveto/config/theme.dart';
 import 'package:tonveto/models/appointment_model.dart';
 import 'package:tonveto/models/clinique_model.dart';
 import 'package:tonveto/models/vet_model.dart';
+import 'package:tonveto/services/search_service.dart';
 import 'package:tonveto/viewmodels/auth_viewmodel.dart';
 import 'package:tonveto/views/screens/appointments/medical_records_screen.dart';
+import 'package:tonveto/views/screens/appointments/select_date_screen.dart';
 import 'package:tonveto/views/widgets/custom_progress.dart';
 
 class AppointmentDetailsScreen extends StatefulWidget {
@@ -34,6 +36,52 @@ class _AppointmentDetailsScreenState extends State<AppointmentDetailsScreen> {
 
   @override
   Widget build(BuildContext context) {
+
+
+    Future<void> confirmDeleteDialog(context) async {
+      return showDialog<void>(
+        context: context,
+        barrierDismissible: false, // user must tap button!
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: const Text("Confimer l\'annulation du rendez vous, s'il vous plais"),
+            actions: <Widget>[
+              TextButton(
+                child: const Text(
+                  'Confimer',
+                  style: TextStyle(color: Colors.red),
+                ),
+                onPressed: () async {
+                  SearchService searchService = SearchService();
+                  await searchService.cancelAppointment(
+                      widget.appointment.id,
+                      Provider.of<AuthViewModel>(context,
+                          listen: false)
+                          .user
+                          ?.id ??
+                          '',
+                      Provider.of<AuthViewModel>(context,
+                          listen: false)
+                          .token);
+                  await Provider.of<AuthViewModel>(context, listen: false).getUserData();
+
+                  Navigator.pop(context);
+                  Navigator.pop(context);
+                },
+              ),
+              TextButton(
+                child: const Text('Annuler'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          );
+        },
+      );
+    }
+
+
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -55,7 +103,17 @@ class _AppointmentDetailsScreenState extends State<AppointmentDetailsScreen> {
         foregroundColor: Colors.black,
         actions: [
           IconButton(
-              onPressed: () {},
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => SelectDateScreen(
+                        clinique_id: widget.appointment.clinicId ?? '',
+                        vet_id: widget.appointment.vetId ?? '',
+                        appointment: widget.appointment,
+                      )),
+                );
+              },
               icon: const Icon(
                 Icons.edit,
                 color: Colors.white,
@@ -82,6 +140,12 @@ class _AppointmentDetailsScreenState extends State<AppointmentDetailsScreen> {
                     ]),
                     child: Column(
                       children: [
+                        if (widget.appointment.pet != null)
+                          ListTile(
+                            leading: const Icon(Icons.pets),
+                            title: Text(
+                                "Animal: ${widget.appointment.pet?.name} , ${widget.appointment.pet?.species}"),
+                          ),
                         ListTile(
                           leading: const Icon(Icons.person),
                           title: Text(
@@ -128,6 +192,31 @@ class _AppointmentDetailsScreenState extends State<AppointmentDetailsScreen> {
                                     widget.appointment.medicalReports ?? [],
                               ),
                             ));
+                          },
+                        ),
+                      ],
+                    ),
+                  ),
+                  Container(
+                    margin: EdgeInsets.only(left: 5.w, right: 5.w, bottom: 20),
+                    padding: const EdgeInsets.all(10),
+                    decoration:
+                        const BoxDecoration(color: Colors.white, boxShadow: [
+                      BoxShadow(
+                        color: Colors.black12,
+                        blurRadius: 4.0,
+                      )
+                    ]),
+                    child: Column(
+                      children: [
+                        ListTile(
+                          leading: const Icon(
+                            Icons.delete,
+                          ),
+                          title: const Text("Annuler le rendez vous"),
+                          trailing: const Icon(Icons.keyboard_arrow_right),
+                          onTap: () async {
+                          confirmDeleteDialog(context);
                           },
                         ),
                       ],

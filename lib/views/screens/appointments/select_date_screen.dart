@@ -1,13 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:tonveto/config/theme.dart';
+import 'package:tonveto/models/appointment_model.dart';
 import 'package:tonveto/models/clinique_model.dart';
 import 'package:tonveto/views/screens/appointments/available_appointments_screen.dart';
 import 'package:tonveto/views/widgets/custom_button.dart';
 
 class SelectDateScreen extends StatefulWidget {
-   SelectDateScreen({required this.clinique,Key? key}) : super(key: key);
+  SelectDateScreen(
+      {required this.clinique_id,
+      required this.vet_id,
+      this.appointment,
+      Key? key})
+      : super(key: key);
 
-  Clinique clinique;
+  String clinique_id;
+  String vet_id;
+  Appointment? appointment;
 
   @override
   _SelectDateScreenState createState() => _SelectDateScreenState();
@@ -20,6 +28,11 @@ class _SelectDateScreenState extends State<SelectDateScreen> {
 
   @override
   Widget build(BuildContext context) {
+    if (widget.appointment != null) {
+      birthDateInString =
+          "${widget.appointment?.date?.day}/${widget.appointment?.date?.month}/${widget.appointment?.date?.year}";
+    }
+
     return SafeArea(
         child: Scaffold(
       backgroundColor: AppTheme.secondaryColor,
@@ -57,7 +70,9 @@ class _SelectDateScreenState extends State<SelectDateScreen> {
               onTap: () async {
                 final datePick = await showDatePicker(
                     context: context,
-                    initialDate: DateTime.now(),
+                    initialDate: widget.appointment != null
+                        ? widget.appointment?.date ?? DateTime.now()
+                        : DateTime.now(),
                     firstDate: DateTime.now(),
                     lastDate: DateTime(2050));
                 if (datePick != null && datePick != birthDate) {
@@ -110,17 +125,40 @@ class _SelectDateScreenState extends State<SelectDateScreen> {
             if (isDateSelected)
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
-                children: [CustomButton(text: 'Suivant', onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => AvailableAppointmentsScreen(
-                          clinique: widget.clinique,
-                          date: birthDate!,
+                children: [
+                  CustomButton(
+                      text: 'Suivant',
+                      onPressed: () {
+                        if (widget.appointment != null) {
+                          setState(() {
+                            widget.appointment?.date = birthDate;
+                          });
 
-                        )),
-                  );
-                })],
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    AvailableAppointmentsScreen(
+                                      clinique_id: widget.clinique_id,
+                                      date: birthDate!,
+                                      vet_id: widget.vet_id,
+                                      appointment: widget.appointment,
+                                    )),
+                          );
+                        } else {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    AvailableAppointmentsScreen(
+                                      clinique_id: widget.clinique_id,
+                                      date: birthDate!,
+                                      vet_id: widget.vet_id,
+                                    )),
+                          );
+                        }
+                      })
+                ],
               )
           ],
         ),

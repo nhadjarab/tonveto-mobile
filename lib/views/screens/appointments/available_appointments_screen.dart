@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
-import 'package:tonveto/models/clinique_model.dart';
+import 'package:tonveto/models/appointment_model.dart';
+import 'package:tonveto/services/search_service.dart';
 import 'package:tonveto/viewmodels/search_viewmodel.dart';
 import 'package:tonveto/views/screens/appointments/select_pet_screen.dart';
 import 'package:tonveto/views/widgets/custom_progress.dart';
@@ -10,11 +12,17 @@ import '../../../viewmodels/auth_viewmodel.dart';
 
 class AvailableAppointmentsScreen extends StatefulWidget {
   AvailableAppointmentsScreen(
-      {required this.clinique, required this.date, Key? key})
+      {required this.clinique_id,
+      required this.date,
+      required this.vet_id,
+      this.appointment,
+      Key? key})
       : super(key: key);
 
-  Clinique clinique;
+  String clinique_id;
   DateTime date;
+  String vet_id;
+  Appointment? appointment;
 
   @override
   _AvailableAppointmentsScreenState createState() =>
@@ -30,9 +38,9 @@ class _AvailableAppointmentsScreenState
   getAvailableAppointments() async {
     appointments = await Provider.of<SearchViewModel>(context, listen: false)
             .getAvailableAppointments(
-          widget.clinique.owner_id,
+          widget.vet_id,
           Provider.of<AuthViewModel>(context, listen: false).user?.id,
-          "${widget.date.year}-${widget.date.month}-${widget.date.day}",
+          DateFormat('yyyy-MM-dd').format(widget.date),
           Provider.of<AuthViewModel>(context, listen: false).token,
         ) ??
         [];
@@ -88,28 +96,46 @@ class _AvailableAppointmentsScreenState
                         itemCount: matin.length,
                         itemBuilder: (BuildContext ctx, index) {
                           return GestureDetector(
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => SelectPetsScreen(
-                                        date:
-                                            widget.date,
-                                        token: Provider.of<AuthViewModel>(
-                                                    context,
-                                                    listen: false)
-                                                .token ??
-                                            '',
-                                        user_id: Provider.of<AuthViewModel>(
-                                                    context,
-                                                    listen: false)
-                                                .user
-                                                ?.id ??
-                                            '',
-                                        vet_id: widget.clinique.owner_id ?? '',
-                                        time: matin[index],
-                                        clinic_id: widget.clinique.id ?? '')),
-                              );
+                            onTap: () async {
+                              if (widget.appointment != null) {
+                                setState(() {
+                                  widget.appointment?.time = matin[index];
+                                });
+                                SearchService searchService = SearchService();
+                                await searchService.updateAppointment(
+                                    widget.appointment,
+                                    Provider.of<AuthViewModel>(context,
+                                            listen: false)
+                                        .token);
+                                if (!mounted) return;
+                                Navigator.pop(context);
+                                Navigator.pop(context);
+
+                                await Provider.of<AuthViewModel>(context,
+                                        listen: false)
+                                    .getUserData();
+                              } else {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => SelectPetsScreen(
+                                          date: widget.date,
+                                          token: Provider.of<AuthViewModel>(
+                                                      context,
+                                                      listen: false)
+                                                  .token ??
+                                              '',
+                                          user_id: Provider.of<AuthViewModel>(
+                                                      context,
+                                                      listen: false)
+                                                  .user
+                                                  ?.id ??
+                                              '',
+                                          vet_id: widget.vet_id,
+                                          time: matin[index],
+                                          clinic_id: widget.clinique_id ?? '')),
+                                );
+                              }
                             },
                             child: Container(
                               margin: const EdgeInsets.symmetric(
@@ -138,27 +164,45 @@ class _AvailableAppointmentsScreenState
                         itemCount: apresMidi.length,
                         itemBuilder: (BuildContext ctx, index) {
                           return GestureDetector(
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => SelectPetsScreen(
-                                        date: widget.date,
-                                        token: Provider.of<AuthViewModel>(
-                                                    context,
-                                                    listen: false)
-                                                .token ??
-                                            '',
-                                        user_id: Provider.of<AuthViewModel>(
-                                                    context,
-                                                    listen: false)
-                                                .user
-                                                ?.id ??
-                                            '',
-                                        vet_id: widget.clinique.owner_id ?? '',
-                                        time: apresMidi[index],
-                                        clinic_id: widget.clinique.id ?? '')),
-                              );
+                            onTap: () async {
+                              if (widget.appointment != null) {
+                                setState(() {
+                                  widget.appointment?.time = apresMidi[index];
+                                });
+                                SearchService searchService = SearchService();
+                                await searchService.updateAppointment(
+                                    widget.appointment,
+                                    Provider.of<AuthViewModel>(context,
+                                            listen: false)
+                                        .token);
+                                Navigator.pop(context);
+                                Navigator.pop(context);
+
+                                await Provider.of<AuthViewModel>(context,
+                                        listen: false)
+                                    .getUserData();
+                              } else {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => SelectPetsScreen(
+                                          date: widget.date,
+                                          token: Provider.of<AuthViewModel>(
+                                                      context,
+                                                      listen: false)
+                                                  .token ??
+                                              '',
+                                          user_id: Provider.of<AuthViewModel>(
+                                                      context,
+                                                      listen: false)
+                                                  .user
+                                                  ?.id ??
+                                              '',
+                                          vet_id: widget.vet_id,
+                                          time: apresMidi[index],
+                                          clinic_id: widget.clinique_id ?? '')),
+                                );
+                              }
                             },
                             child: Container(
                               margin: const EdgeInsets.symmetric(

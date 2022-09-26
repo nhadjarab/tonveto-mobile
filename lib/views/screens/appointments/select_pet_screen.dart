@@ -45,11 +45,14 @@ class SelectPetsScreen extends StatelessWidget {
                   'Ok',
                   style: TextStyle(color: AppTheme.mainColor),
                 ),
-                onPressed: () {
+                onPressed: () async {
+
                   Navigator.pop(context);
                   Navigator.pop(context);
                   Navigator.pop(context);
                   Navigator.pop(context);
+                  Navigator.pop(context);
+                  await Provider.of<AuthViewModel>(context, listen: false).getUserData();
                 },
               ),
             ],

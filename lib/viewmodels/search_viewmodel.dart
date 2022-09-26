@@ -5,7 +5,6 @@ import '../models/search_model.dart';
 import '../models/vet_model.dart';
 import '../services/search_service.dart';
 
-
 class SearchViewModel with ChangeNotifier {
   bool loading = false;
 
@@ -18,8 +17,7 @@ class SearchViewModel with ChangeNotifier {
     notifyListeners();
   }
 
-  Future search(
-      String? city,
+  Future search(String? city,
       String? zip_code,
       String? vet_name,
       String? clinic_name,
@@ -31,11 +29,17 @@ class SearchViewModel with ChangeNotifier {
       final SearchService searchService = SearchService();
       loading = true;
       notifyListeners();
-       searchResult = await searchService.search(city, zip_code, vet_name,
-          clinic_name, specialty, address, country, token);
-       loading = false;
+      searchResult = await searchService.search(
+          city,
+          zip_code,
+          vet_name,
+          clinic_name,
+          specialty,
+          address,
+          country,
+          token);
+      loading = false;
       notifyListeners();
-
     } on Failure catch (f) {
       loading = false;
       errorMessage = f.message;
@@ -47,20 +51,17 @@ class SearchViewModel with ChangeNotifier {
     }
   }
 
-  Future<Veterinaire?> getVet(
-      String? vetId,
-      String? user_id,
+  Future<Veterinaire?> getVet(String? vetId, String? user_id,
       String? token) async {
     try {
       final SearchService searchService = SearchService();
       loading = true;
       notifyListeners();
-      Veterinaire vet = await searchService.getVet(vetId,user_id, token);
+      Veterinaire vet = await searchService.getVet(vetId, user_id, token);
 
       loading = false;
       notifyListeners();
       return vet;
-
     } on Failure catch (f) {
       loading = false;
       errorMessage = f.message;
@@ -72,21 +73,18 @@ class SearchViewModel with ChangeNotifier {
     }
   }
 
-  Future<List<String>?> getAvailableAppointments(
-      String? vetId,
-      String? user_id,
-      String? date,
-      String? token) async {
+  Future<List<String>?> getAvailableAppointments(String? vetId, String? user_id,
+      String? date, String? token) async {
     try {
       final SearchService searchService = SearchService();
       loading = true;
       notifyListeners();
-      List<String> vet = await searchService.getAvailableAppointments(vetId,user_id,date, token);
+      List<String> vet = await searchService.getAvailableAppointments(
+          vetId, user_id, date, token);
 
       loading = false;
       notifyListeners();
       return vet;
-
     } on Failure catch (f) {
       loading = false;
       errorMessage = f.message;
@@ -97,4 +95,5 @@ class SearchViewModel with ChangeNotifier {
       notifyListeners();
     }
   }
+
 }

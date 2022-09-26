@@ -1,4 +1,5 @@
 import 'package:tonveto/models/medical_report_model.dart';
+import 'package:tonveto/models/pet_model.dart';
 import 'package:tonveto/models/vet_model.dart';
 
 class Appointment {
@@ -11,7 +12,8 @@ class Appointment {
       this.userId,
       this.vet,
       this.medicalReports,
-      this.clinicId});
+      this.clinicId,
+      this.pet});
 
   String? id;
   DateTime? date;
@@ -20,17 +22,19 @@ class Appointment {
   String? vetId;
   String? userId;
   Veterinaire? vet;
+  Pet? pet;
   List<MedicalReport>? medicalReports;
   String? clinicId;
 
   factory Appointment.fromJson(Map<String, dynamic> json) => Appointment(
       id: json["id"],
-      date:DateTime.tryParse(json["date"] ?? DateTime.now().toString()) ,
+      date: DateTime.tryParse(json["date"] ?? DateTime.now().toString()),
       time: json["time"],
       petId: json["pet_id"],
       vetId: json["vet_id"],
       userId: json["user_id"],
       vet: Veterinaire.fromJson(json["vet"]),
+      pet:  json["pet"] != null ? Pet.fromJson(json["pet"]) : null ,
       medicalReports: List<MedicalReport>.from(json["MedicalReport"]
               ?.map((record) => MedicalReport.fromJson(record)) ??
           []),
