@@ -23,7 +23,7 @@ class AuthViewModel with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> login(String? email, String? password) async {
+  Future<bool> login(String? email, String? password) async {
     final AuthService authService = AuthService();
 
     loading = true;
@@ -31,6 +31,15 @@ class AuthViewModel with ChangeNotifier {
 
     try {
       final data = await authService.login(email, password);
+
+      final bool? profileColmpleted = data["userProfile"].profile_complete;
+      print(profileColmpleted);
+
+      if (profileColmpleted != null && !profileColmpleted) {
+        loading = false;
+        notifyListeners();
+        return true;
+      }
 
       user = data["userProfile"];
       token = data["jwtToken"];
@@ -42,13 +51,16 @@ class AuthViewModel with ChangeNotifier {
       final LocalStorageService localStorageService = LocalStorageService();
       localStorageService.saveUser(token, user?.id);
       notifyListeners();
+      return false;
     } on Failure catch (f) {
       loading = false;
       errorMessage = f.message;
       notifyListeners();
+      return false;
     } catch (e) {
       loading = false;
       notifyListeners();
+      return false;
     }
   }
 

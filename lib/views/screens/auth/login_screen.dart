@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:tonveto/views/screens/auth/info_screen.dart';
 
 import '../../../config/theme.dart';
 import '../../../utils/validators.dart';
@@ -8,7 +9,6 @@ import '../../widgets/custom_button.dart';
 import '../../widgets/custom_fields.dart';
 import '../../widgets/custom_progress.dart';
 import '../../widgets/show_message.dart';
-
 
 class LoginScreen extends StatefulWidget {
   static const route = "/login";
@@ -34,7 +34,8 @@ class _LoginScreenState extends State<LoginScreen> {
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
 
-      await Provider.of<AuthViewModel>(context, listen: false).login(
+      final userComplete =
+          await Provider.of<AuthViewModel>(context, listen: false).login(
         _email,
         _password,
       );
@@ -168,7 +169,7 @@ class MyClipper extends CustomClipper<Path> {
     var path = Path();
     path.lineTo(0, size.height - 80);
     path.quadraticBezierTo(
-        size.width / 2, size.height, size.width, size.height-80 );
+        size.width / 2, size.height, size.width, size.height - 80);
     path.lineTo(size.width, 0);
     path.close();
     return path;
