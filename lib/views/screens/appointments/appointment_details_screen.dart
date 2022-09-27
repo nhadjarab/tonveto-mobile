@@ -280,6 +280,7 @@ class _AppointmentDetailsScreenState extends State<AppointmentDetailsScreen> {
                       ],
                     ),
                   ),
+                  if (widget.appointment.date!.isBefore(DateTime.now()))
                   Container(
                     margin: EdgeInsets.only(left: 5.w, right: 5.w, bottom: 20),
                     padding: const EdgeInsets.all(10),

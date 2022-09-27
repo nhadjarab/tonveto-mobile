@@ -79,14 +79,14 @@ class AuthViewModel with ChangeNotifier {
   }
 
   Future<bool> registerInfo(String? firstName, String? lastName, String? phone,
-      DateTime? birthday, String? email, String? password) async {
+      DateTime? birthday, String? email, String? password,bool? is_subscribed) async {
     final AuthService authService = AuthService();
     try {
       loading = true;
       notifyListeners();
       // register user info
       await authService.registerInfo(
-          firstName, lastName, phone, birthday, email, password);
+          firstName, lastName, phone, birthday, email, password,is_subscribed);
       // login the current user with the email and password
       await login(email, password);
       return true;

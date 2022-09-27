@@ -43,15 +43,13 @@ class _InfoScreenState extends State<InfoScreen> {
       }
       bool redirect = false;
 
-
-      await Provider.of<PayementViewModel>(context,
-          listen: false)
-          .makePayment(amount: '2', currency: 'USD')
+      await Provider.of<PayementViewModel>(context, listen: false)
+          .makePayment(amount: '2', currency: 'EUR')
           .then((value) async {
         if (value) {
           redirect = await Provider.of<AuthViewModel>(context, listen: false)
-              .registerInfo(
-              _firstname, _lastname, _phone, birthDate, _email, _password);
+              .registerInfo(_firstname, _lastname, _phone, birthDate, _email,
+                  _password, true);
         } else {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
@@ -64,8 +62,6 @@ class _InfoScreenState extends State<InfoScreen> {
           );
         }
       });
-
-
 
       if (redirect) {
         Navigator.pop(context);

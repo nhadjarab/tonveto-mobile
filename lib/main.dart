@@ -10,7 +10,6 @@ void main() async {
   Stripe.publishableKey = STRIPE_PUBLIC_KEY;
   await SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
-    DeviceOrientation.portraitDown,
   ]);
   runApp(const App());
 }

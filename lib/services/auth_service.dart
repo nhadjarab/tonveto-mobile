@@ -7,7 +7,6 @@ import '../config/consts.dart';
 import '../models/failure_model.dart';
 import '../models/user_model.dart';
 
-
 class AuthService {
   Future login(String? email, String? password) async {
     try {
@@ -65,12 +64,14 @@ class AuthService {
   }
 
   Future<String?> registerInfo(
-      String? firstName,
-      String? lastName,
-      String? phone,
-      DateTime? birthday,
-      String? email,
-      String? password) async {
+    String? firstName,
+    String? lastName,
+    String? phone,
+    DateTime? birthday,
+    String? email,
+    String? password,
+    bool? is_subscribed,
+  ) async {
     String? token;
     User? user;
     try {
@@ -91,7 +92,8 @@ class AuthService {
             "last_name": lastName,
             "email": email,
             "birth_date": birthday.toString(),
-            "phone_number": phone
+            "phone_number": phone,
+            "is_subscribed": is_subscribed
           }));
       final result = json.decode(response.body);
       print(response.body);

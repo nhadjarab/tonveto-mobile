@@ -101,7 +101,7 @@ class SelectPetsScreen extends StatelessWidget {
                           SearchService searchService = SearchService();
                           await Provider.of<PayementViewModel>(context,
                                   listen: false)
-                              .makePayment(amount: price, currency: 'USD')
+                              .makePayment(amount: price, currency: 'EUR')
                               .then((value) async {
                             if (value) {
                               await searchService
