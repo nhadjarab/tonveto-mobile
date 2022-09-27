@@ -94,6 +94,36 @@ class SearchService {
     }
   }
 
+  Future<List<Veterinaire>> getClinicVet(
+      String? clinicId, String? user_id, String? token) async {
+    try {
+      String url = "$BASE_URL/clinic/$clinicId";
+
+      final response = await http.get(
+        Uri.parse(url),
+        headers: {
+          "Content-Type": "application/json",
+          "logged_in_id": user_id!,
+          'Authorization': 'Bearer $token',
+        },
+      );
+      final result = json.decode(response.body);
+      print(response.body);
+      if (response.statusCode == 200) {
+        return List<Veterinaire>.from(result['clinic']['vets']
+                ?.map((record) => Veterinaire.fromJson(record['vet'])) ??
+            []);
+      } else {
+        throw Failure.createFailure(response.statusCode, result);
+      }
+    } on Failure {
+      rethrow;
+    } catch (e) {
+      print(e);
+      throw Failure();
+    }
+  }
+
   Future<List<String>> getAvailableAppointments(
       String? vetId, String? user_id, String? date, String? token) async {
     try {
@@ -122,7 +152,7 @@ class SearchService {
     }
   }
 
-  Future<bool> addAppointment(
+  Future<String?> addAppointment(
     String? date,
     String? time,
     String? pet_id,
@@ -149,6 +179,38 @@ class SearchService {
       final result = json.decode(response.body);
       print(response.body);
       if (response.statusCode == 200 || response.statusCode == 201) {
+        return result['id'];
+      }
+    } on Failure {
+      rethrow;
+    } catch (e) {
+      print(e);
+      throw Failure();
+    }
+  }
+
+  Future<bool> addVetComment(
+    String? text,
+    String? vet_id,
+    String? rating,
+    String? user_id,
+    String? token,
+  ) async {
+    try {
+      final response = await http.post(Uri.parse("$BASE_URL/commentVet"),
+          headers: {
+            "Content-Type": "application/json",
+            "logged_in_id": "$user_id",
+            'Authorization': 'Bearer $token',
+          },
+          body: json.encode({
+            "text": text,
+            "vet_id": vet_id,
+            "rating": rating,
+          }));
+      final result = json.decode(response.body);
+      print(response.body);
+      if (response.statusCode == 200 || response.statusCode == 201) {
         return true;
       }
       return false;
@@ -166,13 +228,9 @@ class SearchService {
   ) async {
     try {
       print(appointment?.id);
-      print(DateFormat('yyyy-MM-dd')
-          .format(appointment?.date ?? DateTime.now()));
-      print(appointment?.time);
-      print(appointment?.petId);
-      print(appointment?.vetId);
-      print(appointment?.userId);
-      print(appointment?.clinicId);
+      print(
+          DateFormat('yyyy-MM-dd').format(appointment?.date ?? DateTime.now()));
+
       final response =
           await http.put(Uri.parse("$BASE_URL/appointment/${appointment?.id}"),
               headers: {

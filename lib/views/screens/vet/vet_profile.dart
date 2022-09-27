@@ -5,6 +5,7 @@ import 'package:sizer/sizer.dart';
 import 'package:tonveto/models/vet_model.dart';
 import 'package:tonveto/viewmodels/search_viewmodel.dart';
 import 'package:tonveto/views/screens/appointments/select_clinique_screen.dart';
+import 'package:tonveto/views/screens/appointments/select_specialty.dart';
 import 'package:tonveto/views/screens/commentaires/commentaires_screen.dart';
 import 'package:tonveto/views/widgets/custom_button.dart';
 
@@ -116,7 +117,8 @@ class _VetProfileScreenState extends State<VetProfileScreen> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => SelectCliniqueScreen(
+                                  builder: (context) => SelectSpecialty(
+                                    specialties: widget.vet.specialities ?? [],
                                         clinics: vet?.clinics ?? [],
                                         vet_id: vet?.id ?? '',
                                       )),

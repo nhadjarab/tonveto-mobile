@@ -7,6 +7,7 @@ import 'package:tonveto/services/search_service.dart';
 import '../../../config/theme.dart';
 import '../../../models/pet_model.dart';
 import '../../../viewmodels/auth_viewmodel.dart';
+import '../../../viewmodels/payement_viewmodel.dart';
 import '../pet/add_pet_screen.dart';
 
 class SelectPetsScreen extends StatelessWidget {
@@ -16,6 +17,7 @@ class SelectPetsScreen extends StatelessWidget {
   final String token;
   final String time;
   final String clinic_id;
+  final String price;
   static const route = "/select-pets-list";
 
   const SelectPetsScreen(
@@ -24,6 +26,7 @@ class SelectPetsScreen extends StatelessWidget {
       required this.user_id,
       required this.time,
       required this.vet_id,
+      required this.price,
       required this.clinic_id,
       Key? key})
       : super(key: key);
@@ -46,13 +49,14 @@ class SelectPetsScreen extends StatelessWidget {
                   style: TextStyle(color: AppTheme.mainColor),
                 ),
                 onPressed: () async {
-
                   Navigator.pop(context);
                   Navigator.pop(context);
                   Navigator.pop(context);
                   Navigator.pop(context);
                   Navigator.pop(context);
-                  await Provider.of<AuthViewModel>(context, listen: false).getUserData();
+                  Navigator.pop(context);
+                  await Provider.of<AuthViewModel>(context, listen: false)
+                      .getUserData();
                 },
               ),
             ],
@@ -95,18 +99,38 @@ class SelectPetsScreen extends StatelessWidget {
                       GestureDetector(
                         onTap: () async {
                           SearchService searchService = SearchService();
-
-                          await searchService
-                              .addAppointment(
-                                  DateFormat('yyyy-MM-dd').format(date),
-                                  time,
-                                  pet.id,
-                                  vet_id,
-                                  user_id,
-                                  clinic_id,
-                                  token)
-                              .then((value) {
-                            confirmDeleteDialog(context);
+                          await Provider.of<PayementViewModel>(context,
+                                  listen: false)
+                              .makePayment(amount: price, currency: 'USD')
+                              .then((value) async {
+                            if (value) {
+                              await searchService
+                                  .addAppointment(
+                                      DateFormat('yyyy-MM-dd').format(date),
+                                      time,
+                                      pet.id,
+                                      vet_id,
+                                      user_id,
+                                      clinic_id,
+                                      token)
+                                  .then((value) async {
+                                Provider.of<PayementViewModel>(context,
+                                        listen: false)
+                                    .addPayement(
+                                        price, vet_id, value, user_id, token);
+                                confirmDeleteDialog(context);
+                              });
+                            } else {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  content: Text(
+                                    'Payement non éffectué',
+                                    style: TextStyle(color: Colors.white),
+                                  ),
+                                  backgroundColor: AppTheme.errorColor,
+                                ),
+                              );
+                            }
                           });
                         },
                         child: Row(

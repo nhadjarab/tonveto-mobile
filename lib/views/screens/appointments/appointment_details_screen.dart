@@ -7,9 +7,13 @@ import 'package:tonveto/models/clinique_model.dart';
 import 'package:tonveto/models/vet_model.dart';
 import 'package:tonveto/services/search_service.dart';
 import 'package:tonveto/viewmodels/auth_viewmodel.dart';
+import 'package:tonveto/viewmodels/search_viewmodel.dart';
 import 'package:tonveto/views/screens/appointments/medical_records_screen.dart';
 import 'package:tonveto/views/screens/appointments/select_date_screen.dart';
 import 'package:tonveto/views/widgets/custom_progress.dart';
+
+import '../../widgets/custom_fields.dart';
+import '../../widgets/widgets.dart';
 
 class AppointmentDetailsScreen extends StatefulWidget {
   final Appointment appointment;
@@ -24,6 +28,8 @@ class AppointmentDetailsScreen extends StatefulWidget {
 
 class _AppointmentDetailsScreenState extends State<AppointmentDetailsScreen> {
   Clinique? clinic;
+  String? text;
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   @override
   void initState() {
@@ -32,19 +38,20 @@ class _AppointmentDetailsScreenState extends State<AppointmentDetailsScreen> {
       clinic = await Provider.of<AuthViewModel>(context, listen: false)
           .getClinic(widget.appointment.clinicId);
     });
+
+
   }
 
   @override
   Widget build(BuildContext context) {
-
-
     Future<void> confirmDeleteDialog(context) async {
       return showDialog<void>(
         context: context,
         barrierDismissible: false, // user must tap button!
         builder: (BuildContext context) {
           return AlertDialog(
-            title: const Text("Confimer l\'annulation du rendez vous, s'il vous plais"),
+            title: const Text(
+                "Confimer l\'annulation du rendez vous, s'il vous plais"),
             actions: <Widget>[
               TextButton(
                 child: const Text(
@@ -55,15 +62,13 @@ class _AppointmentDetailsScreenState extends State<AppointmentDetailsScreen> {
                   SearchService searchService = SearchService();
                   await searchService.cancelAppointment(
                       widget.appointment.id,
-                      Provider.of<AuthViewModel>(context,
-                          listen: false)
-                          .user
-                          ?.id ??
+                      Provider.of<AuthViewModel>(context, listen: false)
+                              .user
+                              ?.id ??
                           '',
-                      Provider.of<AuthViewModel>(context,
-                          listen: false)
-                          .token);
-                  await Provider.of<AuthViewModel>(context, listen: false).getUserData();
+                      Provider.of<AuthViewModel>(context, listen: false).token);
+                  await Provider.of<AuthViewModel>(context, listen: false)
+                      .getUserData();
 
                   Navigator.pop(context);
                   Navigator.pop(context);
@@ -81,6 +86,83 @@ class _AppointmentDetailsScreenState extends State<AppointmentDetailsScreen> {
       );
     }
 
+    Future<void> evaluationDialog(context) async {
+      return showDialog<void>(
+        context: context,
+        barrierDismissible: false, // user must tap button!
+        builder: (BuildContext context) {
+          return Consumer<SearchViewModel>(builder: (context, value, _) {
+            return AlertDialog(
+              title: Form(
+                key: _formKey,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        StarRating(
+                          rating: (value.rating ?? 0).toDouble(),
+                          onRatingChanged: (rating) =>
+                              setState(() => value.setRating(rating ?? 0)),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: AppTheme.divider),
+                    CustomTextField(
+                      labelText: "Commentaire",
+                      keyboardType: TextInputType.emailAddress,
+                      validator: (value) {
+                        if (value == null || value == '') {
+                          return 'le champ ne peut pas être vide';
+                        }
+                      },
+                      onSaved: (value) => text = value,
+                    ),
+                  ],
+                ),
+              ),
+              actions: <Widget>[
+                TextButton(
+                  child: const Text(
+                    'Confimer',
+                    style: TextStyle(color: Colors.red),
+                  ),
+                  onPressed: () async {
+                    if (_formKey.currentState!.validate()) {
+                      _formKey.currentState!.save();
+                      SearchService searchService = SearchService();
+
+                      await searchService.addVetComment(
+                          text,
+                          widget.appointment.vetId,
+                          (value.rating ?? 0).toString(),
+                          Provider.of<AuthViewModel>(context, listen: false)
+                              .user
+                              ?.id,
+                          Provider.of<AuthViewModel>(context, listen: false)
+                              .token);
+                      value.setRating(0);
+                      await Provider.of<AuthViewModel>(context, listen: false)
+                          .getUserData();
+
+                      Navigator.pop(context);
+                      Navigator.pop(context);
+                    }
+                  },
+                ),
+                TextButton(
+                  child: const Text('Annuler'),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+              ],
+            );
+          });
+        },
+      );
+    }
 
     return Scaffold(
       appBar: AppBar(
@@ -108,10 +190,11 @@ class _AppointmentDetailsScreenState extends State<AppointmentDetailsScreen> {
                   context,
                   MaterialPageRoute(
                       builder: (context) => SelectDateScreen(
-                        clinique_id: widget.appointment.clinicId ?? '',
-                        vet_id: widget.appointment.vetId ?? '',
-                        appointment: widget.appointment,
-                      )),
+                            clinique_id: widget.appointment.clinicId ?? '',
+                            vet_id: widget.appointment.vetId ?? '',
+                            price: '',
+                            appointment: widget.appointment,
+                          )),
                 );
               },
               icon: const Icon(
@@ -216,12 +299,40 @@ class _AppointmentDetailsScreenState extends State<AppointmentDetailsScreen> {
                           title: const Text("Annuler le rendez vous"),
                           trailing: const Icon(Icons.keyboard_arrow_right),
                           onTap: () async {
-                          confirmDeleteDialog(context);
+                            confirmDeleteDialog(context);
                           },
                         ),
                       ],
                     ),
                   ),
+                  if (widget.appointment.date!.isBefore(DateTime.now()))
+                      Container(
+                        margin:
+                            EdgeInsets.only(left: 5.w, right: 5.w, bottom: 20),
+                        padding: const EdgeInsets.all(10),
+                        decoration: const BoxDecoration(
+                            color: Colors.white,
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black12,
+                                blurRadius: 4.0,
+                              )
+                            ]),
+                        child: Column(
+                          children: [
+                            ListTile(
+                              leading: const Icon(
+                                Icons.star,
+                              ),
+                              title: const Text("Evaluer le vétérinaire"),
+                              trailing: const Icon(Icons.keyboard_arrow_right),
+                              onTap: () async {
+                                evaluationDialog(context);
+                              },
+                            ),
+                          ],
+                        ),
+                      ),
                   Container(
                     margin: EdgeInsets.symmetric(
                       horizontal: 5.w,

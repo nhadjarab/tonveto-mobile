@@ -5,6 +5,7 @@ import 'package:sizer/sizer.dart';
 import '../../../config/theme.dart';
 import '../../../utils/validators.dart';
 import '../../../viewmodels/auth_viewmodel.dart';
+import '../../../viewmodels/payement_viewmodel.dart';
 import '../../widgets/custom_button.dart';
 import '../../widgets/custom_fields.dart';
 import '../../widgets/custom_progress.dart';
@@ -40,9 +41,32 @@ class _InfoScreenState extends State<InfoScreen> {
             content: Text("Il faut avoir 18 ans pour s'inscrire")));
         return;
       }
-      final redirect = await Provider.of<AuthViewModel>(context, listen: false)
-          .registerInfo(
+      bool redirect = false;
+
+
+      await Provider.of<PayementViewModel>(context,
+          listen: false)
+          .makePayment(amount: '2', currency: 'USD')
+          .then((value) async {
+        if (value) {
+          redirect = await Provider.of<AuthViewModel>(context, listen: false)
+              .registerInfo(
               _firstname, _lastname, _phone, birthDate, _email, _password);
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text(
+                'Payement non éffectué',
+                style: TextStyle(color: Colors.white),
+              ),
+              backgroundColor: AppTheme.errorColor,
+            ),
+          );
+        }
+      });
+
+
+
       if (redirect) {
         Navigator.pop(context);
       }

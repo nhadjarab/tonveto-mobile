@@ -5,8 +5,11 @@ import 'package:sizer/sizer.dart';
 import 'package:tonveto/viewmodels/search_viewmodel.dart';
 import 'package:tonveto/views/screens/appointments/select_date_screen.dart';
 import 'package:tonveto/views/widgets/custom_button.dart';
+import 'package:tonveto/views/widgets/widgets.dart';
 import '../../../config/theme.dart';
 import '../../../models/clinique_model.dart';
+import '../../../models/vet_model.dart';
+import '../../../viewmodels/auth_viewmodel.dart';
 import '../../widgets/custom_progress.dart';
 
 class ClinicProfileScreen extends StatefulWidget {
@@ -20,6 +23,24 @@ class ClinicProfileScreen extends StatefulWidget {
 }
 
 class _ClinicProfileScreenState extends State<ClinicProfileScreen> {
+  List<Veterinaire>? vets;
+  getVets() async {
+    vets = await Provider.of<SearchViewModel>(context, listen: false).getClinicVets(
+      widget.clinique.id,
+      Provider.of<AuthViewModel>(context, listen: false).user?.id,
+      Provider.of<AuthViewModel>(context, listen: false).token,
+    );
+  }
+
+  @override
+  void initState() {
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      getVets();
+    });
+
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -188,6 +209,45 @@ class _ClinicProfileScreenState extends State<ClinicProfileScreen> {
                             ),
                           ),
                         ],
+                      ),
+                    ),
+                    vets?.length == 0
+                        ? const SizedBox()
+                        : const Padding(
+                      padding: EdgeInsets.only(left: 30.0),
+                      child: Text(
+                        'Vétérinaires',
+                        style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                    vets?.length == 0
+                        ? const SizedBox()
+                        : Container(
+                      margin: EdgeInsets.symmetric(
+                        horizontal: 5.w,
+                      ),
+                      padding: const EdgeInsets.symmetric(horizontal: 10),
+                      height: 50.h,
+                      child: vets?.length == 0
+                          ? const Center(
+                        child: Text(
+                          'Aucune Vétérinaire trouvée',
+                          style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold),
+                        ),
+                      )
+                          : ListView.builder(
+                        itemCount: vets?.length,
+                        itemBuilder: (context, index) {
+                          print(vets?[index].first_name);
+                          return VetCard(
+                              veterinaire: vets?[index]);
+                        },
                       ),
                     ),
                   ],

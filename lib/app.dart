@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 import 'package:tonveto/viewmodels/auth_viewmodel.dart';
+import 'package:tonveto/viewmodels/payement_viewmodel.dart';
 import 'package:tonveto/viewmodels/search_viewmodel.dart';
 import 'package:tonveto/views/routes/routes.dart';
 
@@ -18,6 +19,8 @@ class App extends StatelessWidget {
               create: (context) => AuthViewModel()),
           ChangeNotifierProvider<SearchViewModel>(
               create: (context) => SearchViewModel()),
+          ChangeNotifierProvider<PayementViewModel>(
+              create: (context) => PayementViewModel()),
         ],
         child: MaterialApp(
           debugShowCheckedModeBanner: false,

@@ -9,12 +9,14 @@ class SelectDateScreen extends StatefulWidget {
   SelectDateScreen(
       {required this.clinique_id,
       required this.vet_id,
+      required this.price,
       this.appointment,
       Key? key})
       : super(key: key);
 
   String clinique_id;
   String vet_id;
+  String price;
   Appointment? appointment;
 
   @override
@@ -27,11 +29,19 @@ class _SelectDateScreenState extends State<SelectDateScreen> {
   bool isDateSelected = false;
 
   @override
-  Widget build(BuildContext context) {
+  void initState() {
     if (widget.appointment != null) {
+      birthDate = widget.appointment?.date;
+      isDateSelected = true;
       birthDateInString =
-          "${widget.appointment?.date?.day}/${widget.appointment?.date?.month}/${widget.appointment?.date?.year}";
+      "${widget.appointment?.date?.day}/${widget.appointment?.date?.month}/${widget.appointment?.date?.year}";
     }
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+
 
     return SafeArea(
         child: Scaffold(
@@ -143,6 +153,8 @@ class _SelectDateScreenState extends State<SelectDateScreen> {
                                       date: birthDate!,
                                       vet_id: widget.vet_id,
                                       appointment: widget.appointment,
+                                      price: '',
+
                                     )),
                           );
                         } else {
@@ -154,6 +166,7 @@ class _SelectDateScreenState extends State<SelectDateScreen> {
                                       clinique_id: widget.clinique_id,
                                       date: birthDate!,
                                       vet_id: widget.vet_id,
+                                      price:widget.price,
                                     )),
                           );
                         }

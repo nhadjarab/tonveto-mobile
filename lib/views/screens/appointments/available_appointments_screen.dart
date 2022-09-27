@@ -15,6 +15,7 @@ class AvailableAppointmentsScreen extends StatefulWidget {
       {required this.clinique_id,
       required this.date,
       required this.vet_id,
+      required this.price,
       this.appointment,
       Key? key})
       : super(key: key);
@@ -22,6 +23,7 @@ class AvailableAppointmentsScreen extends StatefulWidget {
   String clinique_id;
   DateTime date;
   String vet_id;
+  String price;
   Appointment? appointment;
 
   @override
@@ -132,6 +134,7 @@ class _AvailableAppointmentsScreenState
                                                   ?.id ??
                                               '',
                                           vet_id: widget.vet_id,
+                                          price: widget.price,
                                           time: matin[index],
                                           clinic_id: widget.clinique_id ?? '')),
                                 );
@@ -199,6 +202,7 @@ class _AvailableAppointmentsScreenState
                                                   ?.id ??
                                               '',
                                           vet_id: widget.vet_id,
+                                          price: widget.price,
                                           time: apresMidi[index],
                                           clinic_id: widget.clinique_id ?? '')),
                                 );

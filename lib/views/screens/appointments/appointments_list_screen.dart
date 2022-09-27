@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:tonveto/config/theme.dart';
 import 'package:tonveto/viewmodels/auth_viewmodel.dart';
+import 'package:tonveto/viewmodels/payement_viewmodel.dart';
 import 'package:tonveto/views/screens/appointments/appointment_details_screen.dart';
 
 class AppointmentsListScreen extends StatefulWidget {
@@ -21,6 +22,7 @@ class _AppointmentsListScreenState extends State<AppointmentsListScreen> {
           backgroundColor: AppTheme.mainColor,
           title: const Text("Rendez-vous"),
           centerTitle: true,
+
           bottom: const TabBar(
             indicatorColor: Colors.white,
             tabs: [
