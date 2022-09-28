@@ -5,7 +5,8 @@ import 'package:tonveto/viewmodels/auth_viewmodel.dart';
 import 'package:tonveto/viewmodels/payement_viewmodel.dart';
 import 'package:tonveto/viewmodels/search_viewmodel.dart';
 import 'package:tonveto/views/routes/routes.dart';
-
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 class App extends StatelessWidget {
   const App({Key? key}) : super(key: key);
