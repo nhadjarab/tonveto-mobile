@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:tonveto/views/screens/auth/auth_screen.dart';
-import 'package:tonveto/views/screens/home.dart';
 import 'package:tonveto/views/screens/main_screen.dart';
 
 import '../utils/internet_check.dart';

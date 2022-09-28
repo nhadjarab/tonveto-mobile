@@ -44,15 +44,26 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       bool redirect = await Provider.of<AuthViewModel>(context, listen: false)
           .updateUserData(_firstname, _lastname, _phone, birthDate, _email);
       if (redirect) {
+        if (!mounted) return;
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text(
+              'Informations modifiées avec succès',
+              style: TextStyle(color: Colors.white),
+            ),
+            backgroundColor: AppTheme.successColor,
+          ),
+        );
         Navigator.pop(context);
       }
+
     }
   }
 
   @override
   void initState() {
     birthDate =
-        Provider.of<AuthViewModel>(context, listen: false).user?.birth_date;
+        Provider.of<AuthViewModel>(context, listen: false).user?.birthDate;
     birthDateInString =
         "${birthDate?.day}/${birthDate?.month}/${birthDate?.year}";
 
@@ -102,7 +113,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
                         CustomTextField(
-                          initialValue: auth.user?.last_name ?? "",
+                          initialValue: auth.user?.lastName ?? "",
                           labelText: "Nom",
                           keyboardType: TextInputType.name,
                           validator: (value) => validateName(
@@ -112,7 +123,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                           onSaved: (value) => _lastname = value,
                         ),
                         CustomTextField(
-                          initialValue: auth.user?.first_name ?? "",
+                          initialValue: auth.user?.firstName ?? "",
                           labelText: "Prénom",
                           keyboardType: TextInputType.name,
                           validator: (value) => validateName(
@@ -156,10 +167,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                                     setState(() {
                                       birthDate = datePick;
                                       isDateSelected = true;
-                                      print(birthDateInString);
                                       birthDateInString =
                                           "${birthDate?.day}/${birthDate?.month}/${birthDate?.year}"; // 08/14/2019
-                                      print(birthDateInString);
                                     });
                                   }
                                 }),
@@ -172,7 +181,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                         ),
                         const SizedBox(height: AppTheme.divider),
                         CustomTextField(
-                          initialValue: auth.user?.phone_number,
+                          initialValue: auth.user?.phoneNumber,
                           labelText: "Tel*",
                           keyboardType: TextInputType.number,
                           validator: (value) =>

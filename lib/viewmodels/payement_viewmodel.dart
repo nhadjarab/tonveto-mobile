@@ -10,13 +10,12 @@ import '../models/failure_model.dart';
 class PayementViewModel extends ChangeNotifier  {
 Map<String, dynamic>? paymentIntentData;
 
-String? payement_id;
+String? payementId;
 
 Future<bool> makePayment(
     {required String amount, required String currency}) async {
   try {
     paymentIntentData = await createPaymentIntent(amount, currency);
-    print(paymentIntentData);
     if (paymentIntentData != null) {
       await Stripe.instance.initPaymentSheet(
           paymentSheetParameters: SetupPaymentSheetParameters(
@@ -30,13 +29,12 @@ Future<bool> makePayment(
             customerEphemeralKeySecret: paymentIntentData!['ephemeralKey'],
           ));
       bool res = await displayPaymentSheet();
-      payement_id = paymentIntentData!['id'];
+      payementId = paymentIntentData!['id'];
       notifyListeners();
       return res;
     }
     return false;
-  } catch (e, s) {
-    print('exception:$e$s');
+  } catch (e) {
     return false;
   }
 }
@@ -53,13 +51,10 @@ Future<bool> displayPaymentSheet() async {
         duration: const Duration(seconds: 2));*/
   } on Exception catch (e) {
     if (e is StripeException) {
-      print("Error from Stripe: ${e.error.localizedMessage}");
     } else {
-      print("Unforeseen error: ${e}");
     }
     return false;
   } catch (e) {
-    print("exception:$e");
     return false;
   }
 }
@@ -76,12 +71,11 @@ createPaymentIntent(String amount, String currency) async {
         Uri.parse('https://api.stripe.com/v1/payment_intents'),
         body: body,
         headers: {
-          'Authorization': 'Bearer $STRIPE_SECRET_KEY',
+          'Authorization': 'Bearer $stripeSecretKey',
           'Content-Type': 'application/x-www-form-urlencoded'
         });
     return jsonDecode(response.body);
   } catch (err) {
-    print('err charging user: ${err.toString()}');
   }
 }
 
@@ -92,27 +86,25 @@ calculateAmount(String amount) {
 
   Future<bool> addPayement(
       String? amount,
-      String? vet_id,
-      String? appointment_id,
-      String? user_id,
+      String? vetId,
+      String? appointmentId,
+      String? userId,
 
       String? token,
       ) async {
     try {
-      final response = await http.post(Uri.parse("$BASE_URL/payment"),
+      final response = await http.post(Uri.parse("$baseUrl/payment"),
           headers: {
             "Content-Type": "application/json",
             'Authorization': 'Bearer $token',
           },
           body: json.encode({
             "amount": amount,
-            "vet_id": vet_id,
-            "appointment_id": appointment_id,
-            "user_id": user_id,
-            "payment_id": payement_id,
+            "vet_id": vetId,
+            "appointment_id": appointmentId,
+            "user_id": userId,
+            "payment_id": payementId,
           }));
-      final result = json.decode(response.body);
-      print(response.body);
       if (response.statusCode == 200 || response.statusCode == 201) {
         return true;
       }
@@ -120,7 +112,6 @@ calculateAmount(String amount) {
     } on Failure {
       rethrow;
     } catch (e) {
-      print(e);
       throw Failure();
     }
   }

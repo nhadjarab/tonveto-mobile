@@ -17,7 +17,7 @@ class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
 
   @override
-  _HomeState createState() => _HomeState();
+  State<Home> createState() => _HomeState();
 }
 
 class _HomeState extends State<Home> {
@@ -76,14 +76,14 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
-    Future<void> _dialogBuilder(BuildContext context) {
+    Future<void> dialogBuilder(BuildContext context) {
       return showDialog<void>(
         context: context,
         builder: (BuildContext context) {
           return Padding(
-            padding: EdgeInsets.only(left: 10.0, right: 10.0),
+            padding: const EdgeInsets.only(left: 10.0, right: 10.0),
             child: Dialog(
-              insetPadding: EdgeInsets.all(10),
+              insetPadding: const EdgeInsets.all(10),
               //insetPadding: EdgeInsets.zero,
               // contentPadding: EdgeInsets.all(0.0),
               child: SingleChildScrollView(
@@ -173,255 +173,269 @@ class _HomeState extends State<Home> {
     return SafeArea(
       child: Scaffold(
         backgroundColor: AppTheme.mainColor,
-        body: Provider.of<SearchViewModel>(
+        body: Provider.of<AuthViewModel>(
           context,
         ).loading
             ? const CustomProgress()
-            : SingleChildScrollView(
-                child: Container(
-                  color: AppTheme.mainColor,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Container(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 20, vertical: 20),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: const [
-
-                                 Text(
-                                  'Page principale',
+            : Provider.of<SearchViewModel>(
+                context,
+              ).loading
+                ? const CustomProgress()
+                : SingleChildScrollView(
+                    child: Container(
+                      color: AppTheme.mainColor,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Container(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 20, vertical: 20),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: const [
+                                    Text(
+                                      'Page principale',
+                                      style: TextStyle(
+                                          fontSize: 22,
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                  ],
+                                ),
+                                const SizedBox(
+                                  height: 30,
+                                ),
+                                const Text(
+                                  'Trouver un bon vétérinaire',
                                   style: TextStyle(
-                                      fontSize: 22,
+                                    fontSize: 20,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                                const Text(
+                                  'n\'a jamais été si facile',
+                                  style: TextStyle(
+                                      fontSize: 28,
                                       color: Colors.white,
                                       fontWeight: FontWeight.bold),
                                 ),
-
-                              ],
-                            ),
-                            const SizedBox(
-                              height: 30,
-                            ),
-                            const Text(
-                              'Trouver un bon vétérinaire',
-                              style: TextStyle(
-                                fontSize: 20,
-                                color: Colors.white,
-                              ),
-                            ),
-                            const Text(
-                              'n\'a jamais été si facile',
-                              style: TextStyle(
-                                  fontSize: 28,
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold),
-                            ),
-                            const SizedBox(
-                              height: 30,
-                            ),
-                            GestureDetector(
-                              onTap: () {
-                                _dialogBuilder(context);
-                              },
-                              child: Container(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 10, vertical: 10),
-                                decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    borderRadius: BorderRadius.circular(10)),
-                                child: Row(
-                                  children: [
-                                    const Icon(Icons.search),
-                                    const SizedBox(
-                                      width: 15,
-                                    ),
-                                    const Text(
-                                      'Filtrer',
-                                      style: TextStyle(
-                                          color: Colors.grey, fontSize: 18),
-                                    ),
-                                    const Spacer(),
-                                    Container(
-                                      margin: const EdgeInsets.all(5),
-                                      padding: const EdgeInsets.all(5),
-                                      decoration: BoxDecoration(
-                                          color: AppTheme.mainColor,
-                                          borderRadius:
-                                              BorderRadius.circular(10)),
-                                      child: SvgPicture.asset(
-                                        "assets/icons/parametre.svg",
-                                        color: Colors.white,
-                                        height: 20,
-                                      ),
-                                    ),
-                                  ],
+                                const SizedBox(
+                                  height: 30,
                                 ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      const SizedBox(
-                        height: 30,
-                      ),
-                      Container(
-                        width: double.infinity,
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 20, vertical: 20),
-                        decoration: const BoxDecoration(
-                            color: AppTheme.secondaryColor,
-                            borderRadius: BorderRadius.only(
-                                topLeft: Radius.circular(40),
-                                topRight: Radius.circular(40))),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const Text(
-                              'Spécialités',
-                              style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.bold),
-                            ),
-                            const SizedBox(
-                              height: 20,
-                            ),
-                            SizedBox(
-                              height: 35,
-                              child: ListView.builder(
-                                scrollDirection: Axis.horizontal,
-                                itemCount: specialities.length,
-                                itemBuilder: (context, index) {
-                                  return GestureDetector(
-                                    onTap: () async {
-                                      setState(() {
-                                        if (selectedIndex == index) {
-                                          selectedIndex = 100;
-                                          speciality.text = '';
-                                        } else {
-                                          selectedIndex = index;
-                                          speciality.text = specialities[index];
-                                        }
-                                      });
-                                      await search();
-                                    },
-                                    child: Container(
-                                      alignment: Alignment.center,
-                                      margin: const EdgeInsets.symmetric(
-                                          horizontal: 5),
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 5, vertical: 5),
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(10),
-                                        border: Border.all(
-                                          color: AppTheme.mainColor,
+                                GestureDetector(
+                                  onTap: () {
+                                    dialogBuilder(context);
+                                  },
+                                  child: Container(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 10, vertical: 10),
+                                    decoration: BoxDecoration(
+                                        color: Colors.white,
+                                        borderRadius:
+                                            BorderRadius.circular(10)),
+                                    child: Row(
+                                      children: [
+                                        const Icon(Icons.search),
+                                        const SizedBox(
+                                          width: 15,
                                         ),
-                                        color: selectedIndex == index
-                                            ? AppTheme.mainColor
-                                            : Colors.white,
-                                      ),
-                                      child: Text(
-                                        specialities[index],
-                                        style: TextStyle(
-                                            color: selectedIndex != index
-                                                ? AppTheme.mainColor
-                                                : Colors.white,
-                                            fontSize: 15),
-                                      ),
-                                    ),
-                                  );
-                                },
-                              ),
-                            ),
-                            const SizedBox(
-                              height: 20,
-                            ),
-                            Consumer<SearchViewModel>(
-                                builder: (context, value, child) {
-                              return DefaultTabController(
-                                length: 2,
-                                child: Column(
-                                  children: [
-                                    const TabBar(
-                                      labelColor: AppTheme.mainColor,
-                                      unselectedLabelColor: Colors.grey,
-                                      tabs: [
-                                        Tab(
-                                          text: "Vétérinaires",
+                                        const Text(
+                                          'Filtrer',
+                                          style: TextStyle(
+                                              color: Colors.grey, fontSize: 18),
                                         ),
-                                        Tab(
-                                          text: "Cliniques",
+                                        const Spacer(),
+                                        Container(
+                                          margin: const EdgeInsets.all(5),
+                                          padding: const EdgeInsets.all(5),
+                                          decoration: BoxDecoration(
+                                              color: AppTheme.mainColor,
+                                              borderRadius:
+                                                  BorderRadius.circular(10)),
+                                          child: SvgPicture.asset(
+                                            "assets/icons/parametre.svg",
+                                            color: Colors.white,
+                                            height: 20,
+                                          ),
                                         ),
                                       ],
                                     ),
-                                    SizedBox(
-                                      height:
-                                          MediaQuery.of(context).size.height *
-                                              0.4,
-                                      child: TabBarView(children: [
-                                        value.searchResult?.veterinaires
-                                                    ?.length ==
-                                                0
-                                            ? const Center(
-                                                child: Text(
-                                                  'Aucun vétérinaire trouvé',
-                                                  style: TextStyle(
-                                                      color: Colors.black,
-                                                      fontSize: 18,
-                                                      fontWeight:
-                                                          FontWeight.bold),
-                                                ),
-                                              )
-                                            : ListView.builder(
-                                                itemCount: value.searchResult
-                                                    ?.veterinaires?.length,
-                                                itemBuilder: (context, index) {
-                                                  return VetCard(
-                                                      veterinaire: value
-                                                              .searchResult
-                                                              ?.veterinaires?[
-                                                          index]);
-                                                },
-                                              ),
-                                        value.searchResult?.cliniques?.length ==
-                                                0
-                                            ? const Center(
-                                                child: Text(
-                                                  'Aucune clinique trouvée',
-                                                  style: TextStyle(
-                                                      color: Colors.black,
-                                                      fontSize: 18,
-                                                      fontWeight:
-                                                          FontWeight.bold),
-                                                ),
-                                              )
-                                            : ListView.builder(
-                                                itemCount: value.searchResult
-                                                    ?.cliniques?.length,
-                                                itemBuilder: (context, index) {
-                                                  return CliniqueCard(
-                                                      clinique: value
-                                                          .searchResult
-                                                          ?.cliniques?[index]);
-                                                },
-                                              ),
-                                      ]),
-                                    ),
-                                  ],
+                                  ),
                                 ),
-                              );
-                            }),
-                          ],
-                        ),
-                      )
-                    ],
+                              ],
+                            ),
+                          ),
+                          const SizedBox(
+                            height: 30,
+                          ),
+                          Container(
+                            width: double.infinity,
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 20, vertical: 20),
+                            decoration: const BoxDecoration(
+                                color: AppTheme.secondaryColor,
+                                borderRadius: BorderRadius.only(
+                                    topLeft: Radius.circular(40),
+                                    topRight: Radius.circular(40))),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const Text(
+                                  'Spécialités',
+                                  style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                                const SizedBox(
+                                  height: 20,
+                                ),
+                                SizedBox(
+                                  height: 35,
+                                  child: ListView.builder(
+                                    scrollDirection: Axis.horizontal,
+                                    itemCount: specialities.length,
+                                    itemBuilder: (context, index) {
+                                      return GestureDetector(
+                                        onTap: () async {
+                                          setState(() {
+                                            if (selectedIndex == index) {
+                                              selectedIndex = 100;
+                                              speciality.text = '';
+                                            } else {
+                                              selectedIndex = index;
+                                              speciality.text =
+                                                  specialities[index];
+                                            }
+                                          });
+                                          await search();
+                                        },
+                                        child: Container(
+                                          alignment: Alignment.center,
+                                          margin: const EdgeInsets.symmetric(
+                                              horizontal: 5),
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 5, vertical: 5),
+                                          decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(10),
+                                            border: Border.all(
+                                              color: AppTheme.mainColor,
+                                            ),
+                                            color: selectedIndex == index
+                                                ? AppTheme.mainColor
+                                                : Colors.white,
+                                          ),
+                                          child: Text(
+                                            specialities[index],
+                                            style: TextStyle(
+                                                color: selectedIndex != index
+                                                    ? AppTheme.mainColor
+                                                    : Colors.white,
+                                                fontSize: 15),
+                                          ),
+                                        ),
+                                      );
+                                    },
+                                  ),
+                                ),
+                                const SizedBox(
+                                  height: 20,
+                                ),
+                                Consumer<SearchViewModel>(
+                                    builder: (context, value, child) {
+                                  return DefaultTabController(
+                                    length: 2,
+                                    child: Column(
+                                      children: [
+                                        const TabBar(
+                                          labelColor: AppTheme.mainColor,
+                                          unselectedLabelColor: Colors.grey,
+                                          tabs: [
+                                            Tab(
+                                              text: "Vétérinaires",
+                                            ),
+                                            Tab(
+                                              text: "Cliniques",
+                                            ),
+                                          ],
+                                        ),
+                                        SizedBox(
+                                          height: MediaQuery.of(context)
+                                                  .size
+                                                  .height *
+                                              0.4,
+                                          child: TabBarView(children: [
+                                            value.searchResult?.veterinaires
+                                                        ?.length ==
+                                                    0
+                                                ? const Center(
+                                                    child: Text(
+                                                      'Aucun vétérinaire trouvé',
+                                                      style: TextStyle(
+                                                          color: Colors.black,
+                                                          fontSize: 18,
+                                                          fontWeight:
+                                                              FontWeight.bold),
+                                                    ),
+                                                  )
+                                                : ListView.builder(
+                                                    itemCount: value
+                                                        .searchResult
+                                                        ?.veterinaires
+                                                        ?.length,
+                                                    itemBuilder:
+                                                        (context, index) {
+                                                      return VetCard(
+                                                          veterinaire: value
+                                                                  .searchResult
+                                                                  ?.veterinaires?[
+                                                              index]);
+                                                    },
+                                                  ),
+                                            value.searchResult?.cliniques
+                                                        ?.length ==
+                                                    0
+                                                ? const Center(
+                                                    child: Text(
+                                                      'Aucune clinique trouvée',
+                                                      style: TextStyle(
+                                                          color: Colors.black,
+                                                          fontSize: 18,
+                                                          fontWeight:
+                                                              FontWeight.bold),
+                                                    ),
+                                                  )
+                                                : ListView.builder(
+                                                    itemCount: value
+                                                        .searchResult
+                                                        ?.cliniques
+                                                        ?.length,
+                                                    itemBuilder:
+                                                        (context, index) {
+                                                      return CliniqueCard(
+                                                          clinique: value
+                                                                  .searchResult
+                                                                  ?.cliniques?[
+                                                              index]);
+                                                    },
+                                                  ),
+                                          ]),
+                                        ),
+                                      ],
+                                    ),
+                                  );
+                                }),
+                              ],
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
                   ),
-                ),
-              ),
       ),
     );
   }

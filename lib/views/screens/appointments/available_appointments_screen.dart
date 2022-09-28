@@ -11,23 +11,23 @@ import '../../../config/theme.dart';
 import '../../../viewmodels/auth_viewmodel.dart';
 
 class AvailableAppointmentsScreen extends StatefulWidget {
-  AvailableAppointmentsScreen(
-      {required this.clinique_id,
+  const AvailableAppointmentsScreen(
+      {required this.cliniqueId,
       required this.date,
-      required this.vet_id,
+      required this.vetId,
       required this.price,
       this.appointment,
       Key? key})
       : super(key: key);
 
-  String clinique_id;
-  DateTime date;
-  String vet_id;
-  String price;
-  Appointment? appointment;
+  final String cliniqueId;
+  final DateTime date;
+  final String vetId;
+  final String price;
+  final Appointment? appointment;
 
   @override
-  _AvailableAppointmentsScreenState createState() =>
+  State<AvailableAppointmentsScreen> createState() =>
       _AvailableAppointmentsScreenState();
 }
 
@@ -40,7 +40,7 @@ class _AvailableAppointmentsScreenState
   getAvailableAppointments() async {
     appointments = await Provider.of<SearchViewModel>(context, listen: false)
             .getAvailableAppointments(
-          widget.vet_id,
+          widget.vetId,
           Provider.of<AuthViewModel>(context, listen: false).user?.id,
           DateFormat('yyyy-MM-dd').format(widget.date),
           Provider.of<AuthViewModel>(context, listen: false).token,
@@ -112,7 +112,15 @@ class _AvailableAppointmentsScreenState
                                 if (!mounted) return;
                                 Navigator.pop(context);
                                 Navigator.pop(context);
-
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                    content: Text(
+                                      'Rendez vous modifié avec succès',
+                                      style: TextStyle(color: Colors.white),
+                                    ),
+                                    backgroundColor: AppTheme.successColor,
+                                  ),
+                                );
                                 await Provider.of<AuthViewModel>(context,
                                         listen: false)
                                     .getUserData();
@@ -127,16 +135,16 @@ class _AvailableAppointmentsScreenState
                                                       listen: false)
                                                   .token ??
                                               '',
-                                          user_id: Provider.of<AuthViewModel>(
+                                          userId: Provider.of<AuthViewModel>(
                                                       context,
                                                       listen: false)
                                                   .user
                                                   ?.id ??
                                               '',
-                                          vet_id: widget.vet_id,
+                                          vetId: widget.vetId,
                                           price: widget.price,
                                           time: matin[index],
-                                          clinic_id: widget.clinique_id ?? '')),
+                                          clinicId: widget.cliniqueId)),
                                 );
                               }
                             },
@@ -148,7 +156,7 @@ class _AvailableAppointmentsScreenState
                                   color: AppTheme.mainColor,
                                   borderRadius: BorderRadius.circular(15)),
                               child: Text(
-                                matin[index] ?? '',
+                                matin[index],
                                 style: const TextStyle(
                                     color: Colors.white,
                                     fontWeight: FontWeight.bold,
@@ -178,6 +186,7 @@ class _AvailableAppointmentsScreenState
                                     Provider.of<AuthViewModel>(context,
                                             listen: false)
                                         .token);
+                                if (!mounted) return;
                                 Navigator.pop(context);
                                 Navigator.pop(context);
 
@@ -195,16 +204,16 @@ class _AvailableAppointmentsScreenState
                                                       listen: false)
                                                   .token ??
                                               '',
-                                          user_id: Provider.of<AuthViewModel>(
+                                          userId: Provider.of<AuthViewModel>(
                                                       context,
                                                       listen: false)
                                                   .user
                                                   ?.id ??
                                               '',
-                                          vet_id: widget.vet_id,
+                                          vetId: widget.vetId,
                                           price: widget.price,
                                           time: apresMidi[index],
-                                          clinic_id: widget.clinique_id ?? '')),
+                                          clinicId: widget.cliniqueId)),
                                 );
                               }
                             },
@@ -216,7 +225,7 @@ class _AvailableAppointmentsScreenState
                                   color: AppTheme.mainColor,
                                   borderRadius: BorderRadius.circular(15)),
                               child: Text(
-                                apresMidi[index] ?? '',
+                                apresMidi[index],
                                 style: const TextStyle(
                                     color: Colors.white,
                                     fontWeight: FontWeight.bold,

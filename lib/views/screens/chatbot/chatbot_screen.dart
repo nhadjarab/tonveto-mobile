@@ -22,7 +22,7 @@ class _ChatBotScreenState extends State<ChatBotScreen> {
   bool _showSymptomsMenu = false;
 
   String? _species;
-  List<String> _selectedSymptoms = [];
+  final List<String> _selectedSymptoms = [];
 
   List symptoms = [];
 
@@ -44,7 +44,7 @@ class _ChatBotScreenState extends State<ChatBotScreen> {
           onTap: () {
             currentOperation = 1;
             messages
-                .add(Message(isOwn: true, message: "Hello $APP_NAME chatbot"));
+                .add(Message(isOwn: true, message: "Hello $appName chatbot"));
             setState(() {});
 
             Future.delayed(const Duration(seconds: 1), () {
@@ -94,8 +94,9 @@ class _ChatBotScreenState extends State<ChatBotScreen> {
           ),
         );
       default:
-        return Text("Say Hello!");
+        return const Text("Say Hello!");
     }
+    return null;
   }
 
   @override
@@ -103,7 +104,7 @@ class _ChatBotScreenState extends State<ChatBotScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          "$APP_NAME Chat-Bot",
+          "$appName Chat-Bot",
           style: TextStyle(color: Colors.white),
         ),
         centerTitle: true,

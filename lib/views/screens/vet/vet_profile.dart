@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 import 'package:tonveto/models/vet_model.dart';
 import 'package:tonveto/viewmodels/search_viewmodel.dart';
-import 'package:tonveto/views/screens/appointments/select_clinique_screen.dart';
 import 'package:tonveto/views/screens/appointments/select_specialty.dart';
 import 'package:tonveto/views/screens/commentaires/commentaires_screen.dart';
 import 'package:tonveto/views/widgets/custom_button.dart';
@@ -13,16 +11,15 @@ import '../../../config/theme.dart';
 import '../../../viewmodels/auth_viewmodel.dart';
 import '../../widgets/custom_progress.dart';
 import '../../widgets/widgets.dart';
-import '../profile/edit_profile_screen.dart';
 
 class VetProfileScreen extends StatefulWidget {
   static const route = "/vet-profile";
-  Veterinaire vet;
+  final Veterinaire vet;
 
-  VetProfileScreen({required this.vet, Key? key}) : super(key: key);
+  const VetProfileScreen({required this.vet, Key? key}) : super(key: key);
 
   @override
-  _VetProfileScreenState createState() => _VetProfileScreenState();
+  State<VetProfileScreen> createState() => _VetProfileScreenState();
 }
 
 class _VetProfileScreenState extends State<VetProfileScreen> {
@@ -53,11 +50,10 @@ class _VetProfileScreenState extends State<VetProfileScreen> {
       somme = somme + (vet?.comments?[i].rating ?? 0);
     }
 
-    if (vet?.comments?.length != 0) {
+    if (vet?.comments?.length == 0) {
       rating = somme / (vet?.comments?.length ?? 1);
     }
 
-    print(rating);
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -70,10 +66,10 @@ class _VetProfileScreenState extends State<VetProfileScreen> {
           ),
         ),
         centerTitle: true,
-        title: vet?.first_name == null
+        title: vet?.firstName == null
             ? const SizedBox()
             : Text(
-                "${vet?.first_name} ${vet?.last_name}",
+                "${vet?.firstName} ${vet?.lastName}",
                 overflow: TextOverflow.ellipsis,
                 style: TextStyle(
                     color: Colors.white,
@@ -118,9 +114,10 @@ class _VetProfileScreenState extends State<VetProfileScreen> {
                               context,
                               MaterialPageRoute(
                                   builder: (context) => SelectSpecialty(
-                                    specialties: widget.vet.specialities ?? [],
+                                        specialties:
+                                            widget.vet.specialities ?? [],
                                         clinics: vet?.clinics ?? [],
-                                        vet_id: vet?.id ?? '',
+                                        vetId: vet?.id ?? '',
                                       )),
                             );
                           }),
@@ -143,7 +140,7 @@ class _VetProfileScreenState extends State<VetProfileScreen> {
                     Padding(
                       padding: EdgeInsets.only(left: 5.w, right: 5.w, top: 10),
                       child: CustomButton(
-                          color: Color(0xFFFFB200),
+                          color: const Color(0xFFFFB200),
                           text: 'Commentaires et évaluations',
                           onPressed: () {
                             Navigator.push(
@@ -191,7 +188,7 @@ class _VetProfileScreenState extends State<VetProfileScreen> {
                                 color: AppTheme.mainColor,
                               ),
                               title: InfoWidget(
-                                info: '${widget.vet.first_name}',
+                                info: '${widget.vet.firstName}',
                                 infoType: 'Nom',
                               )),
                           ListTile(
@@ -200,7 +197,7 @@ class _VetProfileScreenState extends State<VetProfileScreen> {
                                 color: AppTheme.mainColor,
                               ),
                               title: InfoWidget(
-                                info: '${widget.vet.last_name}',
+                                info: '${widget.vet.lastName}',
                                 infoType: 'Prénom',
                               )),
                           ListTile(
@@ -209,7 +206,7 @@ class _VetProfileScreenState extends State<VetProfileScreen> {
                                 color: AppTheme.mainColor,
                               ),
                               title: InfoWidget(
-                                info: '${widget.vet.phone_number}',
+                                info: '${widget.vet.phoneNumber}',
                                 infoType: 'Tel',
                               )),
                         ],

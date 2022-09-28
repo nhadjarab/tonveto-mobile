@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:sizer/sizer.dart';
 import 'package:tonveto/config/theme.dart';
 import 'package:tonveto/models/appointment_model.dart';
 import 'package:tonveto/models/pet_model.dart';
@@ -25,10 +24,14 @@ class _PetAppointmentScreenState extends State<PetAppointmentScreen> {
       Provider.of<AuthViewModel>(context, listen: false)
           .getPetAppointments(widget.pet.id);
     });
+
   }
 
   @override
   Widget build(BuildContext context) {
+    widget.pet.appointments.sort((a, b){ //sorting in ascending order
+      return a.date!.compareTo(b.date!);
+    });
     return Scaffold(
       backgroundColor: AppTheme.mainColor,
       appBar: AppBar(
@@ -74,10 +77,10 @@ class _PetAppointmentScreenState extends State<PetAppointmentScreen> {
                       },
                       leading: const Icon(Icons.calendar_today),
                       title: Text(
-                          "${appointment.vet?.last_name} ${appointment.vet?.first_name}"),
+                          "${appointment.vet?.lastName} ${appointment.vet?.firstName}"),
                       subtitle: Text(
                           "Date:  ${appointment.date?.day}/${appointment.date?.month}/${appointment.date?.year} - ${appointment.time}"),
-                      trailing: const Icon(Icons.keyboard_arrow_right),
+                     // trailing: const Icon(Icons.keyboard_arrow_right),
                     );
                   },
                 ),

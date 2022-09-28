@@ -1,24 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 import 'package:tonveto/views/screens/appointments/select_clinique_screen.dart';
-import 'package:tonveto/views/screens/appointments/select_date_screen.dart';
 
 import '../../../config/theme.dart';
 import '../../../models/clinique_model.dart';
 
 class SelectSpecialty extends StatefulWidget {
-   SelectSpecialty(
+   const SelectSpecialty(
       {required this.clinics,
-      required this.vet_id,
+      required this.vetId,
       required this.specialties,
       Key? key})
       : super(key: key);
-  List<Clinique> clinics;
-  String vet_id;
-  List<dynamic> specialties;
+  final List<Clinique> clinics;
+  final String vetId;
+  final List<dynamic> specialties;
 
   @override
-  _SelectSpecialtyState createState() => _SelectSpecialtyState();
+  State<SelectSpecialty> createState() => _SelectSpecialtyState();
 }
 
 class _SelectSpecialtyState extends State<SelectSpecialty> {
@@ -47,7 +46,7 @@ class _SelectSpecialtyState extends State<SelectSpecialty> {
             ),
             padding: const EdgeInsets.symmetric(horizontal: 10),
             height: 50.h,
-            child: widget.specialties.length == 0
+            child: widget.specialties.isEmpty
                 ? const Center(
               child: Text(
                 'Aucune spécialité trouvée',
@@ -74,8 +73,8 @@ class _SelectSpecialtyState extends State<SelectSpecialty> {
                         context,
                         MaterialPageRoute(
                             builder: (context) => SelectCliniqueScreen(
-                              clinics: widget.clinics ?? [],
-                              vet_id: widget.vet_id,
+                              clinics: widget.clinics,
+                              vetId: widget.vetId,
                               price:widget.specialties[index]['price'],
                             )),
                       );

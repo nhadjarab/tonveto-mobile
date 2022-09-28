@@ -64,6 +64,7 @@ class _InfoScreenState extends State<InfoScreen> {
       });
 
       if (redirect) {
+        if (!mounted) return;
         Navigator.pop(context);
       }
     }
@@ -127,7 +128,7 @@ class _InfoScreenState extends State<InfoScreen> {
                                 context: context,
                                 initialDate: DateTime.now(),
                                 firstDate: DateTime(DateTime.now().year - 100),
-                                lastDate: DateTime(2050));
+                                lastDate: DateTime.now());
                             if (datePick != null && datePick != birthDate) {
                               setState(() {
                                 birthDate = datePick;

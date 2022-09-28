@@ -4,21 +4,20 @@ import 'package:tonveto/config/theme.dart';
 import 'package:tonveto/models/clinique_model.dart';
 import 'package:tonveto/views/screens/appointments/select_date_screen.dart';
 
-import '../../widgets/widgets.dart';
 
 class SelectCliniqueScreen extends StatefulWidget {
-  SelectCliniqueScreen(
+  const SelectCliniqueScreen(
       {required this.clinics,
-      required this.vet_id,
+      required this.vetId,
       required this.price,
       Key? key})
       : super(key: key);
-  List<Clinique> clinics;
-  String vet_id;
-  String price;
+ final  List<Clinique> clinics;
+final  String vetId;
+ final String price;
 
   @override
-  _SelectCliniqueScreenState createState() => _SelectCliniqueScreenState();
+  State<SelectCliniqueScreen> createState() => _SelectCliniqueScreenState();
 }
 
 class _SelectCliniqueScreenState extends State<SelectCliniqueScreen> {
@@ -66,8 +65,8 @@ class _SelectCliniqueScreenState extends State<SelectCliniqueScreen> {
                         context,
                         MaterialPageRoute(
                             builder: (context) => SelectDateScreen(
-                                  clinique_id: widget.clinics[index].id ?? '',
-                                  vet_id: widget.vet_id,
+                                  cliniqueId: widget.clinics[index].id ?? '',
+                                  vetId: widget.vetId,
                               price: widget.price,
                                 )),
                       );
@@ -111,7 +110,7 @@ class _SelectCliniqueScreenState extends State<SelectCliniqueScreen> {
                                   height: 5,
                                 ),
                                 Text(
-                                  '${widget.clinics[index].phone_number}',
+                                  '${widget.clinics[index].phoneNumber}',
                                   style: const TextStyle(
                                     fontSize: 16,
                                   ),

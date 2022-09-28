@@ -8,8 +8,8 @@ class CustomButton extends StatelessWidget {
   final Color? color;
   final Color? textColor;
   final double? width;
-   double padding ;
-   CustomButton(
+   final double padding ;
+   const CustomButton(
       {Key? key,
       required this.text,
       required this.onPressed,
@@ -31,11 +31,10 @@ class CustomButton extends StatelessWidget {
               Radius.circular(10),
             ),
             side: BorderSide.none,
-          ),
+          ), backgroundColor: color ?? AppTheme.mainColor,
           textStyle: const TextStyle(fontWeight: FontWeight.bold,fontSize: 16),
           padding:  EdgeInsets.symmetric(vertical: padding, horizontal: padding),
           elevation: 0.0,
-          primary: color ?? AppTheme.mainColor,
         ),
         child: Text(text,style:TextStyle(color: textColor),),
       ),

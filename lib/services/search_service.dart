@@ -12,37 +12,36 @@ import '../models/search_model.dart';
 class SearchService {
   Future<SearchModel?> search(
       String? city,
-      String? zip_code,
-      String? vet_name,
-      String? clinic_name,
+      String? zipCode,
+      String? vetName,
+      String? clinicName,
       String? specialty,
       String? address,
       String? country,
       String? token) async {
     try {
-      String url = "$BASE_URL/advancedSearch?";
+      String url = "$baseUrl/advancedSearch?";
       if (city != '') {
-        url = url + "city=$city&";
+        url = "${url}city=$city&";
       }
-      if (zip_code != '') {
-        url = url + "zip_code=$zip_code&";
+      if (zipCode != '') {
+        url = "${url}zip_code=$zipCode&";
       }
-      if (vet_name != '') {
-        url = url + "vet_name=$vet_name&";
+      if (vetName != '') {
+        url = "${url}vet_name=$vetName&";
       }
-      if (clinic_name != '') {
-        url = url + "clinic_name=$clinic_name&";
+      if (clinicName != '') {
+        url = "${url}clinic_name=$clinicName&";
       }
       if (specialty != '') {
-        url = url + "specialty=$specialty&";
+        url = "${url}specialty=$specialty&";
       }
       if (address != '') {
-        url = url + "address=$address&";
+        url = "${url}address=$address&";
       }
       if (country != '') {
-        url = url + "country=$country";
+        url = "${url}country=$country";
       }
-      print(url);
       final response = await http.get(
         Uri.parse(url),
         headers: {
@@ -51,7 +50,6 @@ class SearchService {
         },
       );
       final result = json.decode(response.body);
-      print(response.body);
       if (response.statusCode == 200) {
         return SearchModel.fromJson(result);
       } else {
@@ -60,28 +58,25 @@ class SearchService {
     } on Failure {
       rethrow;
     } catch (e) {
-      print(e);
       throw Failure();
     }
   }
 
   Future<Veterinaire> getVet(
-      String? vetId, String? user_id, String? token) async {
+      String? vetId, String? userId, String? token) async {
     try {
-      String url = "$BASE_URL/vet/$vetId";
+      String url = "$baseUrl/vet/$vetId";
 
       final response = await http.get(
         Uri.parse(url),
         headers: {
           "Content-Type": "application/json",
-          "logged_in_id": user_id!,
+          "logged_in_id": userId!,
           'Authorization': 'Bearer $token',
         },
       );
       final result = json.decode(response.body);
-      print(response.body);
       if (response.statusCode == 200) {
-        print(Veterinaire.fromJson(result['vetProfile']).id);
         return Veterinaire.fromJson(result['vetProfile']);
       } else {
         throw Failure.createFailure(response.statusCode, result);
@@ -89,26 +84,24 @@ class SearchService {
     } on Failure {
       rethrow;
     } catch (e) {
-      print(e);
       throw Failure();
     }
   }
 
   Future<List<Veterinaire>> getClinicVet(
-      String? clinicId, String? user_id, String? token) async {
+      String? clinicId, String? userId, String? token) async {
     try {
-      String url = "$BASE_URL/clinic/$clinicId";
+      String url = "$baseUrl/clinic/$clinicId";
 
       final response = await http.get(
         Uri.parse(url),
         headers: {
           "Content-Type": "application/json",
-          "logged_in_id": user_id!,
+          "logged_in_id": userId!,
           'Authorization': 'Bearer $token',
         },
       );
       final result = json.decode(response.body);
-      print(response.body);
       if (response.statusCode == 200) {
         return List<Veterinaire>.from(result['clinic']['vets']
                 ?.map((record) => Veterinaire.fromJson(record['vet'])) ??
@@ -119,21 +112,20 @@ class SearchService {
     } on Failure {
       rethrow;
     } catch (e) {
-      print(e);
       throw Failure();
     }
   }
 
   Future<List<String>> getAvailableAppointments(
-      String? vetId, String? user_id, String? date, String? token) async {
+      String? vetId, String? userId, String? date, String? token) async {
     try {
-      String url = "$BASE_URL/vetAvailableAppointments/$vetId";
+      String url = "$baseUrl/vetAvailableAppointments/$vetId";
 
       final response = await http.get(
         Uri.parse(url),
         headers: {
           "Content-Type": "application/json",
-          "logged_in_id": user_id!,
+          "logged_in_id": userId!,
           "date": date!,
           'Authorization': 'Bearer $token',
         },
@@ -147,7 +139,6 @@ class SearchService {
     } on Failure {
       rethrow;
     } catch (e) {
-      print(e);
       throw Failure();
     }
   }
@@ -155,15 +146,14 @@ class SearchService {
   Future<String?> addAppointment(
     String? date,
     String? time,
-    String? pet_id,
-    String? vet_id,
-    String? user_id,
-    String? clinic_id,
+    String? petId,
+    String? vetId,
+    String? userId,
+    String? clinicId,
     String? token,
   ) async {
     try {
-      print(date);
-      final response = await http.post(Uri.parse("$BASE_URL/appointment"),
+      final response = await http.post(Uri.parse("$baseUrl/appointment"),
           headers: {
             "Content-Type": "application/json",
             'Authorization': 'Bearer $token',
@@ -171,45 +161,43 @@ class SearchService {
           body: json.encode({
             "date": date,
             "time": time,
-            "pet_id": pet_id,
-            "vet_id": vet_id,
-            "user_id": user_id,
-            "clinic_id": clinic_id,
+            "pet_id": petId,
+            "vet_id": vetId,
+            "user_id": userId,
+            "clinic_id": clinicId,
           }));
       final result = json.decode(response.body);
-      print(response.body);
       if (response.statusCode == 200 || response.statusCode == 201) {
         return result['id'];
       }
+      return null;
     } on Failure {
       rethrow;
+
     } catch (e) {
-      print(e);
       throw Failure();
     }
   }
 
   Future<bool> addVetComment(
     String? text,
-    String? vet_id,
+    String? vetId,
     String? rating,
-    String? user_id,
+    String? userId,
     String? token,
   ) async {
     try {
-      final response = await http.post(Uri.parse("$BASE_URL/commentVet"),
+      final response = await http.post(Uri.parse("$baseUrl/commentVet"),
           headers: {
             "Content-Type": "application/json",
-            "logged_in_id": "$user_id",
+            "logged_in_id": "$userId",
             'Authorization': 'Bearer $token',
           },
           body: json.encode({
             "text": text,
-            "vet_id": vet_id,
+            "vet_id": vetId,
             "rating": rating,
           }));
-      final result = json.decode(response.body);
-      print(response.body);
       if (response.statusCode == 200 || response.statusCode == 201) {
         return true;
       }
@@ -217,7 +205,6 @@ class SearchService {
     } on Failure {
       rethrow;
     } catch (e) {
-      print(e);
       throw Failure();
     }
   }
@@ -227,12 +214,9 @@ class SearchService {
     String? token,
   ) async {
     try {
-      print(appointment?.id);
-      print(
-          DateFormat('yyyy-MM-dd').format(appointment?.date ?? DateTime.now()));
 
       final response =
-          await http.put(Uri.parse("$BASE_URL/appointment/${appointment?.id}"),
+          await http.put(Uri.parse("$baseUrl/appointment/${appointment?.id}"),
               headers: {
                 "Content-Type": "application/json",
                 'Authorization': 'Bearer $token',
@@ -246,8 +230,6 @@ class SearchService {
                 "user_id": appointment?.userId,
                 "clinic_id": appointment?.clinicId,
               }));
-      final result = json.decode(response.body);
-      print(response.body);
       if (response.statusCode == 200 || response.statusCode == 201) {
         return true;
       }
@@ -255,31 +237,27 @@ class SearchService {
     } on Failure {
       rethrow;
     } catch (e) {
-      print(e);
       throw Failure();
     }
   }
 
   Future cancelAppointment(
-    String? appointment_id,
-    String? user_id,
+    String? appointmentId,
+    String? userId,
     String? token,
   ) async {
     try {
-      final response = await http.delete(
-        Uri.parse("$BASE_URL/appointment/$appointment_id"),
+    await http.delete(
+        Uri.parse("$baseUrl/appointment/$appointmentId"),
         headers: {
           "Content-Type": "application/json",
           'Authorization': 'Bearer $token',
-          'user_id': user_id!,
+          'user_id': userId!,
         },
       );
-      final result = json.decode(response.body);
-      print(response.body);
     } on Failure {
       rethrow;
     } catch (e) {
-      print(e);
       throw Failure();
     }
   }

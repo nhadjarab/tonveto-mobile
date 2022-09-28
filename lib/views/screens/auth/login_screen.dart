@@ -38,6 +38,7 @@ class _LoginScreenState extends State<LoginScreen> {
         _email,
         _password,
       );
+      if (!mounted) return;
       if (Provider
           .of<AuthViewModel>(context, listen: false)
           .isAuth) {
@@ -52,110 +53,108 @@ class _LoginScreenState extends State<LoginScreen> {
       child: Scaffold(
           body: SingleChildScrollView(
             child: Center(
-                child: Container(
-                  child: Form(
-                    key: _formKey,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
+                child: Form(
+                  key: _formKey,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
 
-                        ClipPath(
-                          clipper: MyClipper(),
-                          child: Container(
-                            padding: const EdgeInsets.only(
-                                left: 10, top: 20, right: 10),
-                            height: 200,
-                            width: double.infinity,
-                            decoration:const  BoxDecoration(
-                              color: AppTheme.mainColor,
+                      ClipPath(
+                        clipper: MyClipper(),
+                        child: Container(
+                          padding: const EdgeInsets.only(
+                              left: 10, top: 20, right: 10),
+                          height: 200,
+                          width: double.infinity,
+                          decoration:const  BoxDecoration(
+                            color: AppTheme.mainColor,
 
-                            ),
-                            child: Column(children: [Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                IconButton(
-                                  onPressed: () {
-                                    Navigator.pop(context);
-                                  },
-                                  icon: const Icon(Icons.arrow_back,size: 30,color: Colors.white,),
-                                ),
-                                const Text('Se connecter', style: TextStyle(color: Colors
-                                    .white, fontSize: 20, fontWeight: FontWeight.bold
-                                ),),
-                                const SizedBox(width: 30,),
-                              ],
-                            ),],),
                           ),
+                          child: Column(children: [Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              IconButton(
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                },
+                                icon: const Icon(Icons.arrow_back,size: 30,color: Colors.white,),
+                              ),
+                              const Text('Se connecter', style: TextStyle(color: Colors
+                                  .white, fontSize: 20, fontWeight: FontWeight.bold
+                              ),),
+                              const SizedBox(width: 30,),
+                            ],
+                          ),],),
                         ),
-                        const SizedBox(height: AppTheme.divider * 2),
-                        Container(
-                          padding:const  EdgeInsets.symmetric(
-                            horizontal: 20
+                      ),
+                      const SizedBox(height: AppTheme.divider * 2),
+                      Container(
+                        padding:const  EdgeInsets.symmetric(
+                          horizontal: 20
+                        ),
+                        child: Column(children: [
+                          CustomTextField(
+                            preffixIcon: const Icon(
+                              Icons.email_outlined,
+                              color: AppTheme.mainColor,
+                            ),
+                            labelText: "e-mail",
+                            keyboardType: TextInputType.emailAddress,
+                            validator: (value) =>
+                                validateEmail(value,
+                                    "le champ ne peut pas être vide",
+                                    "email invalide"),
+                            onSaved: (value) => _email = value,
                           ),
-                          child: Column(children: [
-                            CustomTextField(
-                              preffixIcon: const Icon(
-                                Icons.email_outlined,
+                          const SizedBox(height: AppTheme.divider),
+                          CustomTextField(
+                            labelText: "Mot de passe",
+                            preffixIcon: const Icon(
+                              Icons.lock_outlined,
+                              color: AppTheme.mainColor,
+                            ),
+                            keyboardType: TextInputType.visiblePassword,
+                            obscureText: !_passwordVisible,
+                            suffixIcon: IconButton(
+                              icon: Icon(
+                                _passwordVisible
+                                    ? Icons.visibility
+                                    : Icons.visibility_off,
                                 color: AppTheme.mainColor,
                               ),
-                              labelText: "e-mail",
-                              keyboardType: TextInputType.emailAddress,
-                              validator: (value) =>
-                                  validateEmail(value,
-                                      "le champ ne peut pas être vide",
-                                      "email invalide"),
-                              onSaved: (value) => _email = value,
+                              onPressed: () =>
+                                  setState(() =>
+                                  _passwordVisible = !_passwordVisible),
                             ),
-                            const SizedBox(height: AppTheme.divider),
-                            CustomTextField(
-                              labelText: "Mot de passe",
-                              preffixIcon: const Icon(
-                                Icons.lock_outlined,
-                                color: AppTheme.mainColor,
-                              ),
-                              keyboardType: TextInputType.visiblePassword,
-                              obscureText: !_passwordVisible,
-                              suffixIcon: IconButton(
-                                icon: Icon(
-                                  _passwordVisible
-                                      ? Icons.visibility
-                                      : Icons.visibility_off,
-                                  color: AppTheme.mainColor,
-                                ),
-                                onPressed: () =>
-                                    setState(() =>
-                                    _passwordVisible = !_passwordVisible),
-                              ),
-                              validator: (value) =>
-                                  validatePassword(
-                                      value,
-                                      "le champ ne peut pas être vide",
-                                      "Le mot de passe doit contenir au moins un chiffre et avoir au moins 8 caractères"),
-                              onSaved: (value) => _password = value,
-                            ),
-                            const SizedBox(height: AppTheme.divider * 4),
-                            Provider
-                                .of<AuthViewModel>(context)
-                                .loading
-                                ? const CustomProgress()
-                                : CustomButton(
-                              width: double.infinity,
-                                text: "Se connecter", onPressed: login),
-                            Consumer<AuthViewModel>(
-                                builder: (context, value, child) {
-                                  if (value.errorMessage != null) {
-                                    return ShowMessage(
-                                        message: value.errorMessage!,
-                                        isError: true,
-                                        onPressed: () => value.clearError());
-                                  }
-                                  return const SizedBox.shrink();
-                                }),
-                          ],),
-                        )
+                            validator: (value) =>
+                                validatePassword(
+                                    value,
+                                    "le champ ne peut pas être vide",
+                                    "Le mot de passe doit contenir au moins un chiffre et avoir au moins 8 caractères"),
+                            onSaved: (value) => _password = value,
+                          ),
+                          const SizedBox(height: AppTheme.divider * 4),
+                          Provider
+                              .of<AuthViewModel>(context)
+                              .loading
+                              ? const CustomProgress()
+                              : CustomButton(
+                            width: double.infinity,
+                              text: "Se connecter", onPressed: login),
+                          Consumer<AuthViewModel>(
+                              builder: (context, value, child) {
+                                if (value.errorMessage != null) {
+                                  return ShowMessage(
+                                      message: value.errorMessage!,
+                                      isError: true,
+                                      onPressed: () => value.clearError());
+                                }
+                                return const SizedBox.shrink();
+                              }),
+                        ],),
+                      )
 
-                      ],
-                    ),
+                    ],
                   ),
                 )),
           )),

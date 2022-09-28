@@ -8,7 +8,6 @@ import 'package:tonveto/views/screens/pet/edit_pet_screen.dart';
 import 'package:tonveto/views/screens/pet/pet_appointments_screen.dart';
 import 'package:tonveto/views/widgets/custom_progress.dart';
 
-import '../../widgets/custom_button.dart';
 import '../../widgets/widgets.dart';
 
 class PetDetailsScreen extends StatelessWidget {
@@ -160,7 +159,7 @@ class PetDetailsScreen extends StatelessWidget {
                                 ),
                                 title: InfoWidget(
                                   info: pet.crossbreed! ? "Oui" : "Non",
-                                  infoType: 'Croiser',
+                                  infoType: 'Croisé(e)',
                                 )),
                             ListTile(
                                 leading: const Icon(
@@ -169,7 +168,7 @@ class PetDetailsScreen extends StatelessWidget {
                                 ),
                                 title: InfoWidget(
                                   info: pet.sterilised! ? "Oui" : "Non",
-                                  infoType: 'Stérialsé',
+                                  infoType: 'Stérélisé(e)',
                                 )),
                           ],
                         ),

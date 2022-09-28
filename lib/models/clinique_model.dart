@@ -5,10 +5,10 @@ class Clinique {
         this.address,
         this.city,
         this.country,
-        this.phone_number,
-        this.owner_id,
-        this.zip_code,
-        this.is_approved,
+        this.phoneNumber,
+        this.ownerId,
+        this.zipCode,
+        this.isApproved,
        });
 
   String? id;
@@ -16,10 +16,10 @@ class Clinique {
   String? address;
   String? city;
   String? country;
-  String? phone_number;
-  String? owner_id;
-  String? zip_code;
-  bool? is_approved;
+  String? phoneNumber;
+  String? ownerId;
+  String? zipCode;
+  bool? isApproved;
 
 
   factory Clinique.fromJson(Map<String, dynamic> json) => Clinique(
@@ -27,11 +27,11 @@ class Clinique {
     name: json["name"],
     address: json["address"],
     city: json["city"],
-    phone_number: json["phone_number"],
+    phoneNumber: json["phone_number"],
     country: json["country"],
-    owner_id: json["owner_id"],
-    zip_code: json["zip_code"],
-    is_approved: json["is_approved"],
+    ownerId: json["owner_id"],
+    zipCode: json["zip_code"],
+    isApproved: json["is_approved"],
 
   );
 }

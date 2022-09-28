@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../config/theme.dart';
 
@@ -88,7 +87,7 @@ class VetTextField extends StatefulWidget {
       : super(key: key);
 
   @override
-  _VetTextFieldState createState() => _VetTextFieldState();
+  State<VetTextField> createState() => _VetTextFieldState();
 }
 
 class _VetTextFieldState extends State<VetTextField> {

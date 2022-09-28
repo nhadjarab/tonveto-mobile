@@ -44,7 +44,7 @@ class VetCard extends StatelessWidget {
                       text: TextSpan(children: [
                     TextSpan(
                       text:
-                          'Dr ${veterinaire?.first_name} ${veterinaire?.last_name}',
+                          'Dr ${veterinaire?.firstName} ${veterinaire?.lastName}',
                       style: const TextStyle(
                           overflow: TextOverflow.ellipsis,
                           color: Colors.black,
@@ -56,7 +56,7 @@ class VetCard extends StatelessWidget {
                     height: 5,
                   ),
                   Text(
-                    "${veterinaire?.phone_number}",
+                    "${veterinaire?.phoneNumber}",
                     style: const TextStyle(fontSize: 14, color: Colors.grey),
                   ),
                 ],
@@ -122,7 +122,7 @@ class CliniqueCard extends StatelessWidget {
                     height: 5,
                   ),
                   Text(
-                    '${clinique?.phone_number}',
+                    '${clinique?.phoneNumber}',
                     style: const TextStyle(
                       fontSize: 16,
                     ),

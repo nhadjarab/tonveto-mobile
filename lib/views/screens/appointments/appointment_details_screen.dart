@@ -4,7 +4,6 @@ import 'package:sizer/sizer.dart';
 import 'package:tonveto/config/theme.dart';
 import 'package:tonveto/models/appointment_model.dart';
 import 'package:tonveto/models/clinique_model.dart';
-import 'package:tonveto/models/vet_model.dart';
 import 'package:tonveto/services/search_service.dart';
 import 'package:tonveto/viewmodels/auth_viewmodel.dart';
 import 'package:tonveto/viewmodels/search_viewmodel.dart';
@@ -51,7 +50,7 @@ class _AppointmentDetailsScreenState extends State<AppointmentDetailsScreen> {
         builder: (BuildContext context) {
           return AlertDialog(
             title: const Text(
-                "Confimer l\'annulation du rendez vous, s'il vous plais"),
+                "Confimer l'annulation du rendez vous, s'il vous plais"),
             actions: <Widget>[
               TextButton(
                 child: const Text(
@@ -67,9 +66,10 @@ class _AppointmentDetailsScreenState extends State<AppointmentDetailsScreen> {
                               ?.id ??
                           '',
                       Provider.of<AuthViewModel>(context, listen: false).token);
+                  if (!mounted) return;
                   await Provider.of<AuthViewModel>(context, listen: false)
                       .getUserData();
-
+                  if (!mounted) return;
                   Navigator.pop(context);
                   Navigator.pop(context);
                 },
@@ -116,6 +116,7 @@ class _AppointmentDetailsScreenState extends State<AppointmentDetailsScreen> {
                         if (value == null || value == '') {
                           return 'le champ ne peut pas être vide';
                         }
+                        return null;
                       },
                       onSaved: (value) => text = value,
                     ),
@@ -143,9 +144,10 @@ class _AppointmentDetailsScreenState extends State<AppointmentDetailsScreen> {
                           Provider.of<AuthViewModel>(context, listen: false)
                               .token);
                       value.setRating(0);
+                      if (!mounted) return;
                       await Provider.of<AuthViewModel>(context, listen: false)
                           .getUserData();
-
+                      if (!mounted) return;
                       Navigator.pop(context);
                       Navigator.pop(context);
                     }
@@ -184,14 +186,15 @@ class _AppointmentDetailsScreenState extends State<AppointmentDetailsScreen> {
         backgroundColor: AppTheme.mainColor,
         foregroundColor: Colors.black,
         actions: [
-          IconButton(
+          if (!widget.appointment.date!.isBefore(DateTime.now()))
+            IconButton(
               onPressed: () {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
                       builder: (context) => SelectDateScreen(
-                            clinique_id: widget.appointment.clinicId ?? '',
-                            vet_id: widget.appointment.vetId ?? '',
+                            cliniqueId: widget.appointment.clinicId ?? '',
+                            vetId: widget.appointment.vetId ?? '',
                             price: '',
                             appointment: widget.appointment,
                           )),
@@ -232,7 +235,7 @@ class _AppointmentDetailsScreenState extends State<AppointmentDetailsScreen> {
                         ListTile(
                           leading: const Icon(Icons.person),
                           title: Text(
-                              "Vétérinaire: ${widget.appointment.vet?.first_name} ${widget.appointment.vet?.last_name}"),
+                              "Vétérinaire: ${widget.appointment.vet?.firstName} ${widget.appointment.vet?.lastName}"),
                         ),
                         ListTile(
                           leading: const Icon(Icons.date_range_outlined),
@@ -242,7 +245,7 @@ class _AppointmentDetailsScreenState extends State<AppointmentDetailsScreen> {
                         ListTile(
                           leading: const Icon(Icons.phone),
                           title: Text(
-                              "Téléphone: ${widget.appointment.vet?.phone_number}"),
+                              "Téléphone: ${widget.appointment.vet?.phoneNumber}"),
                         ),
                         ListTile(
                           leading: const Icon(Icons.contact_mail),
@@ -280,7 +283,7 @@ class _AppointmentDetailsScreenState extends State<AppointmentDetailsScreen> {
                       ],
                     ),
                   ),
-                  if (widget.appointment.date!.isBefore(DateTime.now()))
+                  if (!widget.appointment.date!.isBefore(DateTime.now()))
                   Container(
                     margin: EdgeInsets.only(left: 5.w, right: 5.w, bottom: 20),
                     padding: const EdgeInsets.all(10),
@@ -352,7 +355,7 @@ class _AppointmentDetailsScreenState extends State<AppointmentDetailsScreen> {
                             leading: const Icon(Icons.location_on),
                             title: Text(clinic?.name ?? ""),
                             subtitle: Text(
-                                "${clinic?.address}, ${clinic?.city}, ${clinic?.country} (${clinic?.zip_code})"),
+                                "${clinic?.address}, ${clinic?.city}, ${clinic?.country} (${clinic?.zipCode})"),
                           ),
                   ),
                 ],

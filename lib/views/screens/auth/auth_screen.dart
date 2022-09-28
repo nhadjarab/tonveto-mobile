@@ -30,7 +30,7 @@ class AuthScreen extends StatelessWidget {
                     color: AppTheme.mainColor,
                   ),
                   child: Text(
-                    APP_NAME,
+                    appName,
                     style: TextStyle(
                         fontSize: 10.w,
                         fontWeight: FontWeight.bold,
@@ -40,7 +40,7 @@ class AuthScreen extends StatelessWidget {
                 ),
               ),
               Padding(
-                padding: EdgeInsets.symmetric(horizontal: 20),
+                padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: Column(
                   children: [
                     const SizedBox(height: AppTheme.divider * 2),

@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:io';
 
 import 'package:http/http.dart' as http;
 
@@ -10,7 +9,7 @@ import '../models/user_model.dart';
 class AuthService {
   Future login(String? email, String? password) async {
     try {
-      final response = await http.post(Uri.parse("$BASE_URL/login"),
+      final response = await http.post(Uri.parse("$baseUrl/login"),
           headers: {
             "Content-Type": "application/json",
           },
@@ -19,7 +18,6 @@ class AuthService {
             "password": password,
           }));
       final result = json.decode(response.body);
-      print(response.body);
       if (response.statusCode == 200) {
         Map<String, dynamic> userInfo = {
           "userProfile": User.fromJson(result["userProfile"]),
@@ -33,14 +31,13 @@ class AuthService {
     } on Failure {
       rethrow;
     } catch (e) {
-      print(e);
       throw Failure();
     }
   }
 
   Future<bool> register(String? email, String? password) async {
     try {
-      final response = await http.post(Uri.parse("$BASE_URL/register"),
+      final response = await http.post(Uri.parse("$baseUrl/register"),
           headers: {
             "Content-Type": "application/json",
           },
@@ -49,7 +46,6 @@ class AuthService {
             "password": password,
           }));
       final result = json.decode(response.body);
-      print(response.body);
       if (response.statusCode == 200) {
         return true;
       } else {
@@ -58,7 +54,6 @@ class AuthService {
     } on Failure {
       rethrow;
     } catch (e) {
-      print(e);
       throw Failure();
     }
   }
@@ -70,7 +65,7 @@ class AuthService {
     DateTime? birthday,
     String? email,
     String? password,
-    bool? is_subscribed,
+    bool? isSubscribed,
   ) async {
     String? token;
     User? user;
@@ -79,10 +74,10 @@ class AuthService {
       user = data["userProfile"];
       token = data["jwtToken"];
     } catch (e) {
-      print(e);
+
     }
     try {
-      final response = await http.put(Uri.parse("$BASE_URL/user/${user?.id}"),
+      final response = await http.put(Uri.parse("$baseUrl/user/${user?.id}"),
           headers: {
             "Content-Type": "application/json",
             'Authorization': 'Bearer $token',
@@ -93,10 +88,9 @@ class AuthService {
             "email": email,
             "birth_date": birthday.toString(),
             "phone_number": phone,
-            "is_subscribed": is_subscribed
+            "is_subscribed": isSubscribed
           }));
       final result = json.decode(response.body);
-      print(response.body);
       if (response.statusCode == 200) {
         return user?.id;
       } else {
@@ -105,16 +99,14 @@ class AuthService {
     } on Failure {
       rethrow;
     } catch (e) {
-      print(e);
       throw Failure();
     }
   }
 
   Future<User?> getUserData(String? userID, String? token) async {
     try {
-      print(userID);
       final response = await http.get(
-        Uri.parse("$BASE_URL/user/$userID"),
+        Uri.parse("$baseUrl/user/$userID"),
         headers: {
           "Content-Type": "application/json",
           'Authorization': 'Bearer $token',
@@ -122,7 +114,6 @@ class AuthService {
         },
       );
       final result = json.decode(response.body);
-      print(response.body);
       if (response.statusCode == 200) {
         return User.fromJson(result);
       } else {
@@ -131,7 +122,6 @@ class AuthService {
     } on Failure {
       rethrow;
     } catch (e) {
-      print(e);
       throw Failure();
     }
   }
@@ -145,7 +135,7 @@ class AuthService {
       DateTime? birthday,
       String? email) async {
     try {
-      final response = await http.put(Uri.parse("$BASE_URL/user/$userID"),
+      final response = await http.put(Uri.parse("$baseUrl/user/$userID"),
           headers: {
             "Content-Type": "application/json",
             'Authorization': 'Bearer $token',
@@ -155,10 +145,10 @@ class AuthService {
             "last_name": lastName,
             "email": email,
             "birth_date": birthday.toString(),
-            "phone_number": phone
+            "phone_number": phone,
+            "is_subscribed": true
           }));
       final result = json.decode(response.body);
-      print(response.body);
       if (response.statusCode == 200) {
         return true;
       } else {
@@ -167,7 +157,6 @@ class AuthService {
     } on Failure {
       rethrow;
     } catch (e) {
-      print(e);
       throw Failure();
     }
   }

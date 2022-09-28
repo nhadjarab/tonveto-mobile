@@ -23,8 +23,8 @@ class _EditPetScreenState extends State<EditPetScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   List<String> genders = [
-    "male",
-    "female",
+    "Mâle",
+    "Femelle",
   ];
 
   String? birthDateInString;
@@ -32,7 +32,7 @@ class _EditPetScreenState extends State<EditPetScreen> {
   bool isDateSelected = false;
 
   String? _nom;
-  String? _sex = "male";
+  String? _sex = "Mâle";
   String? _animal = types[0];
   String? _race;
   bool _crossbreed = true;
@@ -85,6 +85,7 @@ class _EditPetScreenState extends State<EditPetScreen> {
       final redirect =
           await Provider.of<AuthViewModel>(context, listen: false).editPet(pet);
       if (redirect) {
+        if (!mounted) return;
         Navigator.pop(context);
       }
     }
@@ -282,7 +283,7 @@ class _EditPetScreenState extends State<EditPetScreen> {
                                 });
                               },
                             ),
-                            const Text("Croiser"),
+                            const Text("Croisé(e)"),
                             Column(
                               children: [
                                 RadioListTile<bool>(
@@ -307,7 +308,7 @@ class _EditPetScreenState extends State<EditPetScreen> {
                                 ),
                               ],
                             ),
-                            const Text("Stérilisée"),
+                            const Text("Stérélisé(e)"),
                             Column(
                               children: [
                                 RadioListTile<bool>(

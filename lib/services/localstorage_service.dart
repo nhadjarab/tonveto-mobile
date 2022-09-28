@@ -19,7 +19,6 @@ class LocalStorageService {
       );
       return true;
     } catch (e) {
-      print(e);
       return false;
     }
   }
@@ -35,7 +34,6 @@ class LocalStorageService {
       final userData = json.decode(userAsString);
       return userData;
     } catch (e) {
-      print(e);
       return null;
     }
   }

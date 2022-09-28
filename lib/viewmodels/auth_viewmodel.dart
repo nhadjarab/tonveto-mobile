@@ -2,9 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:tonveto/models/appointment_model.dart';
 import 'package:tonveto/models/clinique_model.dart';
 import 'package:tonveto/models/pet_model.dart';
-import 'package:tonveto/models/vet_model.dart';
 import 'package:tonveto/services/pet_service.dart';
-import 'package:tonveto/services/search_service.dart';
 
 import '../models/failure_model.dart';
 import '../models/user_model.dart';
@@ -50,7 +48,6 @@ class AuthViewModel with ChangeNotifier {
       notifyListeners();
     } catch (e) {
       loading = false;
-      print(e);
       notifyListeners();
     }
   }
@@ -72,21 +69,26 @@ class AuthViewModel with ChangeNotifier {
       notifyListeners();
     } catch (e) {
       loading = false;
-      print(e);
       notifyListeners();
     }
     return false;
   }
 
-  Future<bool> registerInfo(String? firstName, String? lastName, String? phone,
-      DateTime? birthday, String? email, String? password,bool? is_subscribed) async {
+  Future<bool> registerInfo(
+      String? firstName,
+      String? lastName,
+      String? phone,
+      DateTime? birthday,
+      String? email,
+      String? password,
+      bool? isSubscribed) async {
     final AuthService authService = AuthService();
     try {
       loading = true;
       notifyListeners();
       // register user info
       await authService.registerInfo(
-          firstName, lastName, phone, birthday, email, password,is_subscribed);
+          firstName, lastName, phone, birthday, email, password, isSubscribed);
       // login the current user with the email and password
       await login(email, password);
       return true;
@@ -97,7 +99,6 @@ class AuthViewModel with ChangeNotifier {
       return false;
     } catch (e) {
       loading = false;
-      print(e);
       notifyListeners();
       return false;
     }
@@ -118,7 +119,6 @@ class AuthViewModel with ChangeNotifier {
       notifyListeners();
     } catch (e) {
       loading = false;
-      print(e);
       notifyListeners();
     }
   }
@@ -133,11 +133,10 @@ class AuthViewModel with ChangeNotifier {
       await authService.updateUserData(
           user?.id, token, firstName, lastName, phone, birthday, email);
       loading = false;
-
-      user?.last_name = lastName;
-      user?.first_name = firstName;
-      user?.phone_number = phone;
-      user?.birth_date = birthday;
+      user?.lastName = lastName;
+      user?.firstName = firstName;
+      user?.phoneNumber = phone;
+      user?.birthDate = birthday;
       user?.email = email;
 
       notifyListeners();
@@ -146,10 +145,10 @@ class AuthViewModel with ChangeNotifier {
       loading = false;
       errorMessage = f.message;
       notifyListeners();
+
       return false;
     } catch (e) {
       loading = false;
-      print(e);
       notifyListeners();
       return false;
     }
@@ -203,7 +202,6 @@ class AuthViewModel with ChangeNotifier {
       return false;
     } catch (e) {
       loading = false;
-      print(e);
       notifyListeners();
       return false;
     }
@@ -237,7 +235,6 @@ class AuthViewModel with ChangeNotifier {
       return false;
     } catch (e) {
       loading = false;
-      print(e);
       notifyListeners();
       return false;
     }
@@ -261,7 +258,6 @@ class AuthViewModel with ChangeNotifier {
       return false;
     } catch (e) {
       loading = false;
-      print(e);
       notifyListeners();
       return false;
     }
@@ -280,7 +276,6 @@ class AuthViewModel with ChangeNotifier {
 
       List<Appointment> appointments =
           await petService.getPetAppointments(petID, token, user?.id);
-      print(appointments.length);
 
       if (petIndex != null && petIndex != -1) {
         user?.pets?[petIndex].addAppointments(appointments);
@@ -295,7 +290,6 @@ class AuthViewModel with ChangeNotifier {
       return false;
     } catch (e) {
       loading = false;
-      print(e);
       notifyListeners();
       return false;
     }
@@ -317,12 +311,11 @@ class AuthViewModel with ChangeNotifier {
       loading = false;
       errorMessage = f.message;
       notifyListeners();
+      return null;
     } catch (e) {
       loading = false;
       notifyListeners();
-      print(e);
+      return null;
     }
   }
-
-
 }

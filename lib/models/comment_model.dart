@@ -1,22 +1,22 @@
 class CommentModel {
   CommentModel({
     this.text,
-    this.owner_first_name,
-    this.owner_last_name,
+    this.ownerFirstName,
+    this.ownerLastName,
     this.rating,
 
   });
 
   String? text;
-  String? owner_first_name;
-  String? owner_last_name;
+  String? ownerFirstName;
+  String? ownerLastName;
   int? rating;
 
 
   factory CommentModel.fromJson(Map<String, dynamic> json) => CommentModel(
     text: json["text"],
-    owner_first_name: json["owner"]['first_name'],
-    owner_last_name: json["owner"]['last_name'],
+    ownerFirstName: json["owner"]['first_name'],
+    ownerLastName: json["owner"]['last_name'],
     rating: json["rating"]['rating'] ?? 0,
 
   );

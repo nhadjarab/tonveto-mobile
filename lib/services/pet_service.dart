@@ -14,14 +14,13 @@ class PetService {
     try {
       Map<String, dynamic>? body = pet?.toJson();
 
-      final response = await http.post(Uri.parse("$BASE_URL/pet"),
+      final response = await http.post(Uri.parse("$baseUrl/pet"),
           headers: {
             "Content-Type": "application/json",
             'Authorization': 'Bearer $token',
           },
           body: json.encode(body));
       final result = json.decode(response.body);
-      print(response.body);
       if (response.statusCode == 200) {
         return Pet.fromJson(result);
       } else {
@@ -30,7 +29,6 @@ class PetService {
     } on Failure {
       rethrow;
     } catch (e) {
-      print(e);
       throw Failure();
     }
   }
@@ -38,16 +36,14 @@ class PetService {
   Future updatePet(Pet? pet, String? token) async {
     try {
       Map<String, dynamic>? body = pet?.toJson();
-      print(body);
 
-      final response = await http.put(Uri.parse("$BASE_URL/pet/${pet?.id}"),
+      final response = await http.put(Uri.parse("$baseUrl/pet/${pet?.id}"),
           headers: {
             "Content-Type": "application/json",
             'Authorization': 'Bearer $token',
           },
           body: json.encode(body));
       final result = json.decode(response.body);
-      print(response.body);
       if (response.statusCode == 200) {
         return Pet.fromJson(result);
       } else {
@@ -56,7 +52,6 @@ class PetService {
     } on Failure {
       rethrow;
     } catch (e) {
-      print(e);
       throw Failure();
     }
   }
@@ -64,7 +59,7 @@ class PetService {
   Future deletePet(String? userID, String? petID, String? token) async {
     try {
       final response = await http.delete(
-        Uri.parse("$BASE_URL/pet/$petID"),
+        Uri.parse("$baseUrl/pet/$petID"),
         headers: {
           "Content-Type": "application/json",
           'Authorization': 'Bearer $token',
@@ -72,7 +67,6 @@ class PetService {
         },
       );
       final result = json.decode(response.body);
-      print(response.body);
       if (response.statusCode == 200) {
         return true;
       } else {
@@ -81,7 +75,6 @@ class PetService {
     } on Failure {
       rethrow;
     } catch (e) {
-      print(e);
       throw Failure();
     }
   }
@@ -90,7 +83,7 @@ class PetService {
       String? petID, String? token, String? userID) async {
     try {
       final response = await http.get(
-        Uri.parse("$BASE_URL/pet/$petID"),
+        Uri.parse("$baseUrl/pet/$petID"),
         headers: {
           "Content-Type": "application/json",
           'Authorization': 'Bearer $token',
@@ -98,7 +91,6 @@ class PetService {
         },
       );
       final result = json.decode(response.body);
-      print(response.body);
       if (response.statusCode == 200) {
         List<Appointment> appointments = [];
         for (Map<String, dynamic> appointment in result["appointments"]) {
@@ -111,7 +103,6 @@ class PetService {
     } on Failure {
       rethrow;
     } catch (e) {
-      print(e);
       throw Failure();
     }
   }
@@ -119,7 +110,7 @@ class PetService {
   Future getPet(String? petID, String? token, String? userID) async {
     try {
       final response = await http.get(
-        Uri.parse("$BASE_URL/pet/$petID"),
+        Uri.parse("$baseUrl/pet/$petID"),
         headers: {
           "Content-Type": "application/json",
           'Authorization': 'Bearer $token',
@@ -127,7 +118,6 @@ class PetService {
         },
       );
       final result = json.decode(response.body);
-      print(response.body);
       if (response.statusCode == 200) {
         return Pet.fromJson(result);
       } else {
@@ -136,7 +126,6 @@ class PetService {
     } on Failure {
       rethrow;
     } catch (e) {
-      print(e);
       throw Failure();
     }
   }
@@ -144,7 +133,7 @@ class PetService {
   Future getClinic(String? clinicID, String? token, String? userID) async {
     try {
       final response = await http.get(
-        Uri.parse("$BASE_URL/clinic/$clinicID"),
+        Uri.parse("$baseUrl/clinic/$clinicID"),
         headers: {
           "Content-Type": "application/json",
           'Authorization': 'Bearer $token',
@@ -152,7 +141,6 @@ class PetService {
         },
       );
       final result = json.decode(response.body);
-      print(response.body);
       if (response.statusCode == 200) {
         return Clinique.fromJson(result["clinic"]);
       } else {
@@ -161,7 +149,6 @@ class PetService {
     } on Failure {
       rethrow;
     } catch (e) {
-      print(e);
       throw Failure();
     }
   }

@@ -3,8 +3,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 import 'package:tonveto/viewmodels/search_viewmodel.dart';
-import 'package:tonveto/views/screens/appointments/select_date_screen.dart';
-import 'package:tonveto/views/widgets/custom_button.dart';
+
 import 'package:tonveto/views/widgets/widgets.dart';
 import '../../../config/theme.dart';
 import '../../../models/clinique_model.dart';
@@ -14,18 +13,21 @@ import '../../widgets/custom_progress.dart';
 
 class ClinicProfileScreen extends StatefulWidget {
   static const route = "/clinique-profile";
-  Clinique clinique;
+  final Clinique clinique;
 
-  ClinicProfileScreen({required this.clinique, Key? key}) : super(key: key);
+  const ClinicProfileScreen({required this.clinique, Key? key})
+      : super(key: key);
 
   @override
-  _ClinicProfileScreenState createState() => _ClinicProfileScreenState();
+  State<ClinicProfileScreen> createState() => _ClinicProfileScreenState();
 }
 
 class _ClinicProfileScreenState extends State<ClinicProfileScreen> {
   List<Veterinaire>? vets;
+
   getVets() async {
-    vets = await Provider.of<SearchViewModel>(context, listen: false).getClinicVets(
+    vets = await Provider.of<SearchViewModel>(context, listen: false)
+        .getClinicVets(
       widget.clinique.id,
       Provider.of<AuthViewModel>(context, listen: false).user?.id,
       Provider.of<AuthViewModel>(context, listen: false).token,
@@ -94,7 +96,6 @@ class _ClinicProfileScreenState extends State<ClinicProfileScreen> {
                             fit: BoxFit.contain),
                       ),
                     ),
-
                     Container(
                       margin:
                           EdgeInsets.symmetric(horizontal: 5.w, vertical: 20),
@@ -175,7 +176,7 @@ class _ClinicProfileScreenState extends State<ClinicProfileScreen> {
                                         color: AppTheme.mainColor),
                                   ),
                                   TextSpan(
-                                    text: " ${widget.clinique.phone_number}",
+                                    text: " ${widget.clinique.phoneNumber}",
                                     style: const TextStyle(
                                         fontSize: 17, color: Colors.black),
                                   ),
@@ -200,7 +201,7 @@ class _ClinicProfileScreenState extends State<ClinicProfileScreen> {
                                         color: AppTheme.mainColor),
                                   ),
                                   TextSpan(
-                                    text: " ${widget.clinique.zip_code}",
+                                    text: " ${widget.clinique.zipCode}",
                                     style: const TextStyle(
                                         fontSize: 17, color: Colors.black),
                                   ),
@@ -214,42 +215,40 @@ class _ClinicProfileScreenState extends State<ClinicProfileScreen> {
                     vets?.length == 0
                         ? const SizedBox()
                         : const Padding(
-                      padding: EdgeInsets.only(left: 30.0),
-                      child: Text(
-                        'Vétérinaires',
-                        style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold),
-                      ),
-                    ),
+                            padding: EdgeInsets.only(left: 30.0),
+                            child: Text(
+                              'Vétérinaires',
+                              style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                          ),
                     vets?.length == 0
                         ? const SizedBox()
                         : Container(
-                      margin: EdgeInsets.symmetric(
-                        horizontal: 5.w,
-                      ),
-                      padding: const EdgeInsets.symmetric(horizontal: 10),
-                      height: 50.h,
-                      child: vets?.length == 0
-                          ? const Center(
-                        child: Text(
-                          'Aucune Vétérinaire trouvée',
-                          style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold),
-                        ),
-                      )
-                          : ListView.builder(
-                        itemCount: vets?.length,
-                        itemBuilder: (context, index) {
-                          print(vets?[index].first_name);
-                          return VetCard(
-                              veterinaire: vets?[index]);
-                        },
-                      ),
-                    ),
+                            margin: EdgeInsets.symmetric(
+                              horizontal: 5.w,
+                            ),
+                            padding: const EdgeInsets.symmetric(horizontal: 10),
+                            height: 50.h,
+                            child: vets?.length == 0
+                                ? const Center(
+                                    child: Text(
+                                      'Aucune Vétérinaire trouvée',
+                                      style: TextStyle(
+                                          color: Colors.black,
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                  )
+                                : ListView.builder(
+                                    itemCount: vets?.length,
+                                    itemBuilder: (context, index) {
+                                      return VetCard(veterinaire: vets?[index]);
+                                    },
+                                  ),
+                          ),
                   ],
                 ),
               ),

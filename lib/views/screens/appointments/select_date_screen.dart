@@ -1,26 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:tonveto/config/theme.dart';
 import 'package:tonveto/models/appointment_model.dart';
-import 'package:tonveto/models/clinique_model.dart';
 import 'package:tonveto/views/screens/appointments/available_appointments_screen.dart';
 import 'package:tonveto/views/widgets/custom_button.dart';
 
 class SelectDateScreen extends StatefulWidget {
-  SelectDateScreen(
-      {required this.clinique_id,
-      required this.vet_id,
+  const SelectDateScreen(
+      {required this.cliniqueId,
+      required this.vetId,
       required this.price,
       this.appointment,
       Key? key})
       : super(key: key);
 
-  String clinique_id;
-  String vet_id;
-  String price;
-  Appointment? appointment;
+ final  String cliniqueId;
+ final String vetId;
+  final String price;
+  final Appointment? appointment;
 
   @override
-  _SelectDateScreenState createState() => _SelectDateScreenState();
+  State<SelectDateScreen> createState() => _SelectDateScreenState();
 }
 
 class _SelectDateScreenState extends State<SelectDateScreen> {
@@ -83,7 +82,9 @@ class _SelectDateScreenState extends State<SelectDateScreen> {
                     initialDate: widget.appointment != null
                         ? widget.appointment?.date ?? DateTime.now()
                         : DateTime.now(),
-                    firstDate: DateTime.now(),
+                    firstDate: widget.appointment != null
+                        ? widget.appointment?.date ?? DateTime.now()
+                        : DateTime.now(),
                     lastDate: DateTime(2050));
                 if (datePick != null && datePick != birthDate) {
                   setState(() {
@@ -149,9 +150,9 @@ class _SelectDateScreenState extends State<SelectDateScreen> {
                             MaterialPageRoute(
                                 builder: (context) =>
                                     AvailableAppointmentsScreen(
-                                      clinique_id: widget.clinique_id,
+                                      cliniqueId: widget.cliniqueId,
                                       date: birthDate!,
-                                      vet_id: widget.vet_id,
+                                      vetId: widget.vetId,
                                       appointment: widget.appointment,
                                       price: '',
 
@@ -163,9 +164,9 @@ class _SelectDateScreenState extends State<SelectDateScreen> {
                             MaterialPageRoute(
                                 builder: (context) =>
                                     AvailableAppointmentsScreen(
-                                      clinique_id: widget.clinique_id,
+                                      cliniqueId: widget.cliniqueId,
                                       date: birthDate!,
-                                      vet_id: widget.vet_id,
+                                      vetId: widget.vetId,
                                       price:widget.price,
                                     )),
                           );

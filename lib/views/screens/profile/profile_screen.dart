@@ -63,7 +63,7 @@ class ProfileScreen extends StatelessWidget {
                             ),
                             const SizedBox(height: AppTheme.divider * 2),
                             Text(
-                              "${auth.user?.first_name} ${auth.user?.last_name}",
+                              "${auth.user?.firstName} ${auth.user?.lastName}",
                               overflow: TextOverflow.ellipsis,
                               style: TextStyle(
                                   color: Colors.white,
@@ -101,7 +101,7 @@ class ProfileScreen extends StatelessWidget {
                                   color: AppTheme.mainColor,
                                 ),
                                 title: InfoWidget(
-                                  info: '${auth.user?.last_name}',
+                                  info: '${auth.user?.lastName}',
                                   infoType: 'Nom',
                                 )),
                             ListTile(
@@ -110,8 +110,18 @@ class ProfileScreen extends StatelessWidget {
                                   color: AppTheme.mainColor,
                                 ),
                                 title: InfoWidget(
-                                  info: '${auth.user?.first_name}',
+                                  info: '${auth.user?.firstName}',
                                   infoType: 'Prénom',
+                                )),
+                            ListTile(
+                                leading: const Icon(
+                                  Icons.date_range_outlined,
+                                  color: AppTheme.mainColor,
+                                ),
+                                title: InfoWidget(
+                                  info:
+                                  '${auth.user?.birthDate?.day}/${auth.user?.birthDate?.month}/${auth.user?.birthDate?.year}',
+                                  infoType: 'Date de naissance',
                                 )),
                             ListTile(
                                 leading: const Icon(
@@ -122,24 +132,15 @@ class ProfileScreen extends StatelessWidget {
                                   info: '${auth.user?.email}',
                                   infoType: 'Email',
                                 )),
-                            ListTile(
-                                leading: const Icon(
-                                  Icons.date_range_outlined,
-                                  color: AppTheme.mainColor,
-                                ),
-                                title: InfoWidget(
-                                  info:
-                                      '${auth.user?.birth_date?.year}/${auth.user?.birth_date?.month}/${auth.user?.birth_date?.day}',
-                                  infoType: 'Date de naissance',
-                                )),
+
                             ListTile(
                                 leading: const Icon(
                                   Icons.phone,
                                   color: AppTheme.mainColor,
                                 ),
                                 title: InfoWidget(
-                                  info: "${auth.user?.phone_number}",
-                                  infoType: 'Tel',
+                                  info: "${auth.user?.phoneNumber}",
+                                  infoType: 'Téléphone',
                                 )),
                           ],
                         ),

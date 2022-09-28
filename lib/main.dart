@@ -7,7 +7,7 @@ import 'config/consts.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  Stripe.publishableKey = STRIPE_PUBLIC_KEY;
+  Stripe.publishableKey = stripePublicKey;
   await SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
   ]);

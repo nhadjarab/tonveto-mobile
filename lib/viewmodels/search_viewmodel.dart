@@ -25,9 +25,9 @@ class SearchViewModel with ChangeNotifier {
 
   Future search(
       String? city,
-      String? zip_code,
-      String? vet_name,
-      String? clinic_name,
+      String? zipCode,
+      String? vetName,
+      String? clinicName,
       String? specialty,
       String? address,
       String? country,
@@ -36,8 +36,8 @@ class SearchViewModel with ChangeNotifier {
       final SearchService searchService = SearchService();
       loading = true;
       notifyListeners();
-      searchResult = await searchService.search(city, zip_code, vet_name,
-          clinic_name, specialty, address, country, token);
+      searchResult = await searchService.search(city, zipCode, vetName,
+          clinicName, specialty, address, country, token);
       loading = false;
       notifyListeners();
     } on Failure catch (f) {
@@ -46,18 +46,17 @@ class SearchViewModel with ChangeNotifier {
       notifyListeners();
     } catch (e) {
       loading = false;
-      print(e);
       notifyListeners();
     }
   }
 
   Future<Veterinaire?> getVet(
-      String? vetId, String? user_id, String? token) async {
+      String? vetId, String? userId, String? token) async {
     try {
       final SearchService searchService = SearchService();
       loading = true;
       notifyListeners();
-      Veterinaire vet = await searchService.getVet(vetId, user_id, token);
+      Veterinaire vet = await searchService.getVet(vetId, userId, token);
 
       loading = false;
       notifyListeners();
@@ -66,21 +65,22 @@ class SearchViewModel with ChangeNotifier {
       loading = false;
       errorMessage = f.message;
       notifyListeners();
+      return null;
     } catch (e) {
       loading = false;
-      print(e);
       notifyListeners();
+      return null;
     }
   }
 
   Future<List<Veterinaire>?> getClinicVets(
-      String? clinicId, String? user_id, String? token) async {
+      String? clinicId, String? userId, String? token) async {
     try {
       final SearchService searchService = SearchService();
       loading = true;
       notifyListeners();
       List<Veterinaire>? vets =
-          await searchService.getClinicVet(clinicId, user_id, token);
+          await searchService.getClinicVet(clinicId, userId, token);
 
       loading = false;
       notifyListeners();
@@ -89,21 +89,22 @@ class SearchViewModel with ChangeNotifier {
       loading = false;
       errorMessage = f.message;
       notifyListeners();
+      return null;
     } catch (e) {
       loading = false;
-      print(e);
       notifyListeners();
+      return null;
     }
   }
 
   Future<List<String>?> getAvailableAppointments(
-      String? vetId, String? user_id, String? date, String? token) async {
+      String? vetId, String? userId, String? date, String? token) async {
     try {
       final SearchService searchService = SearchService();
       loading = true;
       notifyListeners();
       List<String> vet = await searchService.getAvailableAppointments(
-          vetId, user_id, date, token);
+          vetId, userId, date, token);
 
       loading = false;
       notifyListeners();
@@ -112,10 +113,11 @@ class SearchViewModel with ChangeNotifier {
       loading = false;
       errorMessage = f.message;
       notifyListeners();
+      return null;
     } catch (e) {
       loading = false;
-      print(e);
       notifyListeners();
+      return null;
     }
   }
 }
