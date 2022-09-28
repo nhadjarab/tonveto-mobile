@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-
 import '../../../config/theme.dart';
 import '../../../utils/validators.dart';
 import '../../../viewmodels/auth_viewmodel.dart';

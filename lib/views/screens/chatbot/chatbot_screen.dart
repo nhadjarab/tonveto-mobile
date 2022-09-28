@@ -110,7 +110,6 @@ class _ChatBotScreenState extends State<ChatBotScreen> {
         centerTitle: true,
         elevation: 0,
         backgroundColor: AppTheme.mainColor,
-        actions: [IconButton(onPressed: clear, icon: const Icon(Icons.clear))],
       ),
       body: Column(
         children: [

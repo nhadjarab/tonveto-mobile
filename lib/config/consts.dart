@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 const String baseUrl = "https://vetolib-backend-production.up.railway.app";
 const String aiUrl = "http://ai.tonveto.com";
 const String appName = "Tonveto";

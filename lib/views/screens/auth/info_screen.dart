@@ -162,10 +162,13 @@ class _InfoScreenState extends State<InfoScreen> {
                           text: "Créer votre compte", onPressed: register),
                   Consumer<AuthViewModel>(builder: (context, value, child) {
                     if (value.errorMessage != null) {
-                      return ShowMessage(
-                          message: value.errorMessage!,
-                          isError: true,
-                          onPressed: () => value.clearError());
+                      Future.delayed(Duration.zero, () {
+                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                          content: Text(value.errorMessage!),
+                          backgroundColor: AppTheme.errorColor,
+                        ));
+                        value.clearError();
+                      });
                     }
                     return const SizedBox.shrink();
                   }),
