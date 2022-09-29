@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "982948376843",
+    "project_id": "tonveto-firebase",
+    "storage_bucket": "tonveto-firebase.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:982948376843:android:1473309afcf8b479a1f20e",
+        "android_client_info": {
+          "package_name": "com.tonveto.tonvetoapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "982948376843-4ku5mummbuhrb4qmt9juiku8e2ne022a.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBVpDVydd462GyUkoN8U19Si6KKLRzebrs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "982948376843-4ku5mummbuhrb4qmt9juiku8e2ne022a.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "982948376843-d9btfj2bdvc0u2ivqe53gng873k6j3cp.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "nassim.fatmi.com.vet"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

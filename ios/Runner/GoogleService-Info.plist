@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>982948376843-d9btfj2bdvc0u2ivqe53gng873k6j3cp.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.982948376843-d9btfj2bdvc0u2ivqe53gng873k6j3cp</string>
+	<key>API_KEY</key>
+	<string>AIzaSyA17onxcAnU7ZZkxVf4d3abPgruNdMBwHQ</string>
+	<key>GCM_SENDER_ID</key>
+	<string>982948376843</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>nassim.fatmi.com.vet</string>
+	<key>PROJECT_ID</key>
+	<string>tonveto-firebase</string>
+	<key>STORAGE_BUCKET</key>
+	<string>tonveto-firebase.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:982948376843:ios:1d9d057efdf957baa1f20e</string>
+</dict>
+</plist>
