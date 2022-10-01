@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:sizer/sizer.dart';
 import 'package:tonveto/config/theme.dart';
 import 'package:tonveto/models/pet_model.dart';
 import 'package:tonveto/viewmodels/auth_viewmodel.dart';

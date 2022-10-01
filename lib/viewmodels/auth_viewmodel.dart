@@ -93,22 +93,14 @@ class AuthViewModel with ChangeNotifier {
       DateTime? birthday,
       String? email,
       String? password,
-<<<<<<< HEAD
-      bool? isSubscribed) async {
-=======
       bool? is_subscribed) async {
->>>>>>> 0e7d4d0 (fix error msg / remove chatbot clear btn)
     final AuthService authService = AuthService();
     try {
       loading = true;
       notifyListeners();
       // register user info
       await authService.registerInfo(
-<<<<<<< HEAD
-          firstName, lastName, phone, birthday, email, password, isSubscribed);
-=======
           firstName, lastName, phone, birthday, email, password, is_subscribed);
->>>>>>> 0e7d4d0 (fix error msg / remove chatbot clear btn)
       // login the current user with the email and password
       await login(email, password);
       return true;

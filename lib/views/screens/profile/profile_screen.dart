@@ -171,11 +171,7 @@ class ProfileScreen extends StatelessWidget {
                                 auth.logout();
                               },
                             ),
-                            ListTile(
-                              title: Text("send crash"),
-                                onTap: () => throw Exception(),
 
-                            )
                           ],
                         ),
                       )

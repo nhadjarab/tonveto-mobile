@@ -7,16 +7,23 @@ class InternetScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return  Scaffold(
+    return Scaffold(
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Text("No internet connection",style: TextStyle(fontSize: 22),),
-            const SizedBox(height: 40,),
-            CustomButton(text: 'Reconnecter', onPressed: (){
-              Navigator.pushReplacementNamed(context, Wrapper.route);
-            })
+            Text(
+              textLocals.pasDeConnexionInternet,
+              style: const TextStyle(fontSize: 22),
+            ),
+            const SizedBox(
+              height: 40,
+            ),
+            CustomButton(
+                text: 'Reconnecter',
+                onPressed: () {
+                  Navigator.pushReplacementNamed(context, Wrapper.route);
+                })
           ],
         ),
       ),
