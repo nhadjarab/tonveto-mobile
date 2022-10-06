@@ -29,7 +29,7 @@ class PetService {
     } on Failure {
       rethrow;
     } catch (e) {
-      throw Failure();
+      rethrow;
     }
   }
 
@@ -52,7 +52,7 @@ class PetService {
     } on Failure {
       rethrow;
     } catch (e) {
-      throw Failure();
+      rethrow;
     }
   }
 
@@ -75,7 +75,7 @@ class PetService {
     } on Failure {
       rethrow;
     } catch (e) {
-      throw Failure();
+      rethrow;
     }
   }
 
@@ -103,7 +103,7 @@ class PetService {
     } on Failure {
       rethrow;
     } catch (e) {
-      throw Failure();
+      rethrow;
     }
   }
 
@@ -126,7 +126,7 @@ class PetService {
     } on Failure {
       rethrow;
     } catch (e) {
-      throw Failure();
+      rethrow;
     }
   }
 
@@ -149,7 +149,7 @@ class PetService {
     } on Failure {
       rethrow;
     } catch (e) {
-      throw Failure();
+      rethrow;
     }
   }
 }

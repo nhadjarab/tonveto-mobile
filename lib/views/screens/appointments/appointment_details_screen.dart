@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
@@ -30,12 +32,29 @@ class _AppointmentDetailsScreenState extends State<AppointmentDetailsScreen> {
   String? text;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
+  getClinic()async {
+    try {
+      clinic = await Provider.of<AuthViewModel>(context, listen: false)
+          .getClinic(widget.appointment.clinicId);
+    } on SocketException {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const  SnackBar(
+          content: Text(
+            'Vous étes hors ligne',
+            style:
+            TextStyle(color: Colors.white),
+          ),
+          backgroundColor: AppTheme.errorColor,
+        ),
+      );
+    }
+  }
+
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      clinic = await Provider.of<AuthViewModel>(context, listen: false)
-          .getClinic(widget.appointment.clinicId);
+      getClinic();
     });
 
 
@@ -58,20 +77,34 @@ class _AppointmentDetailsScreenState extends State<AppointmentDetailsScreen> {
                   style: TextStyle(color: Colors.red),
                 ),
                 onPressed: () async {
-                  SearchService searchService = SearchService();
-                  await searchService.cancelAppointment(
-                      widget.appointment.id,
-                      Provider.of<AuthViewModel>(context, listen: false)
-                              .user
-                              ?.id ??
-                          '',
-                      Provider.of<AuthViewModel>(context, listen: false).token);
-                  if (!mounted) return;
-                  await Provider.of<AuthViewModel>(context, listen: false)
-                      .getUserData();
-                  if (!mounted) return;
-                  Navigator.pop(context);
-                  Navigator.pop(context);
+                  try {
+                    SearchService searchService = SearchService();
+                    await searchService.cancelAppointment(
+                        widget.appointment.id,
+                        Provider.of<AuthViewModel>(context, listen: false)
+                            .user
+                            ?.id ??
+                            '',
+                        Provider.of<AuthViewModel>(context, listen: false).token);
+                    if (!mounted) return;
+                    await Provider.of<AuthViewModel>(context, listen: false)
+                        .getUserData();
+                    if (!mounted) return;
+                    Navigator.pop(context);
+                    Navigator.pop(context);
+                  } on SocketException {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const  SnackBar(
+                        content: Text(
+                          'Vous étes hors ligne',
+                          style:
+                          TextStyle(color: Colors.white),
+                        ),
+                        backgroundColor: AppTheme.errorColor,
+                      ),
+                    );
+                  }
+
                 },
               ),
               TextButton(
@@ -130,27 +163,55 @@ class _AppointmentDetailsScreenState extends State<AppointmentDetailsScreen> {
                     style: TextStyle(color: Colors.red),
                   ),
                   onPressed: () async {
-                    if (_formKey.currentState!.validate()) {
-                      _formKey.currentState!.save();
-                      SearchService searchService = SearchService();
+                    try {
+                      if (_formKey.currentState!.validate()) {
+                        _formKey.currentState!.save();
+                        SearchService searchService = SearchService();
 
-                      await searchService.addVetComment(
-                          text,
-                          widget.appointment.vetId,
-                          (value.rating ?? 0).toString(),
-                          Provider.of<AuthViewModel>(context, listen: false)
-                              .user
-                              ?.id,
-                          Provider.of<AuthViewModel>(context, listen: false)
-                              .token);
-                      value.setRating(0);
-                      if (!mounted) return;
-                      await Provider.of<AuthViewModel>(context, listen: false)
-                          .getUserData();
-                      if (!mounted) return;
-                      Navigator.pop(context);
-                      Navigator.pop(context);
+                        await searchService.addVetComment(
+                            text,
+                            widget.appointment.vetId,
+                            (value.rating ?? 0).toString(),
+                            Provider.of<AuthViewModel>(context, listen: false)
+                                .user
+                                ?.id,
+                            widget.appointment.id,
+                            Provider.of<AuthViewModel>(context, listen: false)
+                                .token).then((value){
+                                  if(!value){
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      const  SnackBar(
+                                        content: Text(
+                                          'Vous avez deja évaluer ce vétérinaire',
+                                          style:
+                                          TextStyle(color: Colors.white),
+                                        ),
+                                        backgroundColor: AppTheme.errorColor,
+                                      ),
+                                    );
+                                  }
+                        });
+                        value.setRating(0);
+                        if (!mounted) return;
+                        await Provider.of<AuthViewModel>(context, listen: false)
+                            .getUserData();
+                        if (!mounted) return;
+                        Navigator.pop(context);
+                        Navigator.pop(context);
+                      }
+                    } on SocketException {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const  SnackBar(
+                          content: Text(
+                            'Vous étes hors ligne',
+                            style:
+                            TextStyle(color: Colors.white),
+                          ),
+                          backgroundColor: AppTheme.errorColor,
+                        ),
+                      );
                     }
+
                   },
                 ),
                 TextButton(
@@ -337,6 +398,7 @@ class _AppointmentDetailsScreenState extends State<AppointmentDetailsScreen> {
                           ],
                         ),
                       ),
+                  if(clinic !=null)
                   Container(
                     margin: EdgeInsets.symmetric(
                       horizontal: 5.w,

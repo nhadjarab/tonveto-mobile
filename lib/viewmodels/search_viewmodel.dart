@@ -44,9 +44,11 @@ class SearchViewModel with ChangeNotifier {
       loading = false;
       errorMessage = f.message;
       notifyListeners();
+      rethrow;
     } catch (e) {
       loading = false;
       notifyListeners();
+      rethrow;
     }
   }
 
@@ -56,7 +58,7 @@ class SearchViewModel with ChangeNotifier {
       final SearchService searchService = SearchService();
       loading = true;
       notifyListeners();
-      Veterinaire vet = await searchService.getVet(vetId, userId, token);
+      Veterinaire? vet = await searchService.getVet(vetId, userId, token);
 
       loading = false;
       notifyListeners();
@@ -65,11 +67,11 @@ class SearchViewModel with ChangeNotifier {
       loading = false;
       errorMessage = f.message;
       notifyListeners();
-      return null;
+      rethrow;
     } catch (e) {
       loading = false;
       notifyListeners();
-      return null;
+      rethrow;
     }
   }
 
@@ -89,11 +91,11 @@ class SearchViewModel with ChangeNotifier {
       loading = false;
       errorMessage = f.message;
       notifyListeners();
-      return null;
+      rethrow;
     } catch (e) {
       loading = false;
       notifyListeners();
-      return null;
+      rethrow;
     }
   }
 
@@ -113,11 +115,11 @@ class SearchViewModel with ChangeNotifier {
       loading = false;
       errorMessage = f.message;
       notifyListeners();
-      return null;
+      rethrow;
     } catch (e) {
       loading = false;
       notifyListeners();
-      return null;
+      rethrow;
     }
   }
 }

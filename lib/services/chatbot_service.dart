@@ -16,7 +16,8 @@ class ChatbotService {
       final result = json.decode(response.body);
       return result["result"];
     } catch (e) {
-      return [];
+      rethrow;
+
     }
   }
 
@@ -30,7 +31,8 @@ class ChatbotService {
       final result = json.decode(response.body);
       return result["result"];
     } catch (e) {
-      return [];
+      rethrow;
+
     }
   }
 }

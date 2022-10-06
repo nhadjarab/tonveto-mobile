@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
@@ -38,22 +40,36 @@ class _AvailableAppointmentsScreenState
   List<String> apresMidi = [];
 
   getAvailableAppointments() async {
-    appointments = await Provider.of<SearchViewModel>(context, listen: false)
-            .getAvailableAppointments(
-          widget.vetId,
-          Provider.of<AuthViewModel>(context, listen: false).user?.id,
-          DateFormat('yyyy-MM-dd').format(widget.date),
-          Provider.of<AuthViewModel>(context, listen: false).token,
-        ) ??
-        [];
+    try {
+      appointments = await Provider.of<SearchViewModel>(context, listen: false)
+          .getAvailableAppointments(
+        widget.vetId,
+        Provider.of<AuthViewModel>(context, listen: false).user?.id,
+        DateFormat('yyyy-MM-dd').format(widget.date),
+        Provider.of<AuthViewModel>(context, listen: false).token,
+      ) ??
+          [];
 
-    for (int i = 0; i < appointments.length; i++) {
-      if (int.parse(appointments[i].split(':')[0]) < 12) {
-        matin.add(appointments[i]);
-      } else {
-        apresMidi.add(appointments[i]);
+      for (int i = 0; i < appointments.length; i++) {
+        if (int.parse(appointments[i].split(':')[0]) < 12) {
+          matin.add(appointments[i]);
+        } else {
+          apresMidi.add(appointments[i]);
+        }
       }
+    } on SocketException {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const  SnackBar(
+          content: Text(
+            'Vous étes hors ligne',
+            style:
+            TextStyle(color: Colors.white),
+          ),
+          backgroundColor: AppTheme.errorColor,
+        ),
+      );
     }
+
   }
 
   @override

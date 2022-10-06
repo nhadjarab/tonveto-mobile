@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
@@ -82,12 +84,39 @@ class _EditPetScreenState extends State<EditPetScreen> {
         sterilised: _sterilised,
         crossbreed: _crossbreed,
       );
-      final redirect =
-          await Provider.of<AuthViewModel>(context, listen: false).editPet(pet);
-      if (redirect) {
-        if (!mounted) return;
-        Navigator.pop(context);
+
+      try {
+
+        await Provider.of<AuthViewModel>(context, listen: false).editPet(pet).then((value){
+
+          if (value) {
+            if (!mounted) return;
+            Navigator.pop(context);
+          }
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text(
+                'Informations modifiées avec succès',
+                style: TextStyle(color: Colors.white),
+              ),
+              backgroundColor: AppTheme.successColor,
+            ),
+          );
+        });
+
+      } on SocketException {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const  SnackBar(
+            content: Text(
+              'Vous étes hors ligne',
+              style:
+              TextStyle(color: Colors.white),
+            ),
+            backgroundColor: AppTheme.errorColor,
+          ),
+        );
       }
+
     }
   }
 

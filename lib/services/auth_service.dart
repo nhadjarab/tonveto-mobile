@@ -18,6 +18,7 @@ class AuthService {
             "password": password,
           }));
       final result = json.decode(response.body);
+      print(result);
       if (response.statusCode == 200) {
         Map<String, dynamic> userInfo = {
           "userProfile": User.fromJson(result["userProfile"]),
@@ -31,6 +32,7 @@ class AuthService {
     } on Failure {
       rethrow;
     } catch (e) {
+      print(e.toString());
       throw Failure();
     }
   }

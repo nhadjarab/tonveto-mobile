@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:tonveto/config/theme.dart';
@@ -21,8 +23,22 @@ class _PetAppointmentScreenState extends State<PetAppointmentScreen> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      Provider.of<AuthViewModel>(context, listen: false)
-          .getPetAppointments(widget.pet.id);
+      try {
+        await Provider.of<AuthViewModel>(context, listen: false)
+            .getPetAppointments(widget.pet.id);
+      } on SocketException {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const  SnackBar(
+            content: Text(
+              'Vous étes hors ligne',
+              style:
+              TextStyle(color: Colors.white),
+            ),
+            backgroundColor: AppTheme.errorColor,
+          ),
+        );
+      }
+
     });
 
   }

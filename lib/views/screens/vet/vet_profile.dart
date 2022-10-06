@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
@@ -26,16 +28,32 @@ class _VetProfileScreenState extends State<VetProfileScreen> {
   Veterinaire? vet;
 
   getVet() async {
-    vet = await Provider.of<SearchViewModel>(context, listen: false).getVet(
-      widget.vet.id,
-      Provider.of<AuthViewModel>(context, listen: false).user?.id,
-      Provider.of<AuthViewModel>(context, listen: false).token,
-    );
+
+    try {
+      vet = await Provider.of<SearchViewModel>(context, listen: false).getVet(
+        widget.vet.id,
+        Provider.of<AuthViewModel>(context, listen: false).user?.id,
+        Provider.of<AuthViewModel>(context, listen: false).token,
+      );
+    } on SocketException {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const  SnackBar(
+          content: Text(
+            'Vous étes hors ligne',
+            style:
+            TextStyle(color: Colors.white),
+          ),
+          backgroundColor: AppTheme.errorColor,
+        ),
+      );
+    }
+
   }
 
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
+
       getVet();
     });
 
@@ -105,6 +123,7 @@ class _VetProfileScreenState extends State<VetProfileScreen> {
                             fit: BoxFit.contain),
                       ),
                     ),
+                    if(vet!=null)
                     Padding(
                       padding: EdgeInsets.only(left: 5.w, right: 5.w, top: 10),
                       child: CustomButton(
@@ -115,7 +134,7 @@ class _VetProfileScreenState extends State<VetProfileScreen> {
                               MaterialPageRoute(
                                   builder: (context) => SelectSpecialty(
                                         specialties:
-                                            widget.vet.specialities ?? [],
+                                            vet?.specialities ?? [],
                                         clinics: vet?.clinics ?? [],
                                         vetId: vet?.id ?? '',
                                       )),
@@ -212,6 +231,7 @@ class _VetProfileScreenState extends State<VetProfileScreen> {
                         ],
                       ),
                     ),
+                    if(vet!=null)
                     Padding(
                       padding: vet?.specialities?.length != 0
                           ? const EdgeInsets.only(left: 15, bottom: 10)
@@ -232,48 +252,53 @@ class _VetProfileScreenState extends State<VetProfileScreen> {
                                         fontWeight: FontWeight.bold),
                                   ),
                                 ),
-                          SizedBox(
-                            height: vet?.specialities?.length == 0 ? 0 : 60,
-                            child: ListView.builder(
-                              scrollDirection: Axis.horizontal,
-                              itemCount: vet?.specialities?.length,
-                              itemBuilder: (context, index) {
-                                return Container(
-                                  alignment: Alignment.center,
-                                  margin:
-                                      const EdgeInsets.symmetric(horizontal: 5),
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 10, vertical: 10),
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(10),
-                                    border: Border.all(
-                                      color: AppTheme.mainColor,
+                          LayoutBuilder(
+
+                            builder:(context, constraints) => SizedBox(
+                              height: vet?.specialities?.length == 0 ? 0 : 75,
+                              child: ListView.builder(
+                                scrollDirection: Axis.horizontal,
+                                itemCount: vet?.specialities?.length,
+                                itemBuilder: (context, index) {
+                                  return Container(
+                                    alignment: Alignment.center,
+                                    margin:
+                                        const EdgeInsets.symmetric(horizontal: 5),
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 10, vertical: 10),
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(10),
+                                      border: Border.all(
+                                        color: AppTheme.mainColor,
+                                      ),
+                                      color: Colors.white,
                                     ),
-                                    color: Colors.white,
-                                  ),
-                                  child: Column(
-                                    children: [
-                                      Text(
-                                        "${vet?.specialities?[index]['name']}",
-                                        style: const TextStyle(
-                                            color: Colors.black, fontSize: 16),
-                                      ),
-                                      Text(
-                                        "${vet?.specialities?[index]['price']} €",
-                                        style: const TextStyle(
-                                            color: AppTheme.mainColor,
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 16),
-                                      ),
-                                    ],
-                                  ),
-                                );
-                              },
+                                    child: Column(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      children: [
+                                        Text(
+                                          "${vet?.specialities?[index]['name']}",
+                                          style: const TextStyle(
+                                              color: Colors.black, fontSize: 16),
+                                        ),
+                                        Text(
+                                          "${vet?.specialities?[index]['price']} €",
+                                          style: const TextStyle(
+                                              color: AppTheme.mainColor,
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 16),
+                                        ),
+                                      ],
+                                    ),
+                                  );
+                                },
+                              ),
                             ),
                           ),
                         ],
                       ),
                     ),
+                    if(vet!=null)
                     vet?.clinics?.length == 0
                         ? const SizedBox()
                         : const Padding(
@@ -286,6 +311,7 @@ class _VetProfileScreenState extends State<VetProfileScreen> {
                                   fontWeight: FontWeight.bold),
                             ),
                           ),
+                    if(vet!=null)
                     vet?.clinics?.length == 0
                         ? const SizedBox()
                         : Container(

@@ -6,7 +6,7 @@ class ChatbotViewModel {
       final ChatbotService chatbotService = ChatbotService();
       return await chatbotService.getSymptoms(species);
     } catch (e) {
-      return [];
+      rethrow;
     }
   }
 
@@ -15,7 +15,7 @@ class ChatbotViewModel {
       final ChatbotService chatbotService = ChatbotService();
       return await chatbotService.predictDisease(species, symptoms);
     } catch (e) {
-      return [];
+      rethrow;
     }
   }
 }

@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 import 'package:tonveto/config/consts.dart';
@@ -225,11 +227,29 @@ class _ChatBotScreenState extends State<ChatBotScreen> {
       messages.add(Message(isOwn: true, message: _species!));
       messages.add(Message(isOwn: false, message: "Wait a moment please"));
       setState(() {});
-      ChatbotViewModel chatbotViewModel = ChatbotViewModel();
-      final predictedSym = await chatbotViewModel.getSymptoms(_species!);
-      symptoms.addAll(predictedSym);
-      _showSymptomsMenu = true;
-      setState(() {});
+
+      try {
+        ChatbotViewModel chatbotViewModel = ChatbotViewModel();
+        final predictedSym = await chatbotViewModel.getSymptoms(_species!);
+        symptoms.addAll(predictedSym);
+        _showSymptomsMenu = true;
+        setState(() {});
+      } on SocketException {
+        currentOperation = 1;
+        if (!mounted) return;
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text(
+              'Vous étes hors ligne',
+              style: TextStyle(color: Colors.white),
+            ),
+            backgroundColor: AppTheme.errorColor,
+          ),
+        );
+        messages.add(Message(isOwn: false, message: "You are offline, Try again please"));
+
+        setState(() {});
+      }
     }
   }
 
@@ -294,18 +314,31 @@ class _ChatBotScreenState extends State<ChatBotScreen> {
       messages.add(Message(isOwn: false, message: "Wait a moment please"));
       setState(() {});
 
-      ChatbotViewModel chatbotViewModel = ChatbotViewModel();
-      final prediction =
-          await chatbotViewModel.predictDisease(_species!, _selectedSymptoms);
-      messages
-          .add(Message(isOwn: false, message: "This is what i think about"));
-      messages.add(Message(
-          isOwn: false,
-          message: prediction?.join(", ") ??
-              "We can't find a prediction for disease"));
+      try {
+        ChatbotViewModel chatbotViewModel = ChatbotViewModel();
+        final prediction =
+            await chatbotViewModel.predictDisease(_species!, _selectedSymptoms);
+        messages
+            .add(Message(isOwn: false, message: "This is what i think about"));
+        messages.add(Message(
+            isOwn: false,
+            message: prediction?.join(", ") ??
+                "We can't find a prediction for disease"));
 
-      currentOperation = 3;
-      setState(() {});
+        currentOperation = 3;
+        setState(() {});
+      } on SocketException {
+        if (!mounted) return;
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text(
+              'Vous étes hors ligne',
+              style: TextStyle(color: Colors.white),
+            ),
+            backgroundColor: AppTheme.errorColor,
+          ),
+        );
+      }
     }
   }
 }

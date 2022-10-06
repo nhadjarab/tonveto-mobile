@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import 'package:tonveto/models/appointment_model.dart';
@@ -58,11 +59,12 @@ class SearchService {
     } on Failure {
       rethrow;
     } catch (e) {
-      throw Failure();
+      print(e.toString());
+    rethrow;
     }
   }
 
-  Future<Veterinaire> getVet(
+  Future<Veterinaire?> getVet(
       String? vetId, String? userId, String? token) async {
     try {
       String url = "$baseUrl/vet/$vetId";
@@ -76,15 +78,18 @@ class SearchService {
         },
       );
       final result = json.decode(response.body);
+      debugPrint(response.body);
+
       if (response.statusCode == 200) {
         return Veterinaire.fromJson(result['vetProfile']);
       } else {
-        throw Failure.createFailure(response.statusCode, result);
+       // throw Failure.createFailure(response.statusCode, result);
       }
+      return null;
     } on Failure {
       rethrow;
     } catch (e) {
-      throw Failure();
+      rethrow;
     }
   }
 
@@ -107,12 +112,13 @@ class SearchService {
                 ?.map((record) => Veterinaire.fromJson(record['vet'])) ??
             []);
       } else {
-        throw Failure.createFailure(response.statusCode, result);
+       // throw Failure.createFailure(response.statusCode, result);
       }
+      return [];
     } on Failure {
       rethrow;
     } catch (e) {
-      throw Failure();
+      rethrow;
     }
   }
 
@@ -134,12 +140,13 @@ class SearchService {
       if (response.statusCode == 200) {
         return List<String>.from(result?.map((x) => x) ?? []);
       } else {
-        throw Failure.createFailure(response.statusCode, result);
+      //  throw Failure.createFailure(response.statusCode, result);
       }
+      return [];
     } on Failure {
       rethrow;
     } catch (e) {
-      throw Failure();
+      rethrow;
     }
   }
 
@@ -175,7 +182,7 @@ class SearchService {
       rethrow;
 
     } catch (e) {
-      throw Failure();
+      rethrow;
     }
   }
 
@@ -184,6 +191,7 @@ class SearchService {
     String? vetId,
     String? rating,
     String? userId,
+    String? appointment_id,
     String? token,
   ) async {
     try {
@@ -196,6 +204,7 @@ class SearchService {
           body: json.encode({
             "text": text,
             "vet_id": vetId,
+            "appointment_id": appointment_id,
             "rating": rating,
           }));
       if (response.statusCode == 200 || response.statusCode == 201) {
@@ -205,7 +214,7 @@ class SearchService {
     } on Failure {
       rethrow;
     } catch (e) {
-      throw Failure();
+      rethrow;
     }
   }
 
@@ -237,7 +246,7 @@ class SearchService {
     } on Failure {
       rethrow;
     } catch (e) {
-      throw Failure();
+      rethrow;
     }
   }
 
@@ -258,7 +267,7 @@ class SearchService {
     } on Failure {
       rethrow;
     } catch (e) {
-      throw Failure();
+      rethrow;
     }
   }
 }

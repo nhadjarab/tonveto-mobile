@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
@@ -251,7 +253,15 @@ class _AddPetScreenState extends State<AddPetScreen> {
                             items: animalsTypes[_animal]!.map((items) {
                               return DropdownMenuItem(
                                 value: items,
-                                child: Text(items),
+                                child: Container(
+                                  constraints: BoxConstraints(
+                                    maxWidth: 70.w
+                                  ),
+                                  child: Text(
+                                    items ,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                ),
                               );
                             }).toList(),
                             // After selecting the desired option,it will

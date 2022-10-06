@@ -35,7 +35,7 @@ Future<bool> makePayment(
     }
     return false;
   } catch (e) {
-    return false;
+    rethrow;
   }
 }
 

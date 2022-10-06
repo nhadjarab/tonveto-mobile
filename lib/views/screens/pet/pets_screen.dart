@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:tonveto/config/theme.dart';
@@ -24,10 +26,27 @@ class PetsScreen extends StatelessWidget {
                 'Confimer',
                 style: TextStyle(color: Colors.red),
               ),
-              onPressed: () {
-                Provider.of<AuthViewModel>(context, listen: false)
-                    .deletePet(petID);
-                Navigator.pop(context);
+              onPressed: () async {
+                try {
+                  await Provider.of<AuthViewModel>(context, listen: false)
+                      .deletePet(petID).then((value) {
+                    Navigator.pop(context);
+                  });
+
+
+                } on SocketException {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const  SnackBar(
+                      content: Text(
+                        'Vous étes hors ligne',
+                        style:
+                        TextStyle(color: Colors.white),
+                      ),
+                      backgroundColor: AppTheme.errorColor,
+                    ),
+                  );
+                }
+
               },
             ),
             TextButton(

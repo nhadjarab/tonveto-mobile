@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
@@ -26,12 +28,26 @@ class _ClinicProfileScreenState extends State<ClinicProfileScreen> {
   List<Veterinaire>? vets;
 
   getVets() async {
-    vets = await Provider.of<SearchViewModel>(context, listen: false)
-        .getClinicVets(
-      widget.clinique.id,
-      Provider.of<AuthViewModel>(context, listen: false).user?.id,
-      Provider.of<AuthViewModel>(context, listen: false).token,
-    );
+    try {
+      vets = await Provider.of<SearchViewModel>(context, listen: false)
+          .getClinicVets(
+        widget.clinique.id,
+        Provider.of<AuthViewModel>(context, listen: false).user?.id,
+        Provider.of<AuthViewModel>(context, listen: false).token,
+      );
+    } on SocketException {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const  SnackBar(
+          content: Text(
+            'Vous étes hors ligne',
+            style:
+            TextStyle(color: Colors.white),
+          ),
+          backgroundColor: AppTheme.errorColor,
+        ),
+      );
+    }
+
   }
 
   @override
@@ -212,6 +228,7 @@ class _ClinicProfileScreenState extends State<ClinicProfileScreen> {
                         ],
                       ),
                     ),
+                    if(vets !=null)
                     vets?.length == 0
                         ? const SizedBox()
                         : const Padding(
@@ -224,7 +241,9 @@ class _ClinicProfileScreenState extends State<ClinicProfileScreen> {
                                   fontWeight: FontWeight.bold),
                             ),
                           ),
-                    vets?.length == 0
+                    if(vets !=null)
+
+                      vets?.length == 0
                         ? const SizedBox()
                         : Container(
                             margin: EdgeInsets.symmetric(

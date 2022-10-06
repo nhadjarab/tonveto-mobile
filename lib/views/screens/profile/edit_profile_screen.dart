@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -41,21 +43,39 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
         return;
       }
 
-      bool redirect = await Provider.of<AuthViewModel>(context, listen: false)
-          .updateUserData(_firstname, _lastname, _phone, birthDate, _email);
-      if (redirect) {
-        if (!mounted) return;
+      try {
+         await Provider.of<AuthViewModel>(context, listen: false)
+            .updateUserData(_firstname, _lastname, _phone, birthDate, _email).then((value){
+           if (value) {
+             if (!mounted) return;
+             ScaffoldMessenger.of(context).showSnackBar(
+               const SnackBar(
+                 content: Text(
+                   'Informations modifiées avec succès',
+                   style: TextStyle(color: Colors.white),
+                 ),
+                 backgroundColor: AppTheme.successColor,
+               ),
+             );
+             Navigator.pop(context);
+           }
+         });
+
+
+      } on SocketException {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
+          const  SnackBar(
             content: Text(
-              'Informations modifiées avec succès',
-              style: TextStyle(color: Colors.white),
+              'Vous étes hors ligne',
+              style:
+              TextStyle(color: Colors.white),
             ),
-            backgroundColor: AppTheme.successColor,
+            backgroundColor: AppTheme.errorColor,
           ),
         );
-        Navigator.pop(context);
       }
+
+
 
     }
   }

@@ -323,11 +323,11 @@ class AuthViewModel with ChangeNotifier {
       loading = false;
       errorMessage = f.message;
       notifyListeners();
-      return null;
+     rethrow;
     } catch (e) {
       loading = false;
       notifyListeners();
-      return null;
+    rethrow;
     }
   }
 }
