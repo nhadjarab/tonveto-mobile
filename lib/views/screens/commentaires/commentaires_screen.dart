@@ -67,7 +67,7 @@ class _CommentairesScreenState extends State<CommentairesScreen> {
                   const SizedBox(
                     height: AppTheme.divider,
                   ),
-                  Text("${widget.comments[index].text}" ?? ''),
+                  Text("${widget.comments[index].text}"),
                   const SizedBox(
                     height: AppTheme.divider,
                   ),

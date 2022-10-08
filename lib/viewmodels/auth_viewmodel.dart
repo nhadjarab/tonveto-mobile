@@ -31,6 +31,8 @@ class AuthViewModel with ChangeNotifier {
 
     try {
       final data = await authService.login(email, password);
+      final bool? profileColmpleted = data["userProfile"].profileComplete;
+      // print(profileColmpleted);
 
       final bool? profileColmpleted = data["userProfile"].profile_complete;
       print(profileColmpleted);
@@ -323,11 +325,11 @@ class AuthViewModel with ChangeNotifier {
       loading = false;
       errorMessage = f.message;
       notifyListeners();
-     rethrow;
+      rethrow;
     } catch (e) {
       loading = false;
       notifyListeners();
-    rethrow;
+      rethrow;
     }
   }
 }

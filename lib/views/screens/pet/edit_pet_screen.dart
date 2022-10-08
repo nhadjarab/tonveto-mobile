@@ -301,7 +301,15 @@ class _EditPetScreenState extends State<EditPetScreen> {
                               items: animalsTypes[_animal]!.map((items) {
                                 return DropdownMenuItem(
                                   value: items,
-                                  child: Text(items),
+                                  child: Container(
+                                    constraints: BoxConstraints(
+                                        maxWidth: 70.w
+                                    ),
+                                    child: Text(
+                                      items ,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                  ),
                                 );
                               }).toList(),
                               // After selecting the desired option,it will

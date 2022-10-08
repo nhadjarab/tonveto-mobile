@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
+import 'package:intl/intl.dart';
 
 import '../config/consts.dart';
 import '../models/failure_model.dart';
@@ -18,7 +19,6 @@ class AuthService {
             "password": password,
           }));
       final result = json.decode(response.body);
-      print(result);
       if (response.statusCode == 200) {
         Map<String, dynamic> userInfo = {
           "userProfile": User.fromJson(result["userProfile"]),
@@ -32,7 +32,6 @@ class AuthService {
     } on Failure {
       rethrow;
     } catch (e) {
-      print(e.toString());
       throw Failure();
     }
   }
@@ -88,7 +87,8 @@ class AuthService {
             "first_name": firstName,
             "last_name": lastName,
             "email": email,
-            "birth_date": birthday.toString(),
+            "birth_date": DateFormat('yyyy-MM-dd')
+                .format(birthday ?? DateTime.now()),
             "phone_number": phone,
             "is_subscribed": isSubscribed
           }));

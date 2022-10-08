@@ -35,6 +35,8 @@ class SelectPetsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final textLocals = AppLocalizations.of(context)!;
+
     Future<void> confirmDeleteDialog(
       context,
     ) async {
@@ -83,120 +85,139 @@ class SelectPetsScreen extends StatelessWidget {
           padding: const EdgeInsets.symmetric(vertical: 10),
           child: auth.loading
               ? const CustomProgress()
-              : ListView.builder(
-                  itemCount: auth.user?.pets?.length ?? 0,
-                  itemBuilder: (context, index) {
-                    Pet pet = auth.user!.pets![index];
-                    return GestureDetector(
-                      onTap: () async {
-                        SearchService searchService = SearchService();
+              : auth.user?.pets?.length == 0
+                  ? const Center(
+                      child: Text(
+                        "Vous n'avez ajouter aucun animal",
+                        style: TextStyle(fontSize: 22),
+                      ),
+                    )
+                  : ListView.builder(
+                      itemCount: auth.user?.pets?.length ?? 0,
+                      itemBuilder: (context, index) {
+                        Pet pet = auth.user!.pets![index];
+                        return GestureDetector(
+                          onTap: () async {
+                            try {
+                              SearchService searchService = SearchService();
 
-
-                        await Provider.of<PayementViewModel>(context,
-                                listen: false)
-                            .makePayment(amount: price, currency: 'EUR')
-                            .then((value) async {
-
-                          if (value) {
-                            await searchService
-                                .addAppointment(
-                                    DateFormat('yyyy-MM-dd').format(date),
-                                    time,
-                                    pet.id,
-                                    vetId,
-                                    userId,
-                                    clinicId,
-                                    token)
-                                .then((value) async {
-                              Provider.of<PayementViewModel>(context,
+                              await Provider.of<PayementViewModel>(context,
                                       listen: false)
-                                  .addPayement(
-                                      price, vetId, value, userId, token);
-                              confirmDeleteDialog(context);
-                            });
-                          } else {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                content: Text(
-                                  'Payement non éffectué',
-                                  style: TextStyle(color: Colors.white),
-                                ),
-                                backgroundColor: AppTheme.errorColor,
-                              ),
-                            );
-                          }
-                        });
-
-                      },
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 10, vertical: 15),
-                        margin:
-                            EdgeInsets.symmetric(horizontal: 5.w, vertical: 10),
-                        decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(8),
-                            boxShadow: const [
-                              BoxShadow(color: Colors.black12, blurRadius: 2)
-                            ]),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Row(
-                              children: [
-                                const CircleAvatar(
-                                  backgroundImage:
-                                      AssetImage('assets/images/dog.png'),
-                                  backgroundColor: AppTheme.mainColor,
-                                  radius: 30,
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 10),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        pet.name ?? "",
-                                        overflow: TextOverflow.ellipsis,
+                                  .makePayment(amount: price, currency: 'EUR')
+                                  .then((value) async {
+                                if (value) {
+                                  await searchService
+                                      .addAppointment(
+                                          DateFormat('yyyy-MM-dd').format(date),
+                                          time,
+                                          pet.id,
+                                          vetId,
+                                          userId,
+                                          clinicId,
+                                          token)
+                                      .then((value) async {
+                                    Provider.of<PayementViewModel>(context,
+                                            listen: false)
+                                        .addPayement(
+                                            price, vetId, value, userId, token);
+                                    confirmDeleteDialog(context);
+                                  });
+                                } else {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                      content: Text(
+                                        textLocals.payementNonEffectue,
                                         style: const TextStyle(
-                                            fontSize: 18,
-                                            fontWeight: FontWeight.bold,
-                                            color: AppTheme.mainColor),
+                                            color: Colors.white),
                                       ),
-                                      const SizedBox(height: AppTheme.divider),
-                                      RichText(
-                                          text: TextSpan(children: [
-                                        const TextSpan(
-                                            text: 'Type : ',
-                                            style: TextStyle(
-                                              color: AppTheme.mainColor,
-                                            )),
-                                        TextSpan(
-                                            text: '${pet.species}  /  ',
-                                            style: const TextStyle(
-                                                color: Colors.black)),
-                                        const TextSpan(
-                                            text: 'Sex : ',
-                                            style: TextStyle(
-                                              color: AppTheme.mainColor,
-                                            )),
-                                        TextSpan(
-                                            text: '${pet.sex}',
-                                            style: const TextStyle(
-                                                color: Colors.black))
-                                      ])),
-                                    ],
+                                      backgroundColor: AppTheme.errorColor,
+                                    ),
+                                  );
+                                }
+                              });
+                            } on SocketException {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  content: Text(
+                                    'Vous étes hors ligne',
+                                    style: TextStyle(color: Colors.white),
                                   ),
+                                  backgroundColor: AppTheme.errorColor,
+                                ),
+                              );
+                            }
+                          },
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 10, vertical: 15),
+                            margin: EdgeInsets.symmetric(
+                                horizontal: 5.w, vertical: 10),
+                            decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(8),
+                                boxShadow: const [
+                                  BoxShadow(
+                                      color: Colors.black12, blurRadius: 2)
+                                ]),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Row(
+                                  children: [
+                                    const CircleAvatar(
+                                      backgroundImage:
+                                          AssetImage('assets/images/dog.png'),
+                                      backgroundColor: AppTheme.mainColor,
+                                      radius: 30,
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 10),
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            pet.name ?? "",
+                                            overflow: TextOverflow.ellipsis,
+                                            style: const TextStyle(
+                                                fontSize: 18,
+                                                fontWeight: FontWeight.bold,
+                                                color: AppTheme.mainColor),
+                                          ),
+                                          const SizedBox(
+                                              height: AppTheme.divider),
+                                          RichText(
+                                              text: TextSpan(children: [
+                                            const TextSpan(
+                                                text: 'Type : ',
+                                                style: TextStyle(
+                                                  color: AppTheme.mainColor,
+                                                )),
+                                            TextSpan(
+                                                text: '${pet.species}  /  ',
+                                                style: const TextStyle(
+                                                    color: Colors.black)),
+                                            TextSpan(
+                                                text: '${textLocals.sex} : ',
+                                                style: const TextStyle(
+                                                  color: AppTheme.mainColor,
+                                                )),
+                                            TextSpan(
+                                                text: '${pet.sex}',
+                                                style: const TextStyle(
+                                                    color: Colors.black))
+                                          ])),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
                                 ),
                               ],
                             ),
-                          ],
-                        ),
-                      ),
-                    );
-                  }),
+                          ),
+                        );
+                      }),
         ),
       ),
     );

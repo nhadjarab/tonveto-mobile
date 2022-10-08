@@ -59,7 +59,6 @@ class SearchService {
     } on Failure {
       rethrow;
     } catch (e) {
-      print(e.toString());
     rethrow;
     }
   }
@@ -191,7 +190,7 @@ class SearchService {
     String? vetId,
     String? rating,
     String? userId,
-    String? appointment_id,
+    String? appointmentId,
     String? token,
   ) async {
     try {
@@ -204,7 +203,7 @@ class SearchService {
           body: json.encode({
             "text": text,
             "vet_id": vetId,
-            "appointment_id": appointment_id,
+            "appointment_id": appointmentId,
             "rating": rating,
           }));
       if (response.statusCode == 200 || response.statusCode == 201) {
