@@ -147,7 +147,7 @@ const Map<String, List<String>> animalsTypes = {
 const List<String> species = [
   "chien",
   "chat",
-  "âne"
+  "âne",
   "bétail",
   "canard",
   "cheval",

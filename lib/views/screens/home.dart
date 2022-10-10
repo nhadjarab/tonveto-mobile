@@ -233,21 +233,17 @@ class _HomeState extends State<Home> {
                                   },
                                   child: Container(
                                     padding: const EdgeInsets.symmetric(
-                                        horizontal: 10, vertical: 10),
-                                    decoration: BoxDecoration(
-                                        color: Colors.white,
-                                        borderRadius:
-                                            BorderRadius.circular(10)),
-                                    child: Row(
+                                        horizontal: 20, vertical: 50),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
                                       children: [
-                                        const Icon(Icons.search),
-                                        const SizedBox(
-                                          width: 15,
-                                        ),
-                                        const Text(
-                                          'Filtrer',
-                                          style: TextStyle(
-                                              color: Colors.grey, fontSize: 18),
+                                        Text(
+                                          textLocals.trouverUnBonVeterinaire,
+                                          style: const TextStyle(
+                                            fontSize: 20,
+                                            color: Colors.white,
+                                          ),
                                         ),
                                         const Spacer(),
                                         Container(

@@ -76,7 +76,7 @@ class _ClinicProfileScreenState extends State<ClinicProfileScreen> {
         title: widget.clinique.name == null
             ? const SizedBox()
             : Text(
-                "${widget.clinique.name}}",
+                "${widget.clinique.name}",
                 overflow: TextOverflow.ellipsis,
                 style: TextStyle(
                     color: Colors.white,

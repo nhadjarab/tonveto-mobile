@@ -81,25 +81,26 @@ class SelectPetsScreen extends StatelessWidget {
       ),
       backgroundColor: AppTheme.secondaryColor,
       body: Consumer<AuthViewModel>(
-        builder: (context, auth, child) => Padding(
-          padding: const EdgeInsets.symmetric(vertical: 10),
-          child: auth.loading
-              ? const CustomProgress()
-              : auth.user?.pets?.length == 0
-                  ? const Center(
-                      child: Text(
-                        "Vous n'avez ajouter aucun animal",
-                        style: TextStyle(fontSize: 22),
-                      ),
-                    )
-                  : ListView.builder(
-                      itemCount: auth.user?.pets?.length ?? 0,
-                      itemBuilder: (context, index) {
-                        Pet pet = auth.user!.pets![index];
-                        return GestureDetector(
-                          onTap: () async {
-                            try {
-                              SearchService searchService = SearchService();
+          builder: (context, auth, child) =>
+              Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 10),
+                  child: auth.loading
+                      ? const CustomProgress()
+                      :
+
+                  auth.user?.pets?.length == 0 ? const Center(
+                    child:  Text(
+                      "Vous n'avez aucun animal.",
+                      style:  TextStyle(fontSize: 22),),
+                  ) :
+                  ListView.builder(
+                  itemCount: auth.user?.pets?.length ?? 0,
+              itemBuilder: (context, index) {
+      Pet pet = auth.user!.pets![index];
+      return GestureDetector(
+      onTap: () async {
+      try {
+      SearchService searchService = SearchService();
 
                               await Provider.of<PayementViewModel>(context,
                                       listen: false)

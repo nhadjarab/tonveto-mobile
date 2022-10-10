@@ -19,7 +19,7 @@ class PetsScreen extends StatelessWidget {
       barrierDismissible: false, // user must tap button!
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text("Confimer la suppression, s'il vous plais"),
+          title: const Text("Votre animal sera supprimé."),
           actions: <Widget>[
             TextButton(
               child: const Text(
@@ -29,24 +29,21 @@ class PetsScreen extends StatelessWidget {
               onPressed: () async {
                 try {
                   await Provider.of<AuthViewModel>(context, listen: false)
-                      .deletePet(petID).then((value) {
+                      .deletePet(petID)
+                      .then((value) {
                     Navigator.pop(context);
                   });
-
-
                 } on SocketException {
                   ScaffoldMessenger.of(context).showSnackBar(
-                    const  SnackBar(
+                    const SnackBar(
                       content: Text(
                         'Vous étes hors ligne',
-                        style:
-                        TextStyle(color: Colors.white),
+                        style: TextStyle(color: Colors.white),
                       ),
                       backgroundColor: AppTheme.errorColor,
                     ),
                   );
                 }
-
               },
             ),
             TextButton(
@@ -74,9 +71,10 @@ class PetsScreen extends StatelessWidget {
         backgroundColor: AppTheme.mainColor,
       ),
       floatingActionButton: FloatingActionButton(
-
         backgroundColor: AppTheme.mainColor,
-        child: const Icon(Icons.add,),
+        child: const Icon(
+          Icons.add,
+        ),
         onPressed: () {
           Navigator.pushNamed(context, AddPetScreen.route);
         },
@@ -110,7 +108,6 @@ class PetsScreen extends StatelessWidget {
                         child: Row(
                           children: [
                             const CircleAvatar(
-
                               backgroundImage:
                                   AssetImage('assets/images/dog.png'),
                               backgroundColor: AppTheme.mainColor,
@@ -131,26 +128,27 @@ class PetsScreen extends StatelessWidget {
                                         color: AppTheme.mainColor),
                                   ),
                                   const SizedBox(height: AppTheme.divider),
-                                   RichText(
+                                  RichText(
                                       text: TextSpan(children: [
-                                        const TextSpan(
+                                    const TextSpan(
                                         text: 'Type : ',
                                         style: TextStyle(
                                           color: AppTheme.mainColor,
                                         )),
                                     TextSpan(
                                         text: '${pet.species}  /  ',
-                                        style: const TextStyle(color: Colors.black)),
-                                        const  TextSpan(
+                                        style: const TextStyle(
+                                            color: Colors.black)),
+                                    const TextSpan(
                                         text: 'Sex : ',
                                         style: TextStyle(
                                           color: AppTheme.mainColor,
                                         )),
                                     TextSpan(
                                         text: '${pet.sex}',
-                                        style:const TextStyle(color: Colors.black))
+                                        style: const TextStyle(
+                                            color: Colors.black))
                                   ])),
-
                                 ],
                               ),
                             ),

@@ -46,43 +46,43 @@ class _ChatBotScreenState extends State<ChatBotScreen> {
           onTap: () {
             currentOperation = 1;
             messages
-                .add(Message(isOwn: true, message: "Hello $appName chatbot"));
+                .add(Message(isOwn: true, message: "Bonjour"));
             setState(() {});
 
             Future.delayed(const Duration(seconds: 1), () {
               messages.add(
-                  Message(isOwn: false, message: "Hi, How can i help you ?"));
+                  Message(isOwn: false, message: "Bonjour. Je suis Roxane, l'assistante Tonveto. Comment puis-je vous aider ?"));
               setState(() {});
             });
           },
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: const [Text("Say Hello!"), Icon(Icons.send)],
+            children: const [Text("Bonjour"), Icon(Icons.send)],
           ),
         );
       case 1:
         return GestureDetector(
           onTap: () {
-            messages.add(Message(isOwn: true, message: "My pet is sick ?"));
+            messages.add(Message(isOwn: true, message: "Je veux avoir un diagnostic"));
             setState(() {});
 
             Future.delayed(const Duration(seconds: 1), () {
               messages.add(Message(
                   isOwn: false,
                   message:
-                      "Can you specify the species, please from the list ?"));
+                      "Quelle est l'espèce de votre animal ?"));
               _showSpeciesMenu = true;
               setState(() {});
             });
           },
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: const [Text("My pet is sick"), Icon(Icons.send)],
+            children: const [Text("Je veux avoir un diagnostic"), Icon(Icons.send)],
           ),
         );
       case 2:
         messages.add(
-            Message(isOwn: false, message: "Choose your $_species symptoms"));
+            Message(isOwn: false, message: "Quelles sont les symptômes que présentent votre $_species ?"));
         break;
       case 3:
         return GestureDetector(
@@ -90,13 +90,13 @@ class _ChatBotScreenState extends State<ChatBotScreen> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: const [
-              Text("Question the chatbot again"),
+              Text("Voulez-vous un autre diagnostic ?"),
               Icon(Icons.repeat)
             ],
           ),
         );
       default:
-        return const Text("Say Hello!");
+        return const Text("Bonjour");
     }
     return null;
   }
@@ -106,7 +106,7 @@ class _ChatBotScreenState extends State<ChatBotScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          "$appName Chat-Bot",
+          "Chatbot",
           style: TextStyle(color: Colors.white),
         ),
         centerTitle: true,
@@ -153,13 +153,13 @@ class _ChatBotScreenState extends State<ChatBotScreen> {
           ),
           _showSpeciesMenu
               ? CustomButton(
-                  text: "Show species list",
+                  text: "Liste des animaux",
                   onPressed: () {
                     showSpeciesMenu();
                   })
               : _showSymptomsMenu
                   ? CustomButton(
-                      text: "Show symptoms list",
+                      text: "Liste des symptômes",
                       onPressed: () {
                         showSymptomsMenu();
                       })
@@ -212,7 +212,7 @@ class _ChatBotScreenState extends State<ChatBotScreen> {
                         } else {
                           ScaffoldMessenger.of(context).showSnackBar(
                               const SnackBar(
-                                  content: Text("You must choose a species")));
+                                  content: Text("")));
                         }
                       },
                     ),
@@ -225,7 +225,7 @@ class _ChatBotScreenState extends State<ChatBotScreen> {
         });
     if (_species != null) {
       messages.add(Message(isOwn: true, message: _species!));
-      messages.add(Message(isOwn: false, message: "Wait a moment please"));
+      // messages.add(Message(isOwn: false, message: "Un instant ..."));
       setState(() {});
 
       try {
@@ -240,13 +240,13 @@ class _ChatBotScreenState extends State<ChatBotScreen> {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
             content: Text(
-              'Vous étes hors ligne',
+              'Vous êtes hors ligne',
               style: TextStyle(color: Colors.white),
             ),
             backgroundColor: AppTheme.errorColor,
           ),
         );
-        messages.add(Message(isOwn: false, message: "You are offline, Try again please"));
+        messages.add(Message(isOwn: false, message: "Vous êtes hors ligne."));
 
         setState(() {});
       }
@@ -298,7 +298,7 @@ class _ChatBotScreenState extends State<ChatBotScreen> {
                           ScaffoldMessenger.of(context).showSnackBar(
                               const SnackBar(
                                   content:
-                                      Text("You must choose the symptoms")));
+                                      Text("Vous devez choisir au moins un symptôme.")));
                         }
                       },
                     ),
@@ -311,7 +311,7 @@ class _ChatBotScreenState extends State<ChatBotScreen> {
         });
     if (_selectedSymptoms.isNotEmpty) {
       messages.add(Message(isOwn: true, message: _selectedSymptoms.join(", ")));
-      messages.add(Message(isOwn: false, message: "Wait a moment please"));
+      // messages.add(Message(isOwn: false, message: "Un instant..."));
       setState(() {});
 
       try {
@@ -319,11 +319,11 @@ class _ChatBotScreenState extends State<ChatBotScreen> {
         final prediction =
             await chatbotViewModel.predictDisease(_species!, _selectedSymptoms);
         messages
-            .add(Message(isOwn: false, message: "This is what i think about"));
+            .add(Message(isOwn: false, message: "Voilà ce que j'ai trouvé. Votre $_species pourrait avoir la maladie suivante :"));
         messages.add(Message(
             isOwn: false,
             message: prediction?.join(", ") ??
-                "We can't find a prediction for disease"));
+                "Désolé,je n'ai pas trouvé de maladie."));
 
         currentOperation = 3;
         setState(() {});
@@ -332,7 +332,7 @@ class _ChatBotScreenState extends State<ChatBotScreen> {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
             content: Text(
-              'Vous étes hors ligne',
+              'Vous êtes hors ligne',
               style: TextStyle(color: Colors.white),
             ),
             backgroundColor: AppTheme.errorColor,
