@@ -13,7 +13,7 @@ class ChatbotService {
           "Content-Type": "application/json",
         },
       );
-      final result = json.decode(response.body);
+      final result = json.decode(utf8.decode(response.bodyBytes));
       return result["result"];
     } catch (e) {
       rethrow;
@@ -28,7 +28,7 @@ class ChatbotService {
             "Content-Type": "application/json",
           },
           body: json.encode({"species": species, "symptoms": symptoms}));
-      final result = json.decode(response.body);
+      final result = json.decode(utf8.decode(response.bodyBytes));
       return result["result"];
     } catch (e) {
       rethrow;

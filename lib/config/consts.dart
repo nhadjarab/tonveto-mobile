@@ -6,7 +6,7 @@ const String stripeSecretKey =
 const String stripePublicKey =
     "pk_test_51LW1LuHfKN4iGvY0xKKJXJWJoISIy8RhpZYFcczucOOLOW4LwX7ms543bBwlyvQ5lNAx3gY0kXtk2NHy9A9Lntpo00eafcbv8U";
 
-const types = ["Chien", "Chat", "Autre"];
+const types = ["Chat", "Chien", "Âne", "Canard", "Cheval", "Chèvre", "Cochon", "Dinde", "Mouton", "Poule", "Vache", "Autre"];
 
 const Map<String, List<String>> animalsTypes = {
   "Chien": [
@@ -132,22 +132,30 @@ const Map<String, List<String>> animalsTypes = {
     "York Chocolate",
     "Turc de Van",
   ],
+  "Âne" :  ["Âne"],
+  "Canard" : ["Canard"],
+  "Cheval" : ["Cheval"],
+  "Chèvre" : ["Chèvre"],
+  "Cochon" : ["Cochon"],
+  "Dinde" : ["Dinde"],
+  "Mouton" : ["Mouton"],
+  "Poule" : ["Poule"],
+  "Vache" : ["Vache"],
   "Autre": ["Autre"]
-};
 
+};
 const List<String> species = [
-  "dog",
-  "cat",
-  "poultry",
-  "livestock",
-  "cow",
-  "hose",
-  "goat",
-  "sheep",
-  "chicken",
-  "turkey",
-  "duck",
-  "cattle",
-  "pig",
-  "donkey"
+  "chien",
+  "chat",
+  "âne"
+  "bétail",
+  "canard",
+  "cheval",
+  "chèvre",
+  "cochon",
+  "dine",
+  "mouton",
+  "poule",
+  "vache",
+  "volaille",
 ];
