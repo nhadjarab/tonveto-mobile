@@ -12,6 +12,7 @@ import '../../../models/clinique_model.dart';
 import '../../../models/vet_model.dart';
 import '../../../viewmodels/auth_viewmodel.dart';
 import '../../widgets/custom_progress.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ClinicProfileScreen extends StatefulWidget {
   static const route = "/clinique-profile";
@@ -61,6 +62,8 @@ class _ClinicProfileScreenState extends State<ClinicProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final textLocals = AppLocalizations.of(context)!;
+
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -135,9 +138,9 @@ class _ClinicProfileScreenState extends State<ClinicProfileScreen> {
                             title: RichText(
                               text: TextSpan(
                                 children: [
-                                  const TextSpan(
-                                    text: 'Nom:',
-                                    style: TextStyle(
+                                   TextSpan(
+                                    text: '${textLocals.nom}:',
+                                    style:const TextStyle(
                                         fontSize: 17,
                                         fontWeight: FontWeight.bold,
                                         color: AppTheme.mainColor),
@@ -159,9 +162,9 @@ class _ClinicProfileScreenState extends State<ClinicProfileScreen> {
                             title: RichText(
                               text: TextSpan(
                                 children: [
-                                  const TextSpan(
-                                    text: 'Adresse:',
-                                    style: TextStyle(
+                                   TextSpan(
+                                    text: '${textLocals.adresse}:',
+                                    style: const TextStyle(
                                         fontSize: 17,
                                         fontWeight: FontWeight.bold,
                                         color: AppTheme.mainColor),
@@ -184,9 +187,9 @@ class _ClinicProfileScreenState extends State<ClinicProfileScreen> {
                             title: RichText(
                               text: TextSpan(
                                 children: [
-                                  const TextSpan(
-                                    text: 'Numéro de téléphone:',
-                                    style: TextStyle(
+                                   TextSpan(
+                                    text: '${textLocals.numeroDeTelephone}:',
+                                    style:const TextStyle(
                                         fontSize: 17,
                                         fontWeight: FontWeight.bold,
                                         color: AppTheme.mainColor),
@@ -209,9 +212,9 @@ class _ClinicProfileScreenState extends State<ClinicProfileScreen> {
                             title: RichText(
                               text: TextSpan(
                                 children: [
-                                  const TextSpan(
-                                    text: 'Code postal:',
-                                    style: TextStyle(
+                                   TextSpan(
+                                    text: '${textLocals.codePostal}:',
+                                    style:const TextStyle(
                                         fontSize: 17,
                                         fontWeight: FontWeight.bold,
                                         color: AppTheme.mainColor),
@@ -231,11 +234,11 @@ class _ClinicProfileScreenState extends State<ClinicProfileScreen> {
                     if(vets !=null)
                     vets?.length == 0
                         ? const SizedBox()
-                        : const Padding(
-                            padding: EdgeInsets.only(left: 30.0),
+                        :  Padding(
+                            padding:const EdgeInsets.only(left: 30.0),
                             child: Text(
-                              'Vétérinaires',
-                              style: TextStyle(
+                              textLocals.veterinaires,
+                              style:const TextStyle(
                                   color: Colors.black,
                                   fontSize: 20,
                                   fontWeight: FontWeight.bold),
@@ -252,10 +255,10 @@ class _ClinicProfileScreenState extends State<ClinicProfileScreen> {
                             padding: const EdgeInsets.symmetric(horizontal: 10),
                             height: 50.h,
                             child: vets?.length == 0
-                                ? const Center(
+                                ?  Center(
                                     child: Text(
-                                      'Aucune Vétérinaire trouvée',
-                                      style: TextStyle(
+                                      textLocals.aucunVeterinaireTrouve,
+                                      style:const TextStyle(
                                           color: Colors.black,
                                           fontSize: 18,
                                           fontWeight: FontWeight.bold),

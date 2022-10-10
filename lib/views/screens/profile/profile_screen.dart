@@ -7,6 +7,7 @@ import '../../../viewmodels/auth_viewmodel.dart';
 import '../../widgets/custom_progress.dart';
 import '../../widgets/widgets.dart';
 import 'edit_profile_screen.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ProfileScreen extends StatelessWidget {
   static const route = "/profile";
@@ -15,12 +16,14 @@ class ProfileScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final textLocals = AppLocalizations.of(context)!;
+
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: const Text(
-          "Profile",
-          style: TextStyle(color: Colors.white),
+        title:  Text(
+          textLocals.profile,
+          style: const TextStyle(color: Colors.white),
         ),
         elevation: 0.0,
         backgroundColor: AppTheme.mainColor,
@@ -102,7 +105,7 @@ class ProfileScreen extends StatelessWidget {
                                 ),
                                 title: InfoWidget(
                                   info: '${auth.user?.lastName}',
-                                  infoType: 'Nom',
+                                  infoType:textLocals.nom,
                                 )),
                             ListTile(
                                 leading: const Icon(
@@ -111,7 +114,7 @@ class ProfileScreen extends StatelessWidget {
                                 ),
                                 title: InfoWidget(
                                   info: '${auth.user?.firstName}',
-                                  infoType: 'Prénom',
+                                  infoType: textLocals.prenom,
                                 )),
                             ListTile(
                                 leading: const Icon(
@@ -121,7 +124,7 @@ class ProfileScreen extends StatelessWidget {
                                 title: InfoWidget(
                                   info:
                                   '${auth.user?.birthDate?.day}/${auth.user?.birthDate?.month}/${auth.user?.birthDate?.year}',
-                                  infoType: 'Date de naissance',
+                                  infoType: textLocals.dateDeNaissance,
                                 )),
                             ListTile(
                                 leading: const Icon(
@@ -130,7 +133,7 @@ class ProfileScreen extends StatelessWidget {
                                 ),
                                 title: InfoWidget(
                                   info: '${auth.user?.email}',
-                                  infoType: 'Email',
+                                  infoType: textLocals.email,
                                 )),
 
                             ListTile(
@@ -140,7 +143,7 @@ class ProfileScreen extends StatelessWidget {
                                 ),
                                 title: InfoWidget(
                                   info: "${auth.user?.phoneNumber}",
-                                  infoType: 'Téléphone',
+                                  infoType: textLocals.telephone,
                                 )),
                           ],
                         ),
@@ -166,7 +169,7 @@ class ProfileScreen extends StatelessWidget {
                                 Icons.logout,
                                 color: AppTheme.mainColor,
                               ),
-                              title: const Text("Déconnecter"),
+                              title:  Text(textLocals.deconnecter),
                               onTap: () {
                                 auth.logout();
                               },

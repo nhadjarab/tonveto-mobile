@@ -1,9 +1,10 @@
-const String baseUrl = "https://vetolib-backend-production.up.railway.app";
+const String baseUrl = "https://api.tonveto.com";
 const String aiUrl = "http://ai.tonveto.com";
 const String appName = "Tonveto";
 const String stripeSecretKey =
     "sk_test_51LW1LuHfKN4iGvY0z7KzJbc09ACmzQWWOom3VY9yjn0jNpPMBS8KPTusZUmU5A6fbsH22XWXwfN4BgoQqLKFsxLK00e59bV0yF";
 const String stripePublicKey =
+
     "pk_test_51LW1LuHfKN4iGvY0xKKJXJWJoISIy8RhpZYFcczucOOLOW4LwX7ms543bBwlyvQ5lNAx3gY0kXtk2NHy9A9Lntpo00eafcbv8U";
 
 const types = ["Chat", "Chien", "Âne", "Canard", "Cheval", "Chèvre", "Cochon", "Dinde", "Mouton", "Poule", "Vache", "Autre"];

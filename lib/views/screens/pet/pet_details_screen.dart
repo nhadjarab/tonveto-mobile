@@ -7,8 +7,7 @@ import 'package:tonveto/viewmodels/auth_viewmodel.dart';
 import 'package:tonveto/views/screens/pet/edit_pet_screen.dart';
 import 'package:tonveto/views/screens/pet/pet_appointments_screen.dart';
 import 'package:tonveto/views/widgets/custom_progress.dart';
-
-import '../../widgets/custom_button.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../../widgets/widgets.dart';
 
 class PetDetailsScreen extends StatelessWidget {
@@ -18,6 +17,8 @@ class PetDetailsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final textLocals = AppLocalizations.of(context)!;
+
     final int petIndex = ModalRoute.of(context)!.settings.arguments as int;
     Pet pet = Provider.of<AuthViewModel>(context).user!.pets![petIndex];
     return Scaffold(
@@ -32,9 +33,9 @@ class PetDetailsScreen extends StatelessWidget {
           },
         ),
         centerTitle: true,
-        title: const Text(
-          "Details",
-          style: TextStyle(color: Colors.white),
+        title:  Text(
+          textLocals.details,
+          style:const TextStyle(color: Colors.white),
         ),
         elevation: 0.0,
         backgroundColor: AppTheme.mainColor,
@@ -114,7 +115,7 @@ class PetDetailsScreen extends StatelessWidget {
                                 ),
                                 title: InfoWidget(
                                   info: "${pet.name}",
-                                  infoType: 'Nom',
+                                  infoType:  textLocals.nom,
                                 )),
                             ListTile(
                                 leading: const Icon(
@@ -124,7 +125,7 @@ class PetDetailsScreen extends StatelessWidget {
                                 title: InfoWidget(
                                   info:
                                       "${pet.birthDate?.day}/${pet.birthDate?.month}/${pet.birthDate?.year}",
-                                  infoType: 'Date de naissance',
+                                  infoType:  textLocals.dateDeNaissance,
                                 )),
                             ListTile(
                                 leading: const Icon(
@@ -133,7 +134,7 @@ class PetDetailsScreen extends StatelessWidget {
                                 ),
                                 title: InfoWidget(
                                   info: "${pet.sex}",
-                                  infoType: 'Sex',
+                                  infoType:  textLocals.sex,
                                 )),
                             ListTile(
                                 leading: const Icon(
@@ -142,7 +143,7 @@ class PetDetailsScreen extends StatelessWidget {
                                 ),
                                 title: InfoWidget(
                                   info: "${pet.species}",
-                                  infoType: 'Species',
+                                  infoType:  textLocals.especes,
                                 )),
                             ListTile(
                                 leading: const Icon(
@@ -151,7 +152,7 @@ class PetDetailsScreen extends StatelessWidget {
                                 ),
                                 title: InfoWidget(
                                   info: "${pet.breed}",
-                                  infoType: 'Breed',
+                                  infoType:  textLocals.race,
                                 )),
                             ListTile(
                                 leading: const Icon(
@@ -159,8 +160,8 @@ class PetDetailsScreen extends StatelessWidget {
                                   color: AppTheme.mainColor,
                                 ),
                                 title: InfoWidget(
-                                  info: pet.crossbreed! ? "Oui" : "Non",
-                                  infoType: 'Croisé(e)',
+                                  info: pet.crossbreed! ?  textLocals.oui :  textLocals.non,
+                                  infoType:  textLocals.croise,
                                 )),
                             ListTile(
                                 leading: const Icon(
@@ -168,8 +169,8 @@ class PetDetailsScreen extends StatelessWidget {
                                   color: AppTheme.mainColor,
                                 ),
                                 title: InfoWidget(
-                                  info: pet.sterilised! ? "Oui" : "Non",
-                                  infoType: 'Stérélisé(e)',
+                                  info: pet.sterilised! ? textLocals.oui :  textLocals.non,
+                                  infoType: textLocals.sterelise,
                                 )),
                           ],
                         ),
@@ -178,9 +179,30 @@ class PetDetailsScreen extends StatelessWidget {
                         margin: EdgeInsets.symmetric(
                           horizontal: 5.w,
                         ),
-                        padding: const EdgeInsets.symmetric(horizontal: 10),
-                        child: CustomButton(
-                            text: 'Afficher les rendez-vous', onPressed: () {}),
+                        padding: const EdgeInsets.all(10),
+                        decoration: const BoxDecoration(
+                            color: Colors.white,
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black12,
+                                blurRadius: 4.0,
+                              )
+                            ]),
+                        child: Column(
+                          children: [
+                            ListTile(
+                              leading: const Icon(Icons.timelapse),
+                              title:  Text(textLocals.afficherLesRendeVous),
+                              trailing: const Icon(Icons.keyboard_arrow_right),
+                              onTap: () {
+                                Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (context) =>
+                                      PetAppointmentScreen(pet: pet),
+                                ));
+                              },
+                            ),
+                          ],
+                        ),
                       )
                     ],
                   ),

@@ -3,6 +3,7 @@ import 'package:tonveto/config/theme.dart';
 import 'package:tonveto/models/appointment_model.dart';
 import 'package:tonveto/views/screens/appointments/available_appointments_screen.dart';
 import 'package:tonveto/views/widgets/custom_button.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class SelectDateScreen extends StatefulWidget {
   const SelectDateScreen(
@@ -40,6 +41,7 @@ class _SelectDateScreenState extends State<SelectDateScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final textLocals = AppLocalizations.of(context)!;
 
 
     return SafeArea(
@@ -65,9 +67,9 @@ class _SelectDateScreenState extends State<SelectDateScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const Spacer(),
-            const Text(
-              'Séléctionner une date',
-              style: TextStyle(
+             Text(
+              textLocals.selectionnerUneDate,
+              style:const TextStyle(
                   color: AppTheme.mainColor,
                   fontSize: 25,
                   fontWeight: FontWeight.bold),
@@ -138,7 +140,7 @@ class _SelectDateScreenState extends State<SelectDateScreen> {
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   CustomButton(
-                      text: 'Suivant',
+                      text:  textLocals.suivant,
                       onPressed: () {
                         if (widget.appointment != null) {
                           setState(() {

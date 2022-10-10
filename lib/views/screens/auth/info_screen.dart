@@ -9,7 +9,7 @@ import '../../../viewmodels/payement_viewmodel.dart';
 import '../../widgets/custom_button.dart';
 import '../../widgets/custom_fields.dart';
 import '../../widgets/custom_progress.dart';
-import '../../widgets/show_message.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class InfoScreen extends StatefulWidget {
   static const route = "/info";
@@ -65,6 +65,7 @@ class _InfoScreenState extends State<InfoScreen> {
 
       if (redirect) {
         if (!mounted) return;
+
         Navigator.pop(context);
       }
     }
@@ -72,13 +73,15 @@ class _InfoScreenState extends State<InfoScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final textLocals = AppLocalizations.of(context)!;
+
     final args =
         ModalRoute.of(context)!.settings.arguments as Map<String, String?>;
     _email = args["email"];
     _password = args["password"];
     return Scaffold(
         appBar: AppBar(
-          title: const Text("Créer un compte"),
+          title:  Text(textLocals.creerUnCompte),
           elevation: 0.0,
           backgroundColor: Theme.of(context).scaffoldBackgroundColor,
           foregroundColor: Colors.black,
@@ -94,27 +97,27 @@ class _InfoScreenState extends State<InfoScreen> {
                 children: [
                   const SizedBox(height: AppTheme.divider * 2),
                   CustomTextField(
-                    labelText: "Nom*",
+                    labelText: "${textLocals.nom}*",
                     validator: (value) => validateName(
                         value,
-                        "le champ ne peut pas être vide",
-                        "le nom doit avoir au moins 3 caracteres, pas de caractères spécieaux"),
+                        textLocals.leChampNePeutPasEtreVide,
+                        textLocals.leNomDoitAvoirAuMoinsCaracteresPasdeCaracteresSpecieaux),
                     onSaved: (value) => _lastname = value,
                   ),
                   const SizedBox(height: AppTheme.divider),
                   CustomTextField(
-                    labelText: "Prénom*",
+                    labelText: "${textLocals.prenom}*",
                     validator: (value) => validateName(
                         value,
-                        "le champ ne peut pas être vide",
-                        "le prénom doit avoir au moins 3 caracteres, pas de caractères spécieaux"),
+                        textLocals.leChampNePeutPasEtreVide,
+                        textLocals.lePrenomDoitAvoirAuMoinsCaracteresPasDeCaracteresSpecieaux),
                     onSaved: (value) => _firstname = value,
                   ),
                   const SizedBox(height: AppTheme.divider * 2),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      const Text("Date de naissance*"),
+                       Text("${textLocals.dateDeNaissance}*"),
                       const SizedBox(width: AppTheme.divider),
                       Text(birthDateInString ?? "DD/MM/YYYY"),
                       const SizedBox(width: AppTheme.divider),
@@ -148,18 +151,18 @@ class _InfoScreenState extends State<InfoScreen> {
                   ),
                   const SizedBox(height: AppTheme.divider),
                   CustomTextField(
-                    labelText: "Numéro de téléphone*",
+                    labelText: "${textLocals.numeroDeTelephone}*",
                     keyboardType: TextInputType.number,
                     validator: (value) => value != null && value.length >= 8
                         ? null
-                        : "Le numéro doit être valide",
+                        : textLocals.leNumeroDoitEtreValide,
                     onSaved: (value) => _phone = value,
                   ),
                   const SizedBox(height: AppTheme.divider * 2),
                   Provider.of<AuthViewModel>(context).loading
                       ? const CustomProgress()
                       : CustomButton(
-                          text: "Créer votre compte", onPressed: register),
+                          text: textLocals.creerVotreCompte, onPressed: register),
                   Consumer<AuthViewModel>(builder: (context, value, child) {
                     if (value.errorMessage != null) {
                       Future.delayed(Duration.zero, () {

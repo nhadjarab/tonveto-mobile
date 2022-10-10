@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 import 'package:tonveto/config/theme.dart';
 import 'package:tonveto/models/medical_report_model.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class MedicalRecordsScreen extends StatelessWidget {
   final List<MedicalReport> records;
@@ -10,6 +11,8 @@ class MedicalRecordsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final textLocals = AppLocalizations.of(context)!;
+
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -22,9 +25,9 @@ class MedicalRecordsScreen extends StatelessWidget {
           },
         ),
         centerTitle: true,
-        title: const Text(
-          "Les rapports médicaux",
-          style: TextStyle(color: Colors.white),
+        title:  Text(
+          textLocals.lesRapportsMedicaux,
+          style: const TextStyle(color: Colors.white),
         ),
         elevation: 0.0,
         backgroundColor: AppTheme.mainColor,
@@ -49,7 +52,7 @@ class MedicalRecordsScreen extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    "Rapport médical #${index + 1}",
+                    "${textLocals.rapportMedical} #${index + 1}",
                     style: const TextStyle(
                         color: AppTheme.mainColor,
                         fontWeight: FontWeight.bold,
@@ -59,11 +62,11 @@ class MedicalRecordsScreen extends StatelessWidget {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Text(
-                        "Reason",
+                       Text(
+                        textLocals.reason,
                         overflow: TextOverflow.clip,
                         softWrap: true,
-                        style: TextStyle(
+                        style:const TextStyle(
                             color: AppTheme.mainColor,
                             fontWeight: FontWeight.bold),
                       ),
@@ -76,9 +79,9 @@ class MedicalRecordsScreen extends StatelessWidget {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Text(
-                        "Diagnosis",
-                        style: TextStyle(
+                       Text(
+                        textLocals.diagnosis,
+                        style:const TextStyle(
                             color: AppTheme.mainColor,
                             fontWeight: FontWeight.bold),
                       ),
@@ -93,9 +96,9 @@ class MedicalRecordsScreen extends StatelessWidget {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Text(
-                        "Treatment",
-                        style: TextStyle(
+                       Text(
+                        textLocals.traitement,
+                        style:const TextStyle(
                             color: AppTheme.mainColor,
                             fontWeight: FontWeight.bold),
                       ),
@@ -108,9 +111,9 @@ class MedicalRecordsScreen extends StatelessWidget {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Text(
-                        "Notes",
-                        style: TextStyle(
+                       Text(
+                        textLocals.notes,
+                        style:const TextStyle(
                             color: AppTheme.mainColor,
                             fontWeight: FontWeight.bold),
                       ),

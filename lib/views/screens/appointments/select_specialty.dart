@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 import 'package:tonveto/views/screens/appointments/select_clinique_screen.dart';
-
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../../../config/theme.dart';
 import '../../../models/clinique_model.dart';
 
@@ -23,6 +23,8 @@ class SelectSpecialty extends StatefulWidget {
 class _SelectSpecialtyState extends State<SelectSpecialty> {
   @override
   Widget build(BuildContext context) {
+    final textLocals = AppLocalizations.of(context)!;
+
     return SafeArea(
         child: Scaffold(
           appBar: AppBar(
@@ -37,7 +39,7 @@ class _SelectSpecialtyState extends State<SelectSpecialty> {
                 Navigator.pop(context);
               },
             ),
-            title: const Text('Sélectionner une spécialité'),
+            title:  Text(textLocals.selectionnerUneSpecialite),
           ),
           backgroundColor: AppTheme.secondaryColor,
           body: Container(
@@ -47,10 +49,10 @@ class _SelectSpecialtyState extends State<SelectSpecialty> {
             padding: const EdgeInsets.symmetric(horizontal: 10),
             height: 50.h,
             child: widget.specialties.isEmpty
-                ? const Center(
+                ?  Center(
               child: Text(
-                'Aucune spécialité trouvée',
-                style: TextStyle(
+                textLocals.aucuneSpecialieeTrouvee,
+                style:const TextStyle(
                     color: Colors.black,
                     fontSize: 18,
                     fontWeight: FontWeight.bold),

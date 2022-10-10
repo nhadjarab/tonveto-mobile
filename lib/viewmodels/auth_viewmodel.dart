@@ -32,10 +32,8 @@ class AuthViewModel with ChangeNotifier {
     try {
       final data = await authService.login(email, password);
       final bool? profileColmpleted = data["userProfile"].profileComplete;
-      // print(profileColmpleted);
+     // print(profileColmpleted);
 
-      final bool? profileColmpleted = data["userProfile"].profile_complete;
-      print(profileColmpleted);
 
       if (profileColmpleted != null && !profileColmpleted) {
         loading = false;
@@ -95,14 +93,16 @@ class AuthViewModel with ChangeNotifier {
       DateTime? birthday,
       String? email,
       String? password,
-      bool? is_subscribed) async {
+      bool? isSubscribed) async {
+
     final AuthService authService = AuthService();
     try {
       loading = true;
       notifyListeners();
       // register user info
       await authService.registerInfo(
-          firstName, lastName, phone, birthday, email, password, is_subscribed);
+          firstName, lastName, phone, birthday, email, password, isSubscribed);
+
       // login the current user with the email and password
       await login(email, password);
       return true;
@@ -325,11 +325,11 @@ class AuthViewModel with ChangeNotifier {
       loading = false;
       errorMessage = f.message;
       notifyListeners();
-      rethrow;
+     rethrow;
     } catch (e) {
       loading = false;
       notifyListeners();
-      rethrow;
+    rethrow;
     }
   }
 }

@@ -8,6 +8,7 @@ import 'package:tonveto/models/pet_model.dart';
 import 'package:tonveto/viewmodels/auth_viewmodel.dart';
 import 'package:tonveto/views/screens/appointments/appointment_details_screen.dart';
 import 'package:tonveto/views/widgets/custom_progress.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class PetAppointmentScreen extends StatefulWidget {
   static const route = "/pet-appointments";
@@ -45,6 +46,8 @@ class _PetAppointmentScreenState extends State<PetAppointmentScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final textLocals = AppLocalizations.of(context)!;
+
     widget.pet.appointments.sort((a, b){ //sorting in ascending order
       return a.date!.compareTo(b.date!);
     });
@@ -62,7 +65,7 @@ class _PetAppointmentScreenState extends State<PetAppointmentScreen> {
         ),
         centerTitle: true,
         title: Text(
-          "Les rendez-vous de ${widget.pet.name}",
+          "${textLocals.lesEendezVousDe} ${widget.pet.name}",
           style: const TextStyle(color: Colors.white),
         ),
         elevation: 0.0,

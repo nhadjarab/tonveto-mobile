@@ -12,7 +12,7 @@ import 'package:tonveto/viewmodels/search_viewmodel.dart';
 import 'package:tonveto/views/screens/appointments/medical_records_screen.dart';
 import 'package:tonveto/views/screens/appointments/select_date_screen.dart';
 import 'package:tonveto/views/widgets/custom_progress.dart';
-
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../../widgets/custom_fields.dart';
 import '../../widgets/widgets.dart';
 
@@ -32,16 +32,17 @@ class _AppointmentDetailsScreenState extends State<AppointmentDetailsScreen> {
   String? text;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
-  getClinic() async {
+  getClinic()async {
     try {
       clinic = await Provider.of<AuthViewModel>(context, listen: false)
           .getClinic(widget.appointment.clinicId);
     } on SocketException {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
+        const  SnackBar(
           content: Text(
             'Vous étes hors ligne',
-            style: TextStyle(color: Colors.white),
+            style:
+            TextStyle(color: Colors.white),
           ),
           backgroundColor: AppTheme.errorColor,
         ),
@@ -55,23 +56,27 @@ class _AppointmentDetailsScreenState extends State<AppointmentDetailsScreen> {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       getClinic();
     });
+
+
   }
 
   @override
   Widget build(BuildContext context) {
+    final textLocals = AppLocalizations.of(context)!;
+
     Future<void> confirmDeleteDialog(context) async {
       return showDialog<void>(
         context: context,
         barrierDismissible: false, // user must tap button!
         builder: (BuildContext context) {
           return AlertDialog(
-            title: const Text(
-                "Confimer l'annulation du rendez vous, s'il vous plais"),
+            title:  Text(
+                textLocals.confimerAnnulationDuRendezVousSilVousPlais),
             actions: <Widget>[
               TextButton(
-                child: const Text(
-                  'Confimer',
-                  style: TextStyle(color: Colors.red),
+                child:  Text(
+                  textLocals.confimer,
+                  style: const TextStyle(color: Colors.red),
                 ),
                 onPressed: () async {
                   try {
@@ -79,11 +84,10 @@ class _AppointmentDetailsScreenState extends State<AppointmentDetailsScreen> {
                     await searchService.cancelAppointment(
                         widget.appointment.id,
                         Provider.of<AuthViewModel>(context, listen: false)
-                                .user
-                                ?.id ??
+                            .user
+                            ?.id ??
                             '',
-                        Provider.of<AuthViewModel>(context, listen: false)
-                            .token);
+                        Provider.of<AuthViewModel>(context, listen: false).token);
                     if (!mounted) return;
                     await Provider.of<AuthViewModel>(context, listen: false)
                         .getUserData();
@@ -92,19 +96,21 @@ class _AppointmentDetailsScreenState extends State<AppointmentDetailsScreen> {
                     Navigator.pop(context);
                   } on SocketException {
                     ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
+                      const  SnackBar(
                         content: Text(
                           'Vous étes hors ligne',
-                          style: TextStyle(color: Colors.white),
+                          style:
+                          TextStyle(color: Colors.white),
                         ),
                         backgroundColor: AppTheme.errorColor,
                       ),
                     );
                   }
+
                 },
               ),
               TextButton(
-                child: Text(textLocals.annuler),
+                child:  Text(textLocals.annuler),
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
@@ -139,11 +145,11 @@ class _AppointmentDetailsScreenState extends State<AppointmentDetailsScreen> {
                     ),
                     const SizedBox(height: AppTheme.divider),
                     CustomTextField(
-                      labelText: "Commentaire",
+                      labelText:   textLocals.commentaire,
                       keyboardType: TextInputType.emailAddress,
                       validator: (value) {
                         if (value == null || value == '') {
-                          return 'le champ ne peut pas être vide';
+                          return   textLocals.leChampNePeutPasEtreVide;
                         }
                         return null;
                       },
@@ -154,9 +160,9 @@ class _AppointmentDetailsScreenState extends State<AppointmentDetailsScreen> {
               ),
               actions: <Widget>[
                 TextButton(
-                  child: const Text(
-                    'Confimer',
-                    style: TextStyle(color: Colors.red),
+                  child:  Text(
+                    textLocals.confimer,
+                    style: const TextStyle(color: Colors.red),
                   ),
                   onPressed: () async {
                     try {
@@ -164,31 +170,28 @@ class _AppointmentDetailsScreenState extends State<AppointmentDetailsScreen> {
                         _formKey.currentState!.save();
                         SearchService searchService = SearchService();
 
-                        await searchService
-                            .addVetComment(
-                                text,
-                                widget.appointment.vetId,
-                                (value.rating ?? 0).toString(),
-                                Provider.of<AuthViewModel>(context,
-                                        listen: false)
-                                    .user
-                                    ?.id,
-                                widget.appointment.id,
-                                Provider.of<AuthViewModel>(context,
-                                        listen: false)
-                                    .token)
-                            .then((value) {
-                          if (!value) {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                content: Text(
-                                  'Vous avez déjà évalué ce vétérinaire',
-                                  style: TextStyle(color: Colors.white),
-                                ),
-                                backgroundColor: AppTheme.errorColor,
-                              ),
-                            );
-                          }
+                        await searchService.addVetComment(
+                            text,
+                            widget.appointment.vetId,
+                            (value.rating ?? 0).toString(),
+                            Provider.of<AuthViewModel>(context, listen: false)
+                                .user
+                                ?.id,
+                            widget.appointment.id,
+                            Provider.of<AuthViewModel>(context, listen: false)
+                                .token).then((value){
+                                  if(!value){
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      const  SnackBar(
+                                        content: Text(
+                                          'Vous avez déjà évalué ce vétérinaire',
+                                          style:
+                                          TextStyle(color: Colors.white),
+                                        ),
+                                        backgroundColor: AppTheme.errorColor,
+                                      ),
+                                    );
+                                  }
                         });
                         value.setRating(0);
                         if (!mounted) return;
@@ -200,19 +203,21 @@ class _AppointmentDetailsScreenState extends State<AppointmentDetailsScreen> {
                       }
                     } on SocketException {
                       ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
+                        const  SnackBar(
                           content: Text(
                             'Vous étes hors ligne',
-                            style: TextStyle(color: Colors.white),
+                            style:
+                            TextStyle(color: Colors.white),
                           ),
                           backgroundColor: AppTheme.errorColor,
                         ),
                       );
                     }
+
                   },
                 ),
                 TextButton(
-                  child: const Text('Annuler'),
+                  child:  Text(textLocals.annuler),
                   onPressed: () {
                     Navigator.of(context).pop();
                   },
@@ -236,7 +241,7 @@ class _AppointmentDetailsScreenState extends State<AppointmentDetailsScreen> {
           },
         ),
         centerTitle: true,
-        title: Text(
+        title:  Text(
           textLocals.rendezVousDetails,
           style: const TextStyle(fontSize: 18, color: Colors.white),
         ),
@@ -246,22 +251,22 @@ class _AppointmentDetailsScreenState extends State<AppointmentDetailsScreen> {
         actions: [
           if (!widget.appointment.date!.isBefore(DateTime.now()))
             IconButton(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => SelectDateScreen(
-                              cliniqueId: widget.appointment.clinicId ?? '',
-                              vetId: widget.appointment.vetId ?? '',
-                              price: '',
-                              appointment: widget.appointment,
-                            )),
-                  );
-                },
-                icon: const Icon(
-                  Icons.edit,
-                  color: Colors.white,
-                )),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => SelectDateScreen(
+                            cliniqueId: widget.appointment.clinicId ?? '',
+                            vetId: widget.appointment.vetId ?? '',
+                            price: '',
+                            appointment: widget.appointment,
+                          )),
+                );
+              },
+              icon: const Icon(
+                Icons.edit,
+                color: Colors.white,
+              )),
         ],
       ),
       backgroundColor: AppTheme.secondaryColor,
@@ -288,27 +293,27 @@ class _AppointmentDetailsScreenState extends State<AppointmentDetailsScreen> {
                           ListTile(
                             leading: const Icon(Icons.pets),
                             title: Text(
-                                "Animal: ${widget.appointment.pet?.name} , ${widget.appointment.pet?.species}"),
+                                "${textLocals.animal}: ${widget.appointment.pet?.name} , ${widget.appointment.pet?.species}"),
                           ),
                         ListTile(
                           leading: const Icon(Icons.person),
                           title: Text(
-                              "Vétérinaire: ${widget.appointment.vet?.firstName} ${widget.appointment.vet?.lastName}"),
+                              "${textLocals.veterinaire}: ${widget.appointment.vet?.firstName} ${widget.appointment.vet?.lastName}"),
                         ),
                         ListTile(
                           leading: const Icon(Icons.date_range_outlined),
                           title: Text(
-                              "Date: ${widget.appointment.date?.day}/${widget.appointment.date?.month}/${widget.appointment.date?.year} - ${widget.appointment.time}"),
+                              "${textLocals.date}: ${widget.appointment.date?.day}/${widget.appointment.date?.month}/${widget.appointment.date?.year} - ${widget.appointment.time}"),
                         ),
                         ListTile(
                           leading: const Icon(Icons.phone),
                           title: Text(
-                              "Téléphone: ${widget.appointment.vet?.phoneNumber}"),
+                              "${textLocals.telephone}: ${widget.appointment.vet?.phoneNumber}"),
                         ),
                         ListTile(
                           leading: const Icon(Icons.contact_mail),
                           title:
-                              Text("E-mail: ${widget.appointment.vet?.email}"),
+                              Text("${textLocals.email}: ${widget.appointment.vet?.email}"),
                         ),
                       ],
                     ),
@@ -327,7 +332,7 @@ class _AppointmentDetailsScreenState extends State<AppointmentDetailsScreen> {
                       children: [
                         ListTile(
                           leading: const Icon(Icons.file_copy_rounded),
-                          title: const Text("Les rapports médicaux"),
+                          title:  Text(textLocals.lesRapportsMedicaux),
                           trailing: const Icon(Icons.keyboard_arrow_right),
                           onTap: () {
                             Navigator.of(context).push(MaterialPageRoute(
@@ -342,81 +347,81 @@ class _AppointmentDetailsScreenState extends State<AppointmentDetailsScreen> {
                     ),
                   ),
                   if (!widget.appointment.date!.isBefore(DateTime.now()))
-                    Container(
-                      margin:
-                          EdgeInsets.only(left: 5.w, right: 5.w, bottom: 20),
-                      padding: const EdgeInsets.all(10),
-                      decoration:
-                          const BoxDecoration(color: Colors.white, boxShadow: [
-                        BoxShadow(
-                          color: Colors.black12,
-                          blurRadius: 4.0,
-                        )
-                      ]),
-                      child: Column(
-                        children: [
-                          ListTile(
-                            leading: const Icon(
-                              Icons.delete,
-                            ),
-                            title: const Text("Annuler le rendez vous"),
-                            trailing: const Icon(Icons.keyboard_arrow_right),
-                            onTap: () async {
-                              confirmDeleteDialog(context);
-                            },
+                  Container(
+                    margin: EdgeInsets.only(left: 5.w, right: 5.w, bottom: 20),
+                    padding: const EdgeInsets.all(10),
+                    decoration:
+                        const BoxDecoration(color: Colors.white, boxShadow: [
+                      BoxShadow(
+                        color: Colors.black12,
+                        blurRadius: 4.0,
+                      )
+                    ]),
+                    child: Column(
+                      children: [
+                        ListTile(
+                          leading: const Icon(
+                            Icons.delete,
                           ),
-                        ],
-                      ),
+                          title:  Text(textLocals.annulerLeRendezVous),
+                          trailing: const Icon(Icons.keyboard_arrow_right),
+                          onTap: () async {
+                            confirmDeleteDialog(context);
+                          },
+                        ),
+                      ],
                     ),
+                  ),
                   if (widget.appointment.date!.isBefore(DateTime.now()))
-                    Container(
-                      margin:
-                          EdgeInsets.only(left: 5.w, right: 5.w, bottom: 20),
-                      padding: const EdgeInsets.all(10),
-                      decoration:
-                          const BoxDecoration(color: Colors.white, boxShadow: [
-                        BoxShadow(
-                          color: Colors.black12,
-                          blurRadius: 4.0,
-                        )
-                      ]),
-                      child: Column(
-                        children: [
-                          ListTile(
-                            leading: const Icon(
-                              Icons.star,
+                      Container(
+                        margin:
+                            EdgeInsets.only(left: 5.w, right: 5.w, bottom: 20),
+                        padding: const EdgeInsets.all(10),
+                        decoration: const BoxDecoration(
+                            color: Colors.white,
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black12,
+                                blurRadius: 4.0,
+                              )
+                            ]),
+                        child: Column(
+                          children: [
+                            ListTile(
+                              leading: const Icon(
+                                Icons.star,
+                              ),
+                              title:  Text(textLocals.evaluerLeVeterinaire),
+                              trailing: const Icon(Icons.keyboard_arrow_right),
+                              onTap: () async {
+                                evaluationDialog(context);
+                              },
                             ),
-                            title: const Text("Evaluer le vétérinaire"),
-                            trailing: const Icon(Icons.keyboard_arrow_right),
-                            onTap: () async {
-                              evaluationDialog(context);
-                            },
+                          ],
+                        ),
+                      ),
+                  if(clinic !=null)
+                  Container(
+                    margin: EdgeInsets.symmetric(
+                      horizontal: 5.w,
+                    ),
+                    padding: const EdgeInsets.all(10),
+                    decoration:
+                        const BoxDecoration(color: Colors.white, boxShadow: [
+                      BoxShadow(
+                        color: Colors.black12,
+                        blurRadius: 4.0,
+                      )
+                    ]),
+                    child: auth.loading
+                        ? const Center(child: CustomProgress())
+                        : ListTile(
+                            leading: const Icon(Icons.location_on),
+                            title: Text(clinic?.name ?? ""),
+                            subtitle: Text(
+                                "${clinic?.address}, ${clinic?.city}, ${clinic?.country} (${clinic?.zipCode})"),
                           ),
-                        ],
-                      ),
-                    ),
-                  if (clinic != null)
-                    Container(
-                      margin: EdgeInsets.symmetric(
-                        horizontal: 5.w,
-                      ),
-                      padding: const EdgeInsets.all(10),
-                      decoration:
-                          const BoxDecoration(color: Colors.white, boxShadow: [
-                        BoxShadow(
-                          color: Colors.black12,
-                          blurRadius: 4.0,
-                        )
-                      ]),
-                      child: auth.loading
-                          ? const Center(child: CustomProgress())
-                          : ListTile(
-                              leading: const Icon(Icons.location_on),
-                              title: Text(clinic?.name ?? ""),
-                              subtitle: Text(
-                                  "${clinic?.address}, ${clinic?.city}, ${clinic?.country} (${clinic?.zipCode})"),
-                            ),
-                    ),
+                  ),
                 ],
               ),
             ),

@@ -7,9 +7,10 @@ import 'package:tonveto/models/pet_model.dart';
 import 'package:tonveto/viewmodels/auth_viewmodel.dart';
 import 'package:tonveto/views/screens/pet/add_pet_screen.dart';
 import 'package:tonveto/views/screens/pet/pet_details_screen.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class PetsScreen extends StatelessWidget {
-  static const route = "/pets";
+  static const route = "/pets-list";
 
   const PetsScreen({Key? key}) : super(key: key);
 
@@ -29,21 +30,24 @@ class PetsScreen extends StatelessWidget {
               onPressed: () async {
                 try {
                   await Provider.of<AuthViewModel>(context, listen: false)
-                      .deletePet(petID)
-                      .then((value) {
+                      .deletePet(petID).then((value) {
                     Navigator.pop(context);
                   });
+
+
                 } on SocketException {
                   ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
+                    const  SnackBar(
                       content: Text(
                         'Vous étes hors ligne',
-                        style: TextStyle(color: Colors.white),
+                        style:
+                        TextStyle(color: Colors.white),
                       ),
                       backgroundColor: AppTheme.errorColor,
                     ),
                   );
                 }
+
               },
             ),
             TextButton(
@@ -60,11 +64,13 @@ class PetsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final textLocals = AppLocalizations.of(context)!;
+
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          "Mes animaux",
-          style: TextStyle(color: Colors.white),
+        title: Text(
+          textLocals.mesAnimaux,
+          style: const TextStyle(color: Colors.white),
         ),
         centerTitle: true,
         elevation: 0,
@@ -87,81 +93,48 @@ class PetsScreen extends StatelessWidget {
               itemCount: auth.user?.pets?.length ?? 0,
               itemBuilder: (context, index) {
                 Pet pet = auth.user!.pets![index];
-                return Container(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
-                  margin: EdgeInsets.symmetric(horizontal: 5.w, vertical: 10),
-                  decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(8),
-                      boxShadow: const [
-                        BoxShadow(color: Colors.black12, blurRadius: 2)
-                      ]),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      GestureDetector(
-                        onTap: () {
-                          Navigator.pushNamed(context, PetDetailsScreen.route,
-                              arguments: index);
-                        },
-                        child: Row(
-                          children: [
-                            const CircleAvatar(
-                              backgroundImage:
-                                  AssetImage('assets/images/dog.png'),
-                              backgroundColor: AppTheme.mainColor,
-                              radius: 30,
-                            ),
-                            Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 10),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    pet.name ?? "",
-                                    overflow: TextOverflow.ellipsis,
-                                    style: const TextStyle(
-                                        fontSize: 18,
-                                        fontWeight: FontWeight.bold,
-                                        color: AppTheme.mainColor),
-                                  ),
-                                  const SizedBox(height: AppTheme.divider),
-                                  RichText(
-                                      text: TextSpan(children: [
-                                    const TextSpan(
-                                        text: 'Type : ',
-                                        style: TextStyle(
-                                          color: AppTheme.mainColor,
-                                        )),
-                                    TextSpan(
-                                        text: '${pet.species}  /  ',
-                                        style: const TextStyle(
-                                            color: Colors.black)),
-                                    const TextSpan(
-                                        text: 'Sex : ',
-                                        style: TextStyle(
-                                          color: AppTheme.mainColor,
-                                        )),
-                                    TextSpan(
-                                        text: '${pet.sex}',
-                                        style: const TextStyle(
-                                            color: Colors.black))
-                                  ])),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      IconButton(
-                          onPressed: () {
-                            confirmDeleteDialog(context, pet.id);
-                          },
-                          icon: const Icon(Icons.delete, color: Colors.red)),
-                    ],
+                return ListTile(
+                  onTap: (){
+                    Navigator.pushNamed(context, PetDetailsScreen.route,
+                        arguments: index);
+                  },
+                  leading: const CircleAvatar(
+                    backgroundImage: AssetImage('assets/images/dog.png'),
+                    backgroundColor: AppTheme.mainColor,
+                    radius: 30,
                   ),
+                  title: Text(
+                    pet.name ?? "",
+                    overflow: TextOverflow.ellipsis,
+                    style: const TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        color: AppTheme.mainColor),
+                  ),
+                  subtitle: RichText(
+                      text: TextSpan(children: [
+                    TextSpan(
+                        text: '${textLocals.type} : ',
+                        style: const TextStyle(
+                          color: AppTheme.mainColor,
+                        )),
+                    TextSpan(
+                        text: '${pet.species}  /  ',
+                        style: const TextStyle(color: Colors.black)),
+                    TextSpan(
+                        text: '${textLocals.sex} : ',
+                        style: const TextStyle(
+                          color: AppTheme.mainColor,
+                        )),
+                    TextSpan(
+                        text: '${pet.sex}',
+                        style: const TextStyle(color: Colors.black))
+                  ])),
+                  trailing: IconButton(
+                      onPressed: () {
+                        confirmDeleteDialog(context, pet.id);
+                      },
+                      icon: const Icon(Icons.delete, color: Colors.red)),
                 );
               }),
         ),

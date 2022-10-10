@@ -7,6 +7,7 @@ import '../../../config/consts.dart';
 import '../../../config/theme.dart';
 import '../../widgets/custom_button.dart';
 import 'login_screen.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 
 class AuthScreen extends StatelessWidget {
@@ -14,6 +15,8 @@ class AuthScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final textLocals = AppLocalizations.of(context)!;
+
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
@@ -47,13 +50,13 @@ class AuthScreen extends StatelessWidget {
                     Lottie.asset('assets/lotties/dog.json',height: 40.h),
                     const SizedBox(height: AppTheme.divider * 2),
                     CustomButton(
-                        text: "Créer un compte",
+                        text: textLocals.creerUnCompte,
                         width: double.infinity,
                         onPressed: () async => await Navigator.pushNamed(
                             context, RegisterScreen.route)),
                     const SizedBox(height: AppTheme.divider),
                     CustomButton(
-                        text: "Se connecter",
+                        text: textLocals.seConnecter,
                         width: double.infinity,
                         onPressed: () async => await Navigator.pushNamed(
                             context, LoginScreen.route)),

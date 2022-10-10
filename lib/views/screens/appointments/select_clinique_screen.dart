@@ -3,6 +3,7 @@ import 'package:sizer/sizer.dart';
 import 'package:tonveto/config/theme.dart';
 import 'package:tonveto/models/clinique_model.dart';
 import 'package:tonveto/views/screens/appointments/select_date_screen.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 
 class SelectCliniqueScreen extends StatefulWidget {
@@ -23,6 +24,8 @@ final  String vetId;
 class _SelectCliniqueScreenState extends State<SelectCliniqueScreen> {
   @override
   Widget build(BuildContext context) {
+    final textLocals = AppLocalizations.of(context)!;
+
     return SafeArea(
         child: Scaffold(
       appBar: AppBar(
@@ -37,7 +40,7 @@ class _SelectCliniqueScreenState extends State<SelectCliniqueScreen> {
             Navigator.pop(context);
           },
         ),
-        title: const Text('Sélectionner une clinique'),
+        title:  Text(textLocals.selectionnerUneClinique),
       ),
       backgroundColor: AppTheme.secondaryColor,
       body: Container(
@@ -47,10 +50,10 @@ class _SelectCliniqueScreenState extends State<SelectCliniqueScreen> {
         padding: const EdgeInsets.symmetric(horizontal: 10),
         height: 50.h,
         child: widget.clinics.length == 0
-            ? const Center(
+            ?  Center(
                 child: Text(
-                  'Aucune clinique trouvée',
-                  style: TextStyle(
+                  textLocals.aucuneCliniqueTrouvee,
+                  style:const  TextStyle(
                       color: Colors.black,
                       fontSize: 18,
                       fontWeight: FontWeight.bold),

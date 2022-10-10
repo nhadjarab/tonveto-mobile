@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tonveto/config/theme.dart';
 import 'package:tonveto/models/comment_model.dart';
-
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../../widgets/widgets.dart';
 
 class CommentairesScreen extends StatefulWidget {
@@ -19,12 +19,13 @@ class CommentairesScreen extends StatefulWidget {
 class _CommentairesScreenState extends State<CommentairesScreen> {
   @override
   Widget build(BuildContext context) {
+    final textLocals = AppLocalizations.of(context)!;
     return SafeArea(
         child: Scaffold(
       appBar: AppBar(
         backgroundColor: AppTheme.mainColor,
         centerTitle: true,
-        title: const Text('Commentaires et évalutations'),
+        title: Text(textLocals.commentairesEtEvalutations),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
@@ -43,16 +44,20 @@ class _CommentairesScreenState extends State<CommentairesScreen> {
               decoration: BoxDecoration(
                   color: Colors.white, borderRadius: BorderRadius.circular(10)),
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(
-                        '${widget.comments[index].ownerFirstName} ${widget.comments[index].ownerLastName}',
-                        style: const TextStyle(
-                            color: AppTheme.mainColor,
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold),
+                      Expanded(
+                        child: Text(
+                          '${widget.comments[index].ownerFirstName} ${widget.comments[index].ownerLastName}',
+                          style: const TextStyle(
+                              color: AppTheme.mainColor,
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold),
+                          overflow: TextOverflow.ellipsis,
+                        ),
                       ),
                       AbsorbPointer(
                         child: StarRating(

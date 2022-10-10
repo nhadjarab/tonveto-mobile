@@ -11,6 +11,7 @@ import 'package:tonveto/viewmodels/auth_viewmodel.dart';
 import 'package:tonveto/views/widgets/custom_button.dart';
 import 'package:tonveto/views/widgets/custom_fields.dart';
 import 'package:tonveto/views/widgets/custom_progress.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class EditPetScreen extends StatefulWidget {
   final Pet pet;
@@ -122,6 +123,8 @@ class _EditPetScreenState extends State<EditPetScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final textLocals = AppLocalizations.of(context)!;
+
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -134,9 +137,9 @@ class _EditPetScreenState extends State<EditPetScreen> {
           },
         ),
         centerTitle: true,
-        title: const Text(
-          "Modifier un animal",
-          style: TextStyle(color: Colors.white),
+        title:  Text(
+          textLocals.modifierUnAnimal,
+          style:const TextStyle(color: Colors.white),
         ),
         elevation: 0.0,
         backgroundColor: AppTheme.mainColor,
@@ -182,12 +185,12 @@ class _EditPetScreenState extends State<EditPetScreen> {
                       children: [
                         CustomTextField(
                           initialValue: _nom,
-                          labelText: "Surnom*",
+                          labelText: "${ textLocals.surnom}*",
                           keyboardType: TextInputType.name,
                           validator: (value) => validateName(
                               value,
-                              "le champ ne peut pas être vide",
-                              "le surnom doit être +3 caracteres"),
+                              textLocals.leChampNePeutPasEtreVide,
+                              textLocals.leSurnomDoitEtreCaracteres),
                           onSaved: (value) => _nom = value,
                         ),
                         const SizedBox(height: AppTheme.divider),
@@ -222,7 +225,7 @@ class _EditPetScreenState extends State<EditPetScreen> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            const Text("Date de naissance*"),
+                             Text("${ textLocals.dateDeNaissance}*"),
                             const SizedBox(width: AppTheme.divider),
                             Text(birthDateInString ?? "DD/MM/YYYY"),
                             const SizedBox(width: AppTheme.divider),
@@ -261,7 +264,7 @@ class _EditPetScreenState extends State<EditPetScreen> {
                           crossAxisAlignment: CrossAxisAlignment.stretch,
                           children: [
                             DropdownButton(
-                              hint: const Text("Animal"),
+                              hint:  Text( textLocals.animal),
                               // Initial Value
                               value: _animal,
 
@@ -290,7 +293,7 @@ class _EditPetScreenState extends State<EditPetScreen> {
                           crossAxisAlignment: CrossAxisAlignment.stretch,
                           children: [
                             DropdownButton(
-                              hint: const Text("Race"),
+                              hint:  Text( textLocals.race),
                               // Initial Value
                               value: _race,
 
@@ -320,11 +323,11 @@ class _EditPetScreenState extends State<EditPetScreen> {
                                 });
                               },
                             ),
-                            const Text("Croisé(e)"),
+                             Text( textLocals.croise),
                             Column(
                               children: [
                                 RadioListTile<bool>(
-                                  title: const Text('Oui'),
+                                  title:  Text( textLocals.oui),
                                   value: true,
                                   groupValue: _crossbreed,
                                   onChanged: (bool? value) {
@@ -334,7 +337,7 @@ class _EditPetScreenState extends State<EditPetScreen> {
                                   },
                                 ),
                                 RadioListTile<bool>(
-                                  title: const Text('Non'),
+                                  title:  Text( textLocals.non),
                                   value: false,
                                   groupValue: _crossbreed,
                                   onChanged: (bool? value) {
@@ -345,11 +348,11 @@ class _EditPetScreenState extends State<EditPetScreen> {
                                 ),
                               ],
                             ),
-                            const Text("Stérélisé(e)"),
+                             Text( textLocals.sterelise),
                             Column(
                               children: [
                                 RadioListTile<bool>(
-                                  title: const Text('Oui'),
+                                  title:  Text( textLocals.oui),
                                   value: true,
                                   groupValue: _sterilised,
                                   onChanged: (bool? value) {
@@ -359,7 +362,7 @@ class _EditPetScreenState extends State<EditPetScreen> {
                                   },
                                 ),
                                 RadioListTile<bool>(
-                                  title: const Text('Non'),
+                                  title:  Text( textLocals.non),
                                   value: false,
                                   groupValue: _sterilised,
                                   onChanged: (bool? value) {
@@ -376,7 +379,7 @@ class _EditPetScreenState extends State<EditPetScreen> {
                         Provider.of<AuthViewModel>(context).loading
                             ? const CustomProgress()
                             : CustomButton(
-                                text: "Modifier",
+                                text:  textLocals.modifier,
                                 onPressed: editPet,
                               )
                       ],

@@ -8,7 +8,7 @@ import 'package:tonveto/services/search_service.dart';
 import 'package:tonveto/viewmodels/search_viewmodel.dart';
 import 'package:tonveto/views/screens/appointments/select_pet_screen.dart';
 import 'package:tonveto/views/widgets/custom_progress.dart';
-
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../../../config/theme.dart';
 import '../../../viewmodels/auth_viewmodel.dart';
 
@@ -83,18 +83,20 @@ class _AvailableAppointmentsScreenState
 
   @override
   Widget build(BuildContext context) {
+    final textLocals = AppLocalizations.of(context)!;
+
     return DefaultTabController(
         length: 2,
         child: Scaffold(
           appBar: AppBar(
             backgroundColor: AppTheme.mainColor,
-            title: const Text("Rendez-vous disponibles"),
+            title:  Text(textLocals.rendezVousDisponibles),
             centerTitle: true,
-            bottom: const TabBar(
+            bottom:  TabBar(
               indicatorColor: Colors.white,
               tabs: [
-                Tab(text: "Matin"),
-                Tab(text: "Aprés midi"),
+                Tab(text: textLocals.matin),
+                Tab(text: textLocals.apresMidi),
               ],
             ),
           ),
@@ -129,10 +131,10 @@ class _AvailableAppointmentsScreenState
                                 Navigator.pop(context);
                                 Navigator.pop(context);
                                 ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(
+                                   SnackBar(
                                     content: Text(
-                                      'Rendez vous modifié avec succès',
-                                      style: TextStyle(color: Colors.white),
+                                      textLocals.rendezVousModifieAvecSucces,
+                                      style: const TextStyle(color: Colors.white),
                                     ),
                                     backgroundColor: AppTheme.successColor,
                                   ),
@@ -251,29 +253,7 @@ class _AvailableAppointmentsScreenState
                           );
                         }),
 
-                    /* ListView.builder(
-                      itemCount: value.user?.getPastAppointments().length ?? 0,
-                      itemBuilder: (context, index) {
-                        final appointment = value.user?.getPastAppointments()[index];
-                        return ListTile(
-                          leading: const Icon(Icons.calendar_today),
-                          title: Text(
-                              "${appointment?.vet?.last_name} ${appointment?.vet?.first_name}"),
-                          subtitle: Text(
-                              "Date:  ${appointment?.date?.day}/${appointment?.date?.month}/${appointment?.date?.year} - ${appointment?.time}"),
-                          trailing: IconButton(
-                            icon: const Icon(Icons.keyboard_arrow_right),
-                            onPressed: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => AppointmentDetailsScreen(
-                                          appointment: appointment!)));
-                            },
-                          ),
-                        );
-                      },
-                    ),*/
+
                   ],
                 ),
         ));

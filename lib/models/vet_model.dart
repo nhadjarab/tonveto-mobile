@@ -50,8 +50,8 @@ class Veterinaire {
         type: json["type"],
         bankDetails: json["bank_details"],
         balance: json["balance"],
-        //vetRating: json["vetRating"]['_avg']['rating'] ?? 0,
-        specialities: List<dynamic>.from(json["specialities"].map((x) => x)),
+        specialities:
+            List<dynamic>.from(json["specialities"]?.map((x) => x) ?? []),
         clinics: json["clinics"] != null
             ? List<Clinique>.from(json["clinics"]
                 .map((clinique) => Clinique.fromJson(clinique['clinic'])))

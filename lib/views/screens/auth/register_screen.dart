@@ -7,9 +7,9 @@ import '../../../viewmodels/auth_viewmodel.dart';
 import '../../widgets/custom_button.dart';
 import '../../widgets/custom_fields.dart';
 import '../../widgets/custom_progress.dart';
-import '../../widgets/show_message.dart';
 import 'info_screen.dart';
 import 'login_screen.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class RegisterScreen extends StatefulWidget {
   static const route = "/register";
@@ -38,6 +38,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
       );
       if (redirect) {
         if (!mounted) return;
+
         Navigator.pushReplacementNamed(context, InfoScreen.route,
             arguments: {"email": _email, "password": _password});
       }
@@ -46,6 +47,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final textLocals = AppLocalizations.of(context)!;
+
     return SafeArea(
       child: Scaffold(
           body: SingleChildScrollView(
@@ -80,9 +83,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                   color: Colors.white,
                                 ),
                               ),
-                              const Text(
-                                'Inscription',
-                                style: TextStyle(
+                               Text(
+                                textLocals.inscription,
+                                style:const TextStyle(
                                     color: Colors.white,
                                     fontSize: 20,
                                     fontWeight: FontWeight.bold),
@@ -96,71 +99,81 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       ),
                     ),
                   ),
-                  const SizedBox(height: AppTheme.divider * 2),
-                  Container(
-                    padding:const EdgeInsets.symmetric(horizontal: 20),
-                    child: Column(
-                      children: [
-                        CustomTextField(
-                          preffixIcon: const Icon(
-                            Icons.email_outlined,
+
+
+
+
+                const SizedBox(height: AppTheme.divider * 2),
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  child: Column(
+                    children: [
+                      CustomTextField(
+                        preffixIcon: const Icon(
+                          Icons.email_outlined,
+                          color: AppTheme.mainColor,
+                        ),
+                        labelText: textLocals.email,
+                        keyboardType: TextInputType.emailAddress,
+                        validator: (value) => validateEmail(value,
+                            textLocals.leChampNePeutPasEtreVide, textLocals.emailInvalide),
+
+                        onSaved: (value) => _email = value,
+                      ),
+                      const SizedBox(height: AppTheme.divider),
+                      CustomTextField(
+                        preffixIcon: const Icon(
+                          Icons.lock_outlined,
+                          color: AppTheme.mainColor,
+                        ),
+                        labelText: textLocals.motDePasse,
+                        keyboardType: TextInputType.visiblePassword,
+                        obscureText: !_passwordVisible,
+                        suffixIcon: IconButton(
+                          icon: Icon(
+                            _passwordVisible
+                                ? Icons.visibility
+                                : Icons.visibility_off,
                             color: AppTheme.mainColor,
                           ),
-                          labelText: "e-mail",
-                          keyboardType: TextInputType.emailAddress,
-                          validator: (value) => validateEmail(value,
-                              "le champ ne peut pas être vide", "email invalide"),
-                          onSaved: (value) => _email = value,
+                          onPressed: () => setState(
+                              () => _passwordVisible = !_passwordVisible),
                         ),
-                        const SizedBox(height: AppTheme.divider),
-                        CustomTextField(
-                          preffixIcon: const Icon(
-                            Icons.lock_outlined,
-                            color: AppTheme.mainColor,
-                          ),
-                          labelText: "Mot de passe",
-                          keyboardType: TextInputType.visiblePassword,
-                          obscureText: !_passwordVisible,
-                          suffixIcon: IconButton(
-                            icon: Icon(
-                              _passwordVisible
-                                  ? Icons.visibility
-                                  : Icons.visibility_off,
-                              color: AppTheme.mainColor,
-                            ),
-                            onPressed: () => setState(
-                                () => _passwordVisible = !_passwordVisible),
-                          ),
-                          validator: (value) => validatePassword(
-                              value,
-                              "le champ ne peut pas être vide",
-                              "Le mot de passe doit contenir au moins un chiffre et +8 caractères"),
-                          onSaved: (value) => _password = value,
-                        ),
-                        const SizedBox(height: AppTheme.divider * 4),
-                        Provider.of<AuthViewModel>(context).loading
-                            ? const CustomProgress()
-                            : CustomButton(
-                                width: double.infinity,
-                                text: "Inscrire",
-                                onPressed: nextPage),
-                        const SizedBox(height: AppTheme.divider * 4),
-                        Consumer<AuthViewModel>(builder: (context, value, child) {
-                          if (value.errorMessage != null) {
-                            return ShowMessage(
-                                message: value.errorMessage!,
-                                isError: true,
-                                onPressed: () => value.clearError());
-                          }
-                          return const SizedBox.shrink();
-                        }),
-                      ],
-                    ),
+
+                        validator: (value) => validatePassword(
+                            value,
+                            textLocals.leChampNePeutPasEtreVide,
+                            textLocals.leMotDePasseDoitContenirAumoinsunChiffreEtAvoirAuMoinsCaracteres),
+                        onSaved: (value) => _password = value,
+                      ),
+                      const SizedBox(height: AppTheme.divider * 4),
+                      Provider.of<AuthViewModel>(context).loading
+                          ? const CustomProgress()
+                          : CustomButton(
+                              width: double.infinity,
+                              text: textLocals.inscrire,
+                              onPressed: nextPage),
+                      const SizedBox(height: AppTheme.divider * 4),
+                      Consumer<AuthViewModel>(builder: (context, value, child) {
+                        if (value.errorMessage != null) {
+                          Future.delayed(Duration.zero, () {
+                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                              content: Text(value.errorMessage!),
+                              backgroundColor: AppTheme.errorColor,
+                            ));
+                            value.clearError();
+                          });
+                        }
+                        return const SizedBox.shrink();
+                      }),
+                    ],
                   ),
-                ],
-              ),
-            )),
-      )),
-    );
+                ),
+              ],
+            ),
+          ),
+        )),
+      ));
+
   }
 }

@@ -11,6 +11,7 @@ import 'package:tonveto/viewmodels/auth_viewmodel.dart';
 import 'package:tonveto/views/widgets/custom_button.dart';
 import 'package:tonveto/views/widgets/custom_fields.dart';
 import 'package:tonveto/views/widgets/custom_progress.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class AddPetScreen extends StatefulWidget {
   static const route = "/add-pets";
@@ -69,17 +70,32 @@ class _AddPetScreenState extends State<AddPetScreen> {
         sterilised: _sterilised,
         crossbreed: _crossbreed,
       );
-      final redirect =
-          await Provider.of<AuthViewModel>(context, listen: false).addPet(pet);
-      if (redirect) {
-        if (!mounted) return;
-        Navigator.pop(context);
+      try {
+        final redirect =
+            await Provider.of<AuthViewModel>(context, listen: false)
+                .addPet(pet);
+        if (redirect) {
+          if (!mounted) return;
+          Navigator.pop(context);
+        }
+      } on SocketException {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text(
+              'Vous étes hors ligne',
+              style: TextStyle(color: Colors.white),
+            ),
+            backgroundColor: AppTheme.errorColor,
+          ),
+        );
       }
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    final textLocals = AppLocalizations.of(context)!;
+
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -92,9 +108,9 @@ class _AddPetScreenState extends State<AddPetScreen> {
           },
         ),
         centerTitle: true,
-        title: const Text(
-          "Ajouter un animal",
-          style: TextStyle(color: Colors.white),
+        title: Text(
+          textLocals.ajouterUnAnimal,
+          style: const TextStyle(color: Colors.white),
         ),
         elevation: 0.0,
         backgroundColor: AppTheme.mainColor,
@@ -135,12 +151,12 @@ class _AddPetScreenState extends State<AddPetScreen> {
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
                       CustomTextField(
-                        labelText: "Surnom*",
+                        labelText: "${textLocals.surnom}*",
                         keyboardType: TextInputType.name,
                         validator: (value) => validateName(
                             value,
-                            "le champ ne peut pas être vide",
-                            "le surnom doit être +3 caracteres"),
+                            textLocals.leChampNePeutPasEtreVide,
+                            textLocals.leSurnomDoitEtreCaracteres),
                         onSaved: (value) => _nom = value,
                       ),
                       const SizedBox(height: AppTheme.divider),
@@ -175,7 +191,7 @@ class _AddPetScreenState extends State<AddPetScreen> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          const Text("Date de naissance*"),
+                          Text("${textLocals.dateDeNaissance}*"),
                           const SizedBox(width: AppTheme.divider),
                           Text(birthDateInString ?? "DD/MM/YYYY"),
                           const SizedBox(width: AppTheme.divider),
@@ -213,7 +229,7 @@ class _AddPetScreenState extends State<AddPetScreen> {
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
                           DropdownButton(
-                            hint: const Text("Animal"),
+                            hint: Text(textLocals.animal),
                             // Initial Value
                             value: _animal,
 
@@ -242,7 +258,7 @@ class _AddPetScreenState extends State<AddPetScreen> {
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
                           DropdownButton(
-                            hint: const Text("Race"),
+                            hint: Text(textLocals.race),
                             // Initial Value
                             value: _race,
 
@@ -272,11 +288,11 @@ class _AddPetScreenState extends State<AddPetScreen> {
                               });
                             },
                           ),
-                          const Text("Croisé(e)"),
+                          Text(textLocals.croise),
                           Column(
                             children: [
                               RadioListTile<bool>(
-                                title: const Text('Oui'),
+                                title: Text(textLocals.oui),
                                 value: true,
                                 groupValue: _crossbreed,
                                 onChanged: (bool? value) {
@@ -286,7 +302,7 @@ class _AddPetScreenState extends State<AddPetScreen> {
                                 },
                               ),
                               RadioListTile<bool>(
-                                title: const Text('Non'),
+                                title: Text(textLocals.non),
                                 value: false,
                                 groupValue: _crossbreed,
                                 onChanged: (bool? value) {
@@ -297,11 +313,11 @@ class _AddPetScreenState extends State<AddPetScreen> {
                               ),
                             ],
                           ),
-                          const Text("Stérélisé(e)"),
+                          Text(textLocals.sterelise),
                           Column(
                             children: [
                               RadioListTile<bool>(
-                                title: const Text('Oui'),
+                                title: Text(textLocals.oui),
                                 value: true,
                                 groupValue: _sterilised,
                                 onChanged: (bool? value) {
@@ -311,7 +327,7 @@ class _AddPetScreenState extends State<AddPetScreen> {
                                 },
                               ),
                               RadioListTile<bool>(
-                                title: const Text('Non'),
+                                title: Text(textLocals.non),
                                 value: false,
                                 groupValue: _sterilised,
                                 onChanged: (bool? value) {
@@ -328,7 +344,7 @@ class _AddPetScreenState extends State<AddPetScreen> {
                       Provider.of<AuthViewModel>(context).loading
                           ? const CustomProgress()
                           : CustomButton(
-                              text: "Ajouter",
+                              text: textLocals.ajouter,
                               onPressed: addPet,
                             )
                     ],

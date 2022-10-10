@@ -9,6 +9,7 @@ import '../../../viewmodels/auth_viewmodel.dart';
 import '../../widgets/custom_button.dart';
 import '../../widgets/custom_fields.dart';
 import '../../widgets/custom_progress.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class EditProfileScreen extends StatefulWidget {
   static const route = "/edit-profile";
@@ -92,6 +93,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final textLocals = AppLocalizations.of(context)!;
+
     return Scaffold(
       backgroundColor: AppTheme.mainColor,
       appBar: AppBar(
@@ -104,8 +107,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
           },
         ),
         centerTitle: true,
-        title: const Text(
-          "Modifer mon profile",
+        title:  Text(
+          textLocals.modiferMonProfile,
         ),
         elevation: 0.0,
         backgroundColor: Colors.white,
@@ -134,39 +137,39 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                       children: [
                         CustomTextField(
                           initialValue: auth.user?.lastName ?? "",
-                          labelText: "Nom",
+                          labelText:  textLocals.nom,
                           keyboardType: TextInputType.name,
                           validator: (value) => validateName(
                               value,
-                              "le champ ne peut pas être vide",
-                              "le nom doit avoir au moins 3 caracteres"),
+                              textLocals.leChampNePeutPasEtreVide,
+                              textLocals.leNomDoitAvoirAuMoinsCaracteresPasdeCaracteresSpecieaux),
                           onSaved: (value) => _lastname = value,
                         ),
                         CustomTextField(
                           initialValue: auth.user?.firstName ?? "",
-                          labelText: "Prénom",
+                          labelText: textLocals.prenom,
                           keyboardType: TextInputType.name,
                           validator: (value) => validateName(
                               value,
-                              "le champ ne peut pas être vide",
-                              "le prénom doit avoir au moins 3 caracteres"),
+                              textLocals.leChampNePeutPasEtreVide,
+                              textLocals.lePrenomDoitAvoirAuMoinsCaracteresPasDeCaracteresSpecieaux),
                           onSaved: (value) => _firstname = value,
                         ),
                         CustomTextField(
                           initialValue: auth.user?.email ?? "",
-                          labelText: "e-mail",
+                          labelText:  textLocals.email,
                           keyboardType: TextInputType.emailAddress,
                           validator: (value) => validateEmail(
                               value,
-                              "le champ ne peut pas être vide",
-                              "email invalide"),
+                              textLocals.leChampNePeutPasEtreVide,
+                              textLocals.emailInvalide),
                           onSaved: (value) => _email = value,
                         ),
                         const SizedBox(height: AppTheme.divider * 2),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            const Text("Date de naissance*"),
+                             Text( textLocals.dateDeNaissance),
                             const SizedBox(width: AppTheme.divider),
                             Text(birthDateInString ?? "DD/MM/YYYY"),
                             const SizedBox(width: AppTheme.divider),
@@ -202,19 +205,19 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                         const SizedBox(height: AppTheme.divider),
                         CustomTextField(
                           initialValue: auth.user?.phoneNumber,
-                          labelText: "Tel*",
+                          labelText:  textLocals.telephone,
                           keyboardType: TextInputType.number,
                           validator: (value) =>
                               value != null && value.length >= 8
                                   ? null
-                                  : "Le numéro doit être valide",
+                                  :  textLocals.leNumeroDoitEtreValide,
                           onSaved: (value) => _phone = value,
                         ),
                         const SizedBox(height: AppTheme.divider * 2),
                         Provider.of<AuthViewModel>(context).loading
                             ? const CustomProgress()
                             : CustomButton(
-                                text: "Mettre à jour", onPressed: update),
+                                text:  textLocals.mettreAJour, onPressed: update),
                       ],
                     ),
                   ),
