@@ -106,7 +106,9 @@ class _AvailableAppointmentsScreenState
               ? const CustomProgress()
               : TabBarView(
                   children: [
-                    GridView.builder(
+                    matin.isEmpty
+                    ? Center(child: Text("Aucun rendez-vous disponible",style:  TextStyle(fontSize: 22)))
+                    : GridView.builder(
                         gridDelegate:
                             const SliverGridDelegateWithFixedCrossAxisCount(
                           crossAxisCount: 3,
@@ -183,7 +185,9 @@ class _AvailableAppointmentsScreenState
                             ),
                           );
                         }),
-                    GridView.builder(
+                    apresMidi.isEmpty
+                        ? Center(child: Text("Aucun rendez-vous disponible",style:  TextStyle(fontSize: 22)))
+                        :GridView.builder(
                         gridDelegate:
                             const SliverGridDelegateWithFixedCrossAxisCount(
                           crossAxisCount: 3,

@@ -225,7 +225,7 @@ class _ChatBotScreenState extends State<ChatBotScreen> {
         });
     if (_species != null) {
       messages.add(Message(isOwn: true, message: _species!));
-      // messages.add(Message(isOwn: false, message: "Un instant ..."));
+      messages.add(Message(isOwn: false, message: "Un instant s'il vous plait. Je récupère la liste des symptômes"));
       setState(() {});
 
       try {
@@ -311,7 +311,7 @@ class _ChatBotScreenState extends State<ChatBotScreen> {
         });
     if (_selectedSymptoms.isNotEmpty) {
       messages.add(Message(isOwn: true, message: _selectedSymptoms.join(", ")));
-      // messages.add(Message(isOwn: false, message: "Un instant..."));
+      messages.add(Message(isOwn: false, message: "Un instant s'il vous plait..."));
       setState(() {});
 
       try {
